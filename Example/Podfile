@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'Stinger_Example' do
+  pod 'Stinger', :path => '../'
+
+  target 'Stinger_Tests' do
+    inherit! :search_paths
+
+    pod 'Kiwi'
+  end
+end
