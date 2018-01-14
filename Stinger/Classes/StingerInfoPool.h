@@ -28,6 +28,7 @@ typedef void *StingerIMP;
 - (BOOL)removeInfoForIdentifier:(STIdentifier)identifier;
 
 @optional
+@property (nonatomic, weak) Class cls;
 + (instancetype)poolWithTypeEncoding:(NSString *)typeEncoding originalIMP:(IMP)imp selector:(SEL)sel;
 
 @end

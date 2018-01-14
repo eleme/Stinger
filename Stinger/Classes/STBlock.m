@@ -69,8 +69,8 @@ void addInstanceMethodForBlock(SEL sel) {
   addInstanceMethodForBlock(@selector(blockIMP));
 }
 
-- (NSString *)signature {
-  struct Block_layout *layout = (__bridge void *)self;
+NSString *signatureForBlock(id block) {
+  struct Block_layout *layout = (__bridge void *)block;
   if (!(layout->flags & BLOCK_HAS_SIGNATURE))
     return nil;
   
@@ -87,9 +87,19 @@ void addInstanceMethodForBlock(SEL sel) {
   return [NSString stringWithUTF8String:signature];
 }
 
-- (BlockIMP)blockIMP { //与imp_implementationWithBlock不同, blockIMP第一个参数为自己, 后者直接为第一个参数
-  struct Block_layout *layout = (__bridge void *)self;
+BlockIMP impForBlock(id block) {
+  struct Block_layout *layout = (__bridge void *)block;
   return layout->invoke;
 }
+
+- (NSString *)signature {
+  return signatureForBlock(self);
+}
+
+- (BlockIMP)blockIMP {
+  return impForBlock(self);
+}
+
+
 
 @end

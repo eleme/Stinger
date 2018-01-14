@@ -15,7 +15,8 @@
 @property (nonatomic, readonly) NSArray *argumentTypes;
 @property (nonatomic, readonly) NSString *returnType;
 
-- (instancetype)initWithObjCTypes:(NSString *)objCTypes;
-+ (ffi_type *)ffiTypeWithType:(NSString *)type;
+- (instancetype)initWithObjCTypes:(NSString *)objCTypes; // type encoding of method or block
+
+ffi_type * ffiTypeWithType (NSString *type);
 
 @end

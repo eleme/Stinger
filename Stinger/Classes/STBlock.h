@@ -18,4 +18,7 @@ typedef void *BlockIMP;
 - (NSString *)signature;
 - (BlockIMP)blockIMP;
 
+NSString *signatureForBlock(id block);
+BlockIMP impForBlock(id block);
+
 @end

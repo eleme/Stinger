@@ -32,9 +32,14 @@
 @synthesize originalIMP = _originalIMP;
 @synthesize typeEncoding = _typeEncoding;
 @synthesize sel = _sel;
+@synthesize cls = _cls;
 
 
 + (instancetype)poolWithTypeEncoding:(NSString *)typeEncoding originalIMP:(IMP)imp selector:(SEL)sel {
+  NSParameterAssert(typeEncoding);
+  NSParameterAssert(imp);
+  NSParameterAssert(sel);
+  
   StingerInfoPool *pool = [[StingerInfoPool alloc] init];
   pool.typeEncoding = typeEncoding;
   pool.originalIMP = imp;
@@ -54,11 +59,13 @@
 }
 
 - (void)setTypeEncoding:(NSString *)typeEncoding {
+  NSParameterAssert(typeEncoding);
   _typeEncoding = typeEncoding;
   _signature = [[STMethodSignature alloc] initWithObjCTypes:typeEncoding];
 }
 
 - (BOOL)addInfo:(id<StingerInfo>)info {
+  NSParameterAssert(info);
   [_lock lock];
   if (![_identifiers containsObject:info.identifier]) {
     switch (info.option) {
@@ -80,7 +87,7 @@
     [_lock unlock];
     return YES;
   }
-  NSLog(@"___Stinger has have hooked of identifier %@ with", info.identifier);
+  NSAssert(NO, @"Class (%@) has had identifier (%@) with SEL (%@)", self.cls, info.identifier, NSStringFromSelector(self.sel));
   return NO;
 }
 
@@ -109,14 +116,16 @@
 }
 
 - (StingerIMP)stingerIMP {
-  ffi_type *returnType = [STMethodSignature ffiTypeWithType:self.signature.returnType];
+  ffi_type *returnType = ffiTypeWithType(self.signature.returnType);
+  NSAssert(returnType, @"can't find a ffi_type of %@", self.signature.returnType);
   
   NSUInteger argumentCount = self.signature.argumentTypes.count;
   StingerIMP stingerIMP = NULL;
   _args = malloc(sizeof(ffi_type *) * argumentCount) ;
   
   for (int i = 0; i < argumentCount; i++) {
-    ffi_type* current_ffi_type = [STMethodSignature ffiTypeWithType:self.signature.argumentTypes[i]];
+    ffi_type* current_ffi_type = ffiTypeWithType(self.signature.argumentTypes[i]);
+    NSAssert(current_ffi_type, @"can't find a ffi_type of %@", self.signature.argumentTypes[i]);
     _args[i] = current_ffi_type;
   }
   
@@ -124,7 +133,10 @@
   
   if(ffi_prep_cif(&_cif, FFI_DEFAULT_ABI, (unsigned int)argumentCount, returnType, _args) == FFI_OK) {
     if (ffi_prep_closure_loc(_closure, &_cif, ffi_function, (__bridge void *)(self), stingerIMP) != FFI_OK) {
+      NSAssert(NO, @"genarate IMP failed");
     }
+  } else {
+    NSAssert(NO, @"FUCK");
   }
   
   [self _genarateBlockCif];
@@ -132,22 +144,23 @@
 }
 
 - (void)_genarateBlockCif {
-  ffi_type *returnType = [STMethodSignature ffiTypeWithType:self.signature.returnType];
+  ffi_type *returnType = ffiTypeWithType(self.signature.returnType);
   
   NSUInteger argumentCount = self.signature.argumentTypes.count;
   _blockArgs = malloc(sizeof(ffi_type *) *argumentCount);
   
-  ffi_type *current_ffi_type_0 = [STMethodSignature ffiTypeWithType:@"@?"];
+  ffi_type *current_ffi_type_0 = ffiTypeWithType(@"@?");
   _blockArgs[0] = current_ffi_type_0;
-  ffi_type *current_ffi_type_1 = [STMethodSignature ffiTypeWithType:@"@"];
+  ffi_type *current_ffi_type_1 = ffiTypeWithType(@"@");
   _blockArgs[1] = current_ffi_type_1;
   
   for (int i = 2; i < argumentCount; i++){
-    ffi_type* current_ffi_type = [STMethodSignature ffiTypeWithType:self.signature.argumentTypes[i]];
+    ffi_type* current_ffi_type = ffiTypeWithType(self.signature.argumentTypes[i]);
     _blockArgs[i] = current_ffi_type;
   }
   
-  if(ffi_prep_cif(&_blockCif, FFI_DEFAULT_ABI, (unsigned int)argumentCount, returnType, _blockArgs) == FFI_OK) {
+  if(ffi_prep_cif(&_blockCif, FFI_DEFAULT_ABI, (unsigned int)argumentCount, returnType, _blockArgs) != FFI_OK) {
+    NSAssert(NO, @"FUCK");
   }
 }
 
@@ -175,7 +188,7 @@ static void ffi_function(ffi_cif *cif, void *ret, void **args, void *userdata) {
     for (id<StingerInfo> info in infos) { \
     id block = info.block; \
     innerArgs[0] = &block; \
-    ffi_call(&(self->_blockCif), [block blockIMP], NULL, innerArgs); \
+    ffi_call(&(self->_blockCif), impForBlock(block), NULL, innerArgs); \
   }  \
   // before hooks
   ffi_call_infos(self.beforeInfos);
@@ -184,7 +197,7 @@ static void ffi_function(ffi_cif *cif, void *ret, void **args, void *userdata) {
     id <StingerInfo> info = self.insteadInfos[0];
     id block = info.block;
     innerArgs[0] = &block;
-    ffi_call(&(self->_blockCif), [block blockIMP], ret, innerArgs);
+    ffi_call(&(self->_blockCif), impForBlock(block), ret, innerArgs);
   } else {
     // original IMP
     ffi_call(cif, (void (*)(void))self.originalIMP, ret, args);

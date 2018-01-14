@@ -19,18 +19,26 @@
   self = [super init];
   if (self) {
     _types = objCTypes;
-    [self _parse];
+    [self _genarateTypes];
   }
   return self;
 }
 
-- (void)_parse {
+/*
+ *  sel: v24@0:8@16 -> v,@,:,@
+ *  block: v24@?0@\"<StingerParams>\"8@\"NSString\"16 -> v,@?,@,@
+ */
+- (void)_genarateTypes {
   _argumentTypes = [[NSMutableArray alloc] init];
+  NSInteger descNum = 0; // num of '\"' in block signature type encoding
   for (int i = 0; i < _types.length; i ++) {
     unichar c = [_types characterAtIndex:i];
-    NSString *arg;
     
-    if (isdigit(c)) continue;
+    NSString *arg;
+    if (c == '\"') ++descNum;
+    if ((descNum % 2) != 0 || (c == '\"' || isdigit(c))) {
+      continue;
+    }
     
     BOOL skipNext = NO;
     if (c == '^') {
@@ -79,9 +87,7 @@
   return _returnType;
 }
 
-#pragma mark - class methods
-
-+ (ffi_type *)ffiTypeWithType:(NSString *)type {
+ffi_type * ffiTypeWithType (NSString *type) {
   if ([type isEqualToString:@"@?"]) {
     return &ffi_type_pointer;
   }
@@ -130,6 +136,8 @@
     case ':':
       return &ffi_type_schar;
   }
+  
+  NSCAssert(NO, @"can't match a ffi_type of %@", type);
   return NULL;
 }
 

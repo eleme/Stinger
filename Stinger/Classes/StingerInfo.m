@@ -16,6 +16,10 @@
 @synthesize block = _block;
 
 + (instancetype)infoWithOption:(STOption)option withIdentifier:(STIdentifier)identifier withBlock:(id)block {
+  NSAssert((option == 0 || option == 1 || option == 2), @"invalid STOption of %zd", option);
+  NSParameterAssert(identifier);
+  NSParameterAssert(block);
+  
   StingerInfo *info = [[StingerInfo alloc] init];
   info.option = option;
   info.identifier = identifier;

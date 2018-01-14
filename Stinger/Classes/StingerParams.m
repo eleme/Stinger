@@ -32,10 +32,12 @@
 }
 
 - (void)addOriginalInvocation:(NSInvocation *)invocation {
+  NSParameterAssert(invocation);
   self.originalInvocation = invocation;
 }
 
 - (void)addOriginalIMP:(IMP)imp {
+  NSParameterAssert(imp);
   self.originalIMP = imp;
 }
 
