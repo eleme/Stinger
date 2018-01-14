@@ -14,6 +14,7 @@
 @interface StingerInfoPool ()
 @property (nonatomic, strong) NSLock *lock;
 @property (nonatomic, strong) STMethodSignature *signature;
+@property (nonatomic, strong) NSMethodSignature *ns_signature;
 @end
 
 @implementation StingerInfoPool {
@@ -44,6 +45,7 @@
   pool.typeEncoding = typeEncoding;
   pool.originalIMP = imp;
   pool.sel = sel;
+  pool.ns_signature = [NSMethodSignature signatureWithObjCTypes:[typeEncoding UTF8String]];
   return pool;
 }
 
@@ -174,8 +176,7 @@ static void ffi_function(ffi_cif *cif, void *ret, void **args, void *userdata) {
   params.slf = (__bridge id)(*slf);
   params.sel = self.sel;
   [params addOriginalIMP:self.originalIMP];
-  NSMethodSignature *signature = [NSMethodSignature signatureWithObjCTypes:[self.typeEncoding UTF8String]];
-  NSInvocation *originalInvocation = [NSInvocation invocationWithMethodSignature:signature];
+  NSInvocation *originalInvocation = [NSInvocation invocationWithMethodSignature:self.ns_signature];
   for (int i = 0; i < count; i ++) {
     [originalInvocation setArgument:args[i] atIndex:i];
   }

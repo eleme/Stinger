@@ -24,6 +24,8 @@
 		830C57753DA1425076A46639 /* libPods-Stinger_Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 26029EEE123E5F3DD35E00C4 /* libPods-Stinger_Example.a */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 		9C4A1F252003990D0052D8DB /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C4A1F242003990D0052D8DB /* Test.m */; };
+		9C4A50F1200BC1D10079C808 /* Aspects.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C4A50EF200BC1D00079C808 /* Aspects.m */; };
+		9C4A50F4200BC25F0079C808 /* ASViewController+hook.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C4A50F3200BC25F0079C808 /* ASViewController+hook.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +67,10 @@
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9C4A1F242003990D0052D8DB /* Test.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Test.m; sourceTree = "<group>"; };
+		9C4A50EF200BC1D00079C808 /* Aspects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Aspects.m; sourceTree = "<group>"; };
+		9C4A50F0200BC1D10079C808 /* Aspects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Aspects.h; sourceTree = "<group>"; };
+		9C4A50F2200BC25F0079C808 /* ASViewController+hook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ASViewController+hook.h"; sourceTree = "<group>"; };
+		9C4A50F3200BC25F0079C808 /* ASViewController+hook.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ASViewController+hook.m"; sourceTree = "<group>"; };
 		B726683B40D24F9553B4426A /* Pods-Stinger_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stinger_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Stinger_Example/Pods-Stinger_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		E77A19293182F9523DF3CE85 /* Pods-Stinger_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stinger_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Stinger_Tests/Pods-Stinger_Tests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -134,9 +140,13 @@
 			children = (
 				6003F59C195388D20070C39A /* ASAppDelegate.h */,
 				6003F59D195388D20070C39A /* ASAppDelegate.m */,
+				9C4A50F0200BC1D10079C808 /* Aspects.h */,
+				9C4A50EF200BC1D00079C808 /* Aspects.m */,
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
 				6003F5A5195388D20070C39A /* ASViewController.h */,
 				6003F5A6195388D20070C39A /* ASViewController.m */,
+				9C4A50F2200BC25F0079C808 /* ASViewController+hook.h */,
+				9C4A50F3200BC25F0079C808 /* ASViewController+hook.m */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
@@ -410,8 +420,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				6003F59E195388D20070C39A /* ASAppDelegate.m in Sources */,
+				9C4A50F4200BC25F0079C808 /* ASViewController+hook.m in Sources */,
 				6003F5A7195388D20070C39A /* ASViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
+				9C4A50F1200BC1D10079C808 /* Aspects.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

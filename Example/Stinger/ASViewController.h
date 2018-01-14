@@ -14,6 +14,8 @@
 
 - (NSString *)print2:(NSString *)s;
 
+- (void)print3:(NSString *)s;
+
 + (void)class_print:(NSString *)s;
 
 @end

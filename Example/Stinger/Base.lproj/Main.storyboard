@@ -66,12 +66,29 @@
                                     <action selector="execute_print2:" destination="whP-gf-Uak" eventType="touchUpInside" id="1Sd-02-lK2"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jAu-Pz-cDP">
+                                <rect key="frame" x="122" y="479" width="130" height="69"/>
+                                <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="69" id="YOV-UJ-uy0"/>
+                                    <constraint firstAttribute="width" constant="130" id="nS2-vd-gWz"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="aspect print3">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="execute_print3:" destination="whP-gf-Uak" eventType="touchUpInside" id="L9W-KP-fTI"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="hG5-Fd-2U1" firstAttribute="centerX" secondItem="TpU-gO-2f1" secondAttribute="centerX" id="BXX-pQ-9EH"/>
                             <constraint firstItem="mGg-hY-RRQ" firstAttribute="top" secondItem="qhV-Kq-V7e" secondAttribute="bottom" constant="52" id="Gps-Wr-jlr"/>
                             <constraint firstItem="qhV-Kq-V7e" firstAttribute="centerX" secondItem="hG5-Fd-2U1" secondAttribute="centerX" id="LB5-k2-K5J"/>
+                            <constraint firstItem="jAu-Pz-cDP" firstAttribute="top" secondItem="mGg-hY-RRQ" secondAttribute="bottom" constant="55" id="UYs-Jb-LPc"/>
+                            <constraint firstItem="jAu-Pz-cDP" firstAttribute="centerX" secondItem="mGg-hY-RRQ" secondAttribute="centerX" id="c4I-0N-QMh"/>
                             <constraint firstItem="hG5-Fd-2U1" firstAttribute="top" secondItem="uEw-UM-LJ8" secondAttribute="bottom" constant="83" id="qbJ-zx-08G"/>
                             <constraint firstItem="mGg-hY-RRQ" firstAttribute="centerX" secondItem="hG5-Fd-2U1" secondAttribute="centerX" id="xue-c6-fMF"/>
                             <constraint firstItem="qhV-Kq-V7e" firstAttribute="top" secondItem="hG5-Fd-2U1" secondAttribute="bottom" constant="62" id="zpE-0e-cg7"/>
