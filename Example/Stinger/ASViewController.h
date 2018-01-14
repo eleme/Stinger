@@ -10,4 +10,12 @@
 
 @interface ASViewController : UIViewController
 
+- (void)print2:(NSString *)s;
+
+- (void)print1:(NSString *)s;
+
+- (NSString *)print3:(NSString *)s;
+
++ (void)class_print:(NSString *)s;
+
 @end
