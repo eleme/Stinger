@@ -20,11 +20,6 @@ static ASViewController *_vc;
 
 - (void)setUp {
   [super setUp];
-
-  [ASViewController st_hookInstanceMethod:@selector(print1:) option:STOptionBefore usingIdentifier:@"st1" withBlock:^(id self, NSString *s) {
-    NSLog(@"%@ssssss-stinger", s);
-  }];
-  
   _vc = [ASViewController new];
 }
 

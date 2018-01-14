@@ -2,8 +2,8 @@
 //  ASViewController.m
 //  Stinger
 //
-//  Created by Assuner-Lee on 12/05/2017.
-//  Copyright (c) 2017 Assuner-Lee. All rights reserved.
+//  Created by Assuner on 12/05/2017.
+//  Copyright (c) 2017 Assuner. All rights reserved.
 //
 
 #import "ASViewController.h"
@@ -12,44 +12,85 @@
 #import "STBlock.h"
 
 @interface ASViewController ()
-- (IBAction)touch:(id)sender;
+
+- (IBAction)execute_class_print:(id)sender;
+- (IBAction)execute_print1:(id)sender;
+- (IBAction)execute_print2:(id)sender;
 
 @end
 
 @implementation ASViewController
 
 + (void)load {
-  NSString *o;
-  [self st_hookInstanceMethod:@selector(print3:) option:STOptionAfter usingIdentifier:@"3333" withBlock:^NSString *(id<StingerParams> params, NSString *s) {
-    [params invokeAndGetOriginalRetValue:ST_NO_RET];
-    NSLog(@"instead %@ --original %@", s, o);
-    return [NSString stringWithFormat:@"instead %@", s];
+  /*
+   * hook @selector(class_print:)
+   */
+  [self st_hookClassMethod:@selector(class_print:) option:STOptionBefore usingIdentifier:@"hook_class_print_before" withBlock:^(id<StingerParams> params, NSString *s) {
+    NSLog(@"---before class_print: %@", s);
   }];
   
-  [self st_hookClassMethod:@selector(class_print:) option:STOptionBefore usingIdentifier:@"class_hool" withBlock:^(id<StingerParams> params, NSString *s) {
-    NSLog(@"before class_hookhhh %@", s);
+  /*
+   * hook @selector(print1:)
+   */
+  [self st_hookInstanceMethod:@selector(print1:) option:STOptionBefore usingIdentifier:@"hook_print1_before1" withBlock:^(id<StingerParams> params, NSString *s) {
+    NSLog(@"---before1 print1: %@", s);
   }];
-}
-
-- (void)print2:(NSString *)s {
-  NSLog(@"print 2%@", s);
+  
+  [self st_hookInstanceMethod:@selector(print1:) option:STOptionBefore usingIdentifier:@"hook_print1_before2" withBlock:^(id<StingerParams> params, NSString *s) {
+    NSLog(@"---before2 print1: %@", s);
+  }];
+  
+  [self st_hookInstanceMethod:@selector(print1:) option:STOptionAfter usingIdentifier:@"hook_print1_after1" withBlock:^(id<StingerParams> params, NSString *s) {
+    NSLog(@"---after1 print1: %@", s);
+  }];
+  
+  [self st_hookInstanceMethod:@selector(print1:) option:STOptionAfter usingIdentifier:@"hook_print1_after2" withBlock:^(id<StingerParams> params, NSString *s) {
+    NSLog(@"---after2 print1: %@", s);
+  }];
+  
+  /*
+   * hook @selector(print2:)
+   */
+  
+  __block NSString *oldRet, *newRet;
+  [self st_hookInstanceMethod:@selector(print2:) option:STOptionInstead usingIdentifier:@"hook_print2_instead" withBlock:^NSString * (id<StingerParams> params, NSString *s) {
+    [params invokeAndGetOriginalRetValue:&oldRet];
+    newRet = [oldRet stringByAppendingString:@" ++ new-st_instead"];
+    NSLog(@"---instead print2 old ret: (%@) / new ret: (%@)", oldRet, newRet);
+    return newRet;
+  }];
+  
+  [self st_hookInstanceMethod:@selector(print2:) option:STOptionAfter usingIdentifier:@"hook_print2_after1" withBlock:^(id<StingerParams> params, NSString *s) {
+    NSLog(@"---after1 print2 self:%@ SEL: %@ p: %@",[params slf], NSStringFromSelector([params sel]), s);
+  }];
 }
 
 - (void)print1:(NSString *)s{
-  NSLog(@"print 1%@", s);
+  NSLog(@"---original print1: %@", s);
 }
 
-- (NSString *)print3:(NSString *)s{
-  NSLog(@"return--- %@", s);
-  return [s stringByAppendingString:@"++"];
+- (NSString *)print2:(NSString *)s{
+  NSLog(@"---original print2: %@", s);
+  return [s stringByAppendingString:@"-print2 return"];
 }
 
 + (void)class_print:(NSString *)s {
-  NSLog(@"class_print %@", s);
+  NSLog(@"---original class_print: %@", s);
 }
 
-- (void)viewDidLoad {
-  [super viewDidLoad];
+#pragma - action
+
+- (IBAction)execute_class_print:(id)sender {
+  [ASViewController class_print:@"example"];
+}
+
+- (IBAction)execute_print1:(id)sender {
+  [self print1:@"example"];
+}
+
+- (IBAction)execute_print2:(id)sender {
+  NSString *newRet = [self print2:@"example"];
+  NSLog(@"---print2 new ret: %@", newRet);
 }
 
 - (NSTimeInterval)measureBlock:(void(^)(void))block times:(NSUInteger)times {
@@ -62,24 +103,4 @@
   return [[NSDate date] timeIntervalSinceDate:tmpStartDate] * 1000.0 / times;
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (IBAction)touch:(id)sender {
-//  NSLog(@">>>>>>>>>>cost1 time = %f ms", [self measureBlock:^{
-////    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-////      [[ASClassA new] print:@"asclass A"];
-////    });
-////    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-////       [self print1:@"ssss"];;
-////    });
-//   // [self print1:@"ssss"];;
-//    NSString *mss = [self print3:@"pppppp"];
-//    NSLog(@"mss %@", mss);
-//  } times:1]);
-  [ASViewController class_print:@"class"];
-}
 @end

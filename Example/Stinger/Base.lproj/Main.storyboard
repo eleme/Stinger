@@ -6,7 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -23,22 +22,59 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hG5-Fd-2U1">
-                                <rect key="frame" x="34" y="220" width="130" height="69"/>
+                                <rect key="frame" x="122" y="103" width="130" height="69"/>
                                 <color key="backgroundColor" red="0.031372549020000001" green="0.61960784310000006" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="69" id="f3j-cJ-luQ"/>
-                                    <constraint firstAttribute="width" constant="130" id="q06-ES-nic"/>
+                                    <constraint firstAttribute="width" constant="130" id="5Iz-qr-M7X"/>
+                                    <constraint firstAttribute="height" constant="69" id="C2h-1d-Ad3"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="class_print">
+                                    <color key="titleColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
                                 <connections>
-                                    <action selector="touch:" destination="whP-gf-Uak" eventType="touchUpInside" id="dVD-2V-gP8"/>
+                                    <action selector="execute_class_print:" destination="whP-gf-Uak" eventType="touchUpInside" id="jV5-8G-XrA"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qhV-Kq-V7e">
+                                <rect key="frame" x="122" y="234" width="130" height="69"/>
+                                <color key="backgroundColor" red="0.2038704023" green="0.86969942219999996" blue="0.76335604400000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="130" id="4st-AA-vgx"/>
+                                    <constraint firstAttribute="height" constant="69" id="dCL-Wi-4SS"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="print1">
+                                    <color key="titleColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="execute_print1:" destination="whP-gf-Uak" eventType="touchUpInside" id="R38-hY-KVU"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mGg-hY-RRQ">
+                                <rect key="frame" x="122" y="355" width="130" height="69"/>
+                                <color key="backgroundColor" red="1" green="0.51763785620000002" blue="0.1493553064" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="69" id="QTE-qc-L6c"/>
+                                    <constraint firstAttribute="width" constant="130" id="aHG-pH-sEF"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="print2">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="execute_print2:" destination="whP-gf-Uak" eventType="touchUpInside" id="1Sd-02-lK2"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="hG5-Fd-2U1" firstAttribute="leading" secondItem="TpU-gO-2f1" secondAttribute="leadingMargin" constant="18" id="elz-SA-czb"/>
-                            <constraint firstItem="hG5-Fd-2U1" firstAttribute="top" secondItem="uEw-UM-LJ8" secondAttribute="bottom" constant="200" id="sBq-md-rBk"/>
+                            <constraint firstItem="hG5-Fd-2U1" firstAttribute="centerX" secondItem="TpU-gO-2f1" secondAttribute="centerX" id="BXX-pQ-9EH"/>
+                            <constraint firstItem="mGg-hY-RRQ" firstAttribute="top" secondItem="qhV-Kq-V7e" secondAttribute="bottom" constant="52" id="Gps-Wr-jlr"/>
+                            <constraint firstItem="qhV-Kq-V7e" firstAttribute="centerX" secondItem="hG5-Fd-2U1" secondAttribute="centerX" id="LB5-k2-K5J"/>
+                            <constraint firstItem="hG5-Fd-2U1" firstAttribute="top" secondItem="uEw-UM-LJ8" secondAttribute="bottom" constant="83" id="qbJ-zx-08G"/>
+                            <constraint firstItem="mGg-hY-RRQ" firstAttribute="centerX" secondItem="hG5-Fd-2U1" secondAttribute="centerX" id="xue-c6-fMF"/>
+                            <constraint firstItem="qhV-Kq-V7e" firstAttribute="top" secondItem="hG5-Fd-2U1" secondAttribute="bottom" constant="62" id="zpE-0e-cg7"/>
                         </constraints>
                     </view>
                 </viewController>
