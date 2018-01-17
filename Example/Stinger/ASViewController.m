@@ -8,6 +8,7 @@
 
 #import "ASViewController.h"
 #import <Stinger/Stinger.h>
+#import <objc/runtime.h>
 
 @interface ASViewController ()
 
@@ -35,6 +36,7 @@
 
 + (void)class_print:(NSString *)s {
   NSLog(@"---original class_print: %@", s);
+  [self instancesRespondToSelector:<#(SEL)#>]
 }
 
 #pragma - action
@@ -48,7 +50,7 @@
 - (IBAction)execute_print1:(id)sender {
   [self measureBlock:^{
     [self print1:@"example"];
-  } times:2000];
+  } times:100];
 }
 
 - (IBAction)execute_print2:(id)sender {
@@ -61,7 +63,7 @@
 - (IBAction)execute_print3:(id)sender {
   [self measureBlock:^{
     [self print3:@"example"];
-  } times:2000];
+  } times:100];
 }
 
 - (NSTimeInterval)measureBlock:(void(^)(void))block times:(NSUInteger)times {

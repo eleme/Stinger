@@ -57,11 +57,9 @@ NS_INLINE BOOL hook(Class cls, SEL sel, STOption option, STIdentifier identifier
   NSCParameterAssert(option == 0 || option == 1 || option == 2);
   NSCParameterAssert(identifier);
   NSCParameterAssert(block);
-  
   Method m = class_getInstanceMethod(cls, sel);
   NSCAssert(m, @"SEL (%@) doesn't has a imp in Class (%@) originally", NSStringFromSelector(sel), cls);
   if (!m) return NO;
-  
   const char * typeEncoding = method_getTypeEncoding(m);
   STMethodSignature *methodSignature = [[STMethodSignature alloc] initWithObjCTypes:[NSString stringWithUTF8String:typeEncoding]];
   STMethodSignature *blockSignature = [[STMethodSignature alloc] initWithObjCTypes:signatureForBlock(block)];
@@ -84,7 +82,9 @@ NS_INLINE BOOL hook(Class cls, SEL sel, STOption option, STIdentifier identifier
     
     IMP stingerIMP = [infoPool stingerIMP];
     
-    class_replaceMethod(cls, sel, stingerIMP, typeEncoding);
+    if (!(class_addMethod(cls, sel, stingerIMP, typeEncoding))) {
+      class_replaceMethod(cls, sel, stingerIMP, typeEncoding);
+    }
     const char * st_original_SelName = [[@"st_original_" stringByAppendingString:NSStringFromSelector(sel)] UTF8String];
     class_addMethod(cls, sel_registerName(st_original_SelName), originalImp, typeEncoding);
     
