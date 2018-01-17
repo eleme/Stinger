@@ -18,18 +18,48 @@
 #pragma - public
 
 + (BOOL)st_hookInstanceMethod:(SEL)sel option:(STOption)option usingIdentifier:(STIdentifier)identifier withBlock:(id)block {
-  return [self _hookInstanceMethod:sel class:self.class option:option usingIdentifier:identifier withBlock:block];
+  return hook(self, sel, option, identifier, block);
 }
 
 + (BOOL)st_hookClassMethod:(SEL)sel option:(STOption)option usingIdentifier:(STIdentifier)identifier withBlock:(id)block {
-  return [self _hookInstanceMethod:sel class:object_getClass(self) option:option usingIdentifier:identifier withBlock:block];
+  return hook(object_getClass(self), sel, option, identifier, block);
 }
 
-#pragma - private
++ (NSArray<STIdentifier> *)st_allIdentifiersForKey:(SEL)key {
+  NSMutableArray *mArray = [[NSMutableArray alloc] init];
+  @synchronized(self) {
+    [mArray addObjectsFromArray:getAllIdentifiers(self, key)];
+    [mArray addObjectsFromArray:getAllIdentifiers(object_getClass(self), key)];
+  }
+  return [mArray copy];
+}
 
-+ (BOOL)_hookInstanceMethod:(SEL)sel class:(Class)cls option:(STOption)option usingIdentifier:(STIdentifier)identifier withBlock:(id)block {
++ (BOOL)st_removeHookWithIdentifier:(STIdentifier)identifier forKey:(SEL)key {
+  BOOL hasRemoved = NO;
+  @synchronized(self) {
+    id<StingerInfoPool> infoPool = getStingerInfoPool(self, key);
+    if ([infoPool removeInfoForIdentifier:identifier]) {
+      hasRemoved = YES;
+    }
+    infoPool = getStingerInfoPool(object_getClass(self), key);
+    if ([infoPool removeInfoForIdentifier:identifier]) {
+      hasRemoved = YES;
+    }
+  }
+  return hasRemoved;
+}
+
+#pragma - inline functions
+
+NS_INLINE BOOL hook(Class cls, SEL sel, STOption option, STIdentifier identifier, id block) {
+  NSCParameterAssert(cls);
+  NSCParameterAssert(sel);
+  NSCParameterAssert(option == 0 || option == 1 || option == 2);
+  NSCParameterAssert(identifier);
+  NSCParameterAssert(block);
+  
   Method m = class_getInstanceMethod(cls, sel);
-  NSAssert(m, @"SEL (%@) doesn't has a imp in Class (%@) originally", NSStringFromSelector(sel), cls);
+  NSCAssert(m, @"SEL (%@) doesn't has a imp in Class (%@) originally", NSStringFromSelector(sel), cls);
   if (!m) return NO;
   
   const char * typeEncoding = method_getTypeEncoding(m);
@@ -38,13 +68,12 @@
   if (! isMatched(methodSignature, blockSignature, option, cls, sel, identifier)) {
     return NO;
   }
-  
 
   IMP originalImp = method_getImplementation(m);
   
   @synchronized(cls) {
     StingerInfo *info = [StingerInfo infoWithOption:option withIdentifier:identifier withBlock:block];
-    id<StingerInfoPool> infoPool = [cls _stingerInfoPoolForKey:sel];
+    id<StingerInfoPool> infoPool = getStingerInfoPool(cls, sel);
     
     if (infoPool) {
       return [infoPool addInfo:info];
@@ -59,21 +88,27 @@
     const char * st_original_SelName = [[@"st_original_" stringByAppendingString:NSStringFromSelector(sel)] UTF8String];
     class_addMethod(cls, sel_registerName(st_original_SelName), originalImp, typeEncoding);
     
-    [cls _setStingerInfoPool:infoPool ForKey:sel];
+    setStingerInfoPool(cls, sel, infoPool);
     return [infoPool addInfo:info];
   }
 }
 
-+ (id<StingerInfoPool>)_stingerInfoPoolForKey:(SEL)key {
-  return objc_getAssociatedObject(self, key);
+NS_INLINE id<StingerInfoPool> getStingerInfoPool(Class cls, SEL key) {
+  NSCParameterAssert(cls);
+  NSCParameterAssert(key);
+  return objc_getAssociatedObject(cls, key);
 }
 
-+ (void)_setStingerInfoPool:(id<StingerInfoPool>)infoPool ForKey:(SEL)key {
-  objc_setAssociatedObject(self, key, infoPool, OBJC_ASSOCIATION_RETAIN);
+NS_INLINE void setStingerInfoPool(Class cls, SEL key, id<StingerInfoPool> infoPool) {
+  NSCParameterAssert(cls);
+  NSCParameterAssert(key);
+  objc_setAssociatedObject(cls, key, infoPool, OBJC_ASSOCIATION_RETAIN);
 }
 
-+ (NSArray<STIdentifier> *)_allIdentifiersForKey:(SEL)key withClass:(Class)cls {
-  id<StingerInfoPool> infoPool = [cls _stingerInfoPoolForKey:key];
+NS_INLINE NSArray<STIdentifier> * getAllIdentifiers(Class cls, SEL key) {
+  NSCParameterAssert(cls);
+  NSCParameterAssert(key);
+  id<StingerInfoPool> infoPool = getStingerInfoPool(cls, key);
   return infoPool.identifiers;
 }
 

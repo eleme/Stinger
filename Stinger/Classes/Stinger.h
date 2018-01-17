@@ -23,4 +23,8 @@ typedef NS_ENUM(NSInteger, STOption) {
 
 + (BOOL)st_hookClassMethod:(SEL)sel option:(STOption)option usingIdentifier:(STIdentifier)identifier withBlock:(id)block;
 
++ (NSArray<STIdentifier> *)st_allIdentifiersForKey:(SEL)key;
+
++ (BOOL)st_removeHookWithIdentifier:(STIdentifier)identifier forKey:(SEL)key;
+
 @end

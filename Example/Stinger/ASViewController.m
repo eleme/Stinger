@@ -7,6 +7,7 @@
 //
 
 #import "ASViewController.h"
+#import <Stinger/Stinger.h>
 
 @interface ASViewController ()
 
@@ -47,7 +48,7 @@
 - (IBAction)execute_print1:(id)sender {
   [self measureBlock:^{
     [self print1:@"example"];
-  } times:500];
+  } times:2000];
 }
 
 - (IBAction)execute_print2:(id)sender {
@@ -60,7 +61,7 @@
 - (IBAction)execute_print3:(id)sender {
   [self measureBlock:^{
     [self print3:@"example"];
-  } times:500];
+  } times:2000];
 }
 
 - (NSTimeInterval)measureBlock:(void(^)(void))block times:(NSUInteger)times {
