@@ -8,6 +8,8 @@
 
 #import "ASViewController.h"
 #import <Stinger/Stinger.h>
+#import <Stinger/ffi.h>
+#import <Stinger/STBlock.h>
 #import <objc/runtime.h>
 
 @interface ASViewController ()
@@ -36,8 +38,8 @@
 
 + (void)class_print:(NSString *)s {
   NSLog(@"---original class_print: %@", s);
-  [self instancesRespondToSelector:<#(SEL)#>]
 }
+
 
 #pragma - action
 

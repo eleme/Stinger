@@ -19,7 +19,7 @@ typedef NS_ENUM(NSInteger, STOption) {
 
 @interface NSObject (Stinger)
 
-+ (BOOL)st_hookInstanceMethod:(SEL)sel option:(STOption)option usingIdentifier:(STIdentifier)Identifier withBlock:(id)block;
++ (BOOL)st_hookInstanceMethod:(SEL)sel option:(STOption)option usingIdentifier:(STIdentifier)identifier withBlock:(id)block;
 
 + (BOOL)st_hookClassMethod:(SEL)sel option:(STOption)option usingIdentifier:(STIdentifier)identifier withBlock:(id)block;
 

@@ -10,7 +10,6 @@
 #import "Stinger.h"
 #import "STBlock.h"
 #import <Stinger/STMethodSignature.h>
-#import "Aspects.h"
 
 @interface ASViewController (hook)
 

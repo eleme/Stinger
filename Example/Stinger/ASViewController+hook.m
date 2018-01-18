@@ -52,25 +52,5 @@
   [self st_hookInstanceMethod:@selector(print2:) option:STOptionAfter usingIdentifier:@"hook_print2_after1" withBlock:^(id<StingerParams> params, NSString *s) {
     NSLog(@"---after1 print2 self:%@ SEL: %@ p: %@",[params slf], NSStringFromSelector([params sel]), s);
   }];
-  
-  
-  /*
-   *  aspect hook @selector(print3:)
-   */
-  [self aspect_hookSelector:@selector(print3:) withOptions:AspectPositionBefore usingBlock:^(id<StingerParams> params, NSString *s) {
-    NSLog(@"---Aspect before1 print3: %@", s);
-  } error:nil];
-  
-  [self aspect_hookSelector:@selector(print3:) withOptions:AspectPositionBefore usingBlock:^(id<StingerParams> params, NSString *s) {
-    NSLog(@"---Aspect before2 print3: %@", s);
-  } error:nil];
-  
-  [self aspect_hookSelector:@selector(print3:) withOptions:AspectPositionAfter usingBlock:^(id<StingerParams> params, NSString *s) {
-    NSLog(@"---Aspect after1 print3: %@", s);
-  } error:nil];
-  
-  [self aspect_hookSelector:@selector(print3:) withOptions:AspectPositionAfter usingBlock:^(id<StingerParams> params, NSString *s) {
-    NSLog(@"---Aspect after2 print3: %@", s);
-  } error:nil];
 }
 @end
