@@ -30,13 +30,19 @@
  */
 - (void)_genarateTypes {
   _argumentTypes = [[NSMutableArray alloc] init];
-  NSInteger descNum = 0; // num of '\"' in block signature type encoding
+  NSInteger descNum1 = 0; // num of '\"' in block signature type encoding
+  NSInteger descNum2 = 0; // num of '<' or '>' in block signature type encoding
   for (int i = 0; i < _types.length; i ++) {
     unichar c = [_types characterAtIndex:i];
     
     NSString *arg;
-    if (c == '\"') ++descNum;
-    if ((descNum % 2) != 0 || (c == '\"' || isdigit(c))) {
+    if (c == '\"') ++descNum1;
+    if ((descNum1 % 2) != 0 || c == '\"' || isdigit(c)) {
+      continue;
+    }
+    
+    if (c == '<' || c == '>') ++descNum2;
+    if ((descNum2 % 2) != 0 || c == '<' || c == '>') {
       continue;
     }
     

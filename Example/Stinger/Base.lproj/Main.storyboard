@@ -74,7 +74,7 @@
                                     <constraint firstAttribute="width" constant="130" id="nS2-vd-gWz"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <state key="normal" title="aspect print3">
+                                <state key="normal" title="test">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>

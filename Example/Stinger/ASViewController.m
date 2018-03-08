@@ -36,6 +36,10 @@
   NSLog(@"---original print1: %@", s);
 }
 
+- (void)testBlock:(testBlock)block {
+  NSLog(@"---original testBlock %f", block(5, 15));
+}
+
 + (void)class_print:(NSString *)s {
   NSLog(@"---original class_print: %@", s);
 }
@@ -63,9 +67,9 @@
 }
 
 - (IBAction)execute_print3:(id)sender {
-  [self measureBlock:^{
-    [self print3:@"example"];
-  } times:100];
+  [self testBlock:^double(double x, double y) {
+    return x + y;
+  }];
 }
 
 - (NSTimeInterval)measureBlock:(void(^)(void))block times:(NSUInteger)times {
