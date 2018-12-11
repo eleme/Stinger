@@ -56,7 +56,6 @@ AOP lets us modularize these cross-cutting requirements, and then cleanly identi
 
 ```
 #import "ASViewController+hook.h"
-
 @implementation ASViewController (hook)
 
 + (void)load {
@@ -81,14 +80,17 @@ NSLog(@"---before1 print1: %@", s);
 ### Using Stinger with non-void return types
 
 ```
+#import "ASViewController+hook.h"
+@implementation ASViewController (hook)
+
 + (void)load {
-	__block NSString *oldRet, *newRet;
-	[self st_hookInstanceMethod:@selector(print2:) option:STOptionInstead usingIdentifier:@"hook_print2_instead" withBlock:^NSString * (id<StingerParams> params, NSString *s) {
-	[params invokeAndGetOriginalRetValue:&oldRet];
-	newRet = [oldRet stringByAppendingString:@" ++ new-st_instead"];
-	NSLog(@"---instead print2 old ret: (%@) / new ret: (%@)", oldRet, newRet);
-	return newRet;
-	}];
+__block NSString *oldRet, *newRet;
+[self st_hookInstanceMethod:@selector(print2:) option:STOptionInstead usingIdentifier:@"hook_print2_instead" withBlock:^NSString * (id<StingerParams> params, NSString *s) {
+[params invokeAndGetOriginalRetValue:&oldRet];
+newRet = [oldRet stringByAppendingString:@" ++ new-st_instead"];
+NSLog(@"---instead print2 old ret: (%@) / new ret: (%@)", oldRet, newRet);
+return newRet;
+}];
 }
 @end
 
