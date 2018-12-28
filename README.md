@@ -8,7 +8,7 @@ Stinger is a high-efficiency library with great compatibility, for aop in Object
 
 Stinger extends NSObject with the following methods:
 
-```
+```objc
 typedef NSString *STIdentifier;
 
 typedef NS_ENUM(NSInteger, STOption) {
@@ -52,7 +52,7 @@ AOP lets us modularize these cross-cutting requirements, and then cleanly identi
 
 ## How to use Stinger
 ### Example
-```
+```objc
 @interface ASViewController : UIViewController
 
 - (void)print1:(NSString *)s;
@@ -65,7 +65,7 @@ AOP lets us modularize these cross-cutting requirements, and then cleanly identi
 
 ### Using Stinger with void return types
 
-```
+```objc
 @implementation ASViewController (hook)
 
 + (void)load {
@@ -89,7 +89,7 @@ NSLog(@"---before1 print1: %@", s);
 
 ### Using Stinger with non-void return types
 
-```
+```objc
 @implementation ASViewController (hook)
 
 + (void)load {
