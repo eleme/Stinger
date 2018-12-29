@@ -43,7 +43,7 @@ STIdentifier is a identification of per hook in per class, which can be used to 
 
 Stinger uses libffi to hook into messages, not Objective-C message forwarding. This will creat very little overhead compared to Aspects. It can be used in code called 1000 times per second.
 
-Stinger calls and matches block arguments.  The first block argument will be of type id<StingerParams>.
+Stinger calls and matches block arguments.  The first block argument will be of type `id<StingerParams>`.
 
 ## When to use Stinger
 
