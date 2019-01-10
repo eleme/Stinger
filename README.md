@@ -80,7 +80,7 @@ These cross-cutting requirements are duplicated and spread throughout our app.
 AOP lets us modularize these cross-cutting requirements, and then cleanly identify all of the places they should be applied. As shown in the examples above cross-cutting requirements can be either technical or business focused in nature.
 
 ## How to use Stinger
-### Example
+### For specific class
 ```objc
 @interface ASViewController : UIViewController
 
@@ -92,7 +92,7 @@ AOP lets us modularize these cross-cutting requirements, and then cleanly identi
 
 ```
 
-### Using Stinger with void return types
+#### Using Stinger with void return types
 
 ```objc
 @implementation ASViewController (hook)
@@ -114,10 +114,9 @@ AOP lets us modularize these cross-cutting requirements, and then cleanly identi
 
 ```
 
-### Using Stinger with non-void return types
+#### Using Stinger with non-void return types
 
 ```objc
-// For specific class
 @implementation ASViewController (hook)
 
 + (void)load {
@@ -132,7 +131,7 @@ AOP lets us modularize these cross-cutting requirements, and then cleanly identi
 @end
 
 ```
-
+### For specific instance
 ```objc
 // For specific instance
 @implementation ASViewController
