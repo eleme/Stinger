@@ -9,23 +9,33 @@ Stinger is a high-efficiency library with great compatibility, for aop in Object
 Stinger extends NSObject with the following methods:
 
 ```objc
-typedef NSString *STIdentifier;
+ttypedef NSString *STIdentifier;
 
 typedef NS_ENUM(NSInteger, STOption) {
-    STOptionAfter = 0,     // Called after the original implementation (default)
-    STOptionInstead = 1,   // Will replace the original implementation.
-    STOptionBefore = 2,    // Called before the original implementation.
+STOptionAfter = 0,     // Called after the original implementation (default)
+STOptionInstead = 1,   // Will replace the original implementation.
+STOptionBefore = 2,    // Called before the original implementation.
+};
+
+typedef NS_ENUM(NSInteger, STHookResult) {
+STHookResultSuccuss = 1,
+STHookResultErrorMethodNotFound = -1,
+STHookResultErrorBlockNotMatched = -2,
+STHookResultErrorIDExisted = -3,
+STHookResultOther = -4,
 };
 
 @interface NSObject (Stinger)
 
-/* Adds a block of code before/instead/after the current 'SEL' for a specific class.
+#pragma mark - For specific class
+
+/* Adds a block of code before/instead/after the current 'sel'.
 * @param block. The first parameter will be `id<StingerParams>`, followed by all parameters of the method.
 * @param STIdentifier. The string is a identifier for a specific hook.
 * @return hook result.
 */
-+ (BOOL)st_hookInstanceMethod:(SEL)sel option:(STOption)option usingIdentifier:(STIdentifier)identifier withBlock:(id)block;
-+ (BOOL)st_hookClassMethod:(SEL)sel option:(STOption)option usingIdentifier:(STIdentifier)identifier withBlock:(id)block;
++ (STHookResult)st_hookInstanceMethod:(SEL)sel option:(STOption)option usingIdentifier:(STIdentifier)identifier withBlock:(id)block;
++ (STHookResult)st_hookClassMethod:(SEL)sel option:(STOption)option usingIdentifier:(STIdentifier)identifier withBlock:(id)block;
 
 /*
 *  Get all hook identifiers for a specific key.
@@ -36,6 +46,15 @@ typedef NS_ENUM(NSInteger, STOption) {
 *  Remove a specific hook.
 */
 + (BOOL)st_removeHookWithIdentifier:(STIdentifier)identifier forKey:(SEL)key;
+
+
+#pragma mark - For specific instance
+
+- (STHookResult)st_hookInstanceMethod:(SEL)sel option:(STOption)option usingIdentifier:(STIdentifier)identifier withBlock:(id)block;
+
+- (NSArray<STIdentifier> *)st_allIdentifiersForKey:(SEL)key;
+
+- (BOOL)st_removeHookWithIdentifier:(STIdentifier)identifier forKey:(SEL)key;
 
 @end
 ```
@@ -79,37 +98,49 @@ AOP lets us modularize these cross-cutting requirements, and then cleanly identi
 @implementation ASViewController (hook)
 
 + (void)load {
-/*
-* hook class method @selector(class_print:)
-*/
+  /*
+  * hook class method @selector(class_print:)
+  */
+  [self st_hookClassMethod:@selector(class_print:) option:STOptionBefore usingIdentifier:@"hook_class_print_before" withBlock:^(id<StingerParams> params, NSString *s) {
+    NSLog(@"---before class_print: %@", s);
+  }];
 
-[self st_hookClassMethod:@selector(class_print:) option:STOptionBefore usingIdentifier:@"hook_class_print_before" withBlock:^(id<StingerParams> params, NSString *s) {
-NSLog(@"---before class_print: %@", s);
-}];
-
-/*
-* hook @selector(print1:)
-*/
-
-[self st_hookInstanceMethod:@selector(print1:) option:STOptionBefore usingIdentifier:@"hook_print1_before1" withBlock:^(id<StingerParams> params, NSString *s) {
-NSLog(@"---before1 print1: %@", s);
-}];
+  /*
+  * hook @selector(print1:)
+  */
+  [self st_hookInstanceMethod:@selector(print1:) option:STOptionBefore usingIdentifier:@"hook_print1_before1" withBlock:^(id<StingerParams> params, NSString *s) {
+    NSLog(@"---before1 print1: %@", s);
+  }];
 
 ```
 
 ### Using Stinger with non-void return types
 
 ```objc
+// For specific class
 @implementation ASViewController (hook)
 
 + (void)load {
-__block NSString *oldRet, *newRet;
-[self st_hookInstanceMethod:@selector(print2:) option:STOptionInstead usingIdentifier:@"hook_print2_instead" withBlock:^NSString * (id<StingerParams> params, NSString *s) {
-[params invokeAndGetOriginalRetValue:&oldRet];
-newRet = [oldRet stringByAppendingString:@" ++ new-st_instead"];
-NSLog(@"---instead print2 old ret: (%@) / new ret: (%@)", oldRet, newRet);
-return newRet;
-}];
+  __block NSString *oldRet, *newRet;
+  [self st_hookInstanceMethod:@selector(print2:) option:STOptionInstead usingIdentifier:@"hook_print2_instead" withBlock:^NSString * (id<StingerParams> params, NSString *s) {
+    [params invokeAndGetOriginalRetValue:&oldRet];
+    newRet = [oldRet stringByAppendingString:@" ++ new-st_instead"];
+    NSLog(@"---instead print2 old ret: (%@) / new ret: (%@)", oldRet, newRet);
+    return newRet;
+  }];
+}
+@end
+
+```
+
+```objc
+// For specific instance
+@implementation ASViewController
+- (void)viewDidLoad {
+  [super viewDidLoad];
+  [self st_hookInstanceMethod:@selector(print3:) option:STOptionAfter usingIdentifier:@"hook_print3_after1" withBlock:^(id<StingerParams> params, NSString *s) {
+    NSLog(@"---instance after print3: %@", s);
+  }];
 }
 @end
 
@@ -131,6 +162,13 @@ pod 'Stinger'
 
 Assuner-Lee, assuner@foxmail.com
 
+## Release note
+| version | note |
+| ------ | ------ | 
+| 0.1.1 | init. | 
+| 0.2.0 | support hooking specific instance.|
+
 ## License
 
 Stinger is available under the MIT license. See the LICENSE file for more info.
+

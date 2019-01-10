@@ -87,6 +87,8 @@
     NSLog(@"---instance2 after print3: %@", s);
   }];
   [otherInstance2 print3:@"---instance 2"];
+  
+  [self st_removeHookWithIdentifier:@"hook_print3_after1" forKey:@selector(print3:)];
 }
 
 
