@@ -1,5 +1,5 @@
 //
-//  StingerInfo.h
+//  STHookInfo.h
 //  Stinger
 //
 //  Created by Assuner on 2018/1/9.
@@ -10,7 +10,7 @@
 #import "Stinger.h"
 #import "StingerParams.h"
 
-@protocol StingerInfo <NSObject>
+@protocol STHookInfo <NSObject>
 
 @required
 @property (nonatomic, copy) id block;
@@ -22,6 +22,6 @@
 
 @end
 
-@interface StingerInfo : NSObject <StingerInfo>
+@interface STHookInfo : NSObject <STHookInfo>
 
 @end

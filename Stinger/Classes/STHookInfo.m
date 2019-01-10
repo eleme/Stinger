@@ -1,15 +1,15 @@
 //
-//  StingerInfo.m
+//  STHookInfo.m
 //  Stinger
 //
 //  Created by Assuner on 2018/1/9.
 //  Copyright © 2018年 Assuner. All rights reserved.
 //
 
-#import "StingerInfo.h"
+#import "STHookInfo.h"
 #import "STMethodSignature.h"
 
-@implementation StingerInfo
+@implementation STHookInfo
 
 @synthesize identifier = _identifier;
 @synthesize option = _option;
@@ -20,7 +20,7 @@
   NSParameterAssert(identifier);
   NSParameterAssert(block);
   
-  StingerInfo *info = [[StingerInfo alloc] init];
+  STHookInfo *info = [[STHookInfo alloc] init];
   info.option = option;
   info.identifier = identifier;
   info.block = block;

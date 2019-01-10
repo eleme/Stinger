@@ -1,5 +1,5 @@
 //
-//  StingerInfoPool.h
+//  STHookInfoPool.h
 //  Stinger
 //
 //  Created by Assuner on 2018/1/9.
@@ -7,16 +7,21 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "StingerInfo.h"
+#import "STHookInfo.h"
+
 
 typedef void *StingerIMP;
 
-@protocol StingerInfoPool <NSObject>
+extern NSString * const STClassPrefix;
+extern void st_setHookInfoPool(id obj, SEL key, id infoPool);
+extern id st_getHookInfoPool(id obj, SEL key);
+
+@protocol STHookInfoPool <NSObject>
 
 @required
-@property (nonatomic, strong, readonly) NSMutableArray<id<StingerInfo>> *beforeInfos;
-@property (nonatomic, strong, readonly) NSMutableArray<id<StingerInfo>> *insteadInfos;
-@property (nonatomic, strong, readonly) NSMutableArray<id<StingerInfo>> *afterInfos;
+@property (nonatomic, strong, readonly) NSMutableArray<id<STHookInfo>> *beforeInfos;
+@property (nonatomic, strong, readonly) NSMutableArray<id<STHookInfo>> *insteadInfos;
+@property (nonatomic, strong, readonly) NSMutableArray<id<STHookInfo>> *afterInfos;
 @property (nonatomic, strong, readonly) NSMutableArray<NSString *> *identifiers;
 
 @property (nonatomic, copy) NSString *typeEncoding;
@@ -24,7 +29,7 @@ typedef void *StingerIMP;
 @property (nonatomic) SEL sel;
 
 - (StingerIMP)stingerIMP;
-- (BOOL)addInfo:(id<StingerInfo>)info;
+- (BOOL)addInfo:(id<STHookInfo>)info;
 - (BOOL)removeInfoForIdentifier:(STIdentifier)identifier;
 
 @optional
@@ -33,6 +38,6 @@ typedef void *StingerIMP;
 
 @end
 
-@interface StingerInfoPool : NSObject <StingerInfoPool>
+@interface STHookInfoPool : NSObject <STHookInfoPool>
 
 @end

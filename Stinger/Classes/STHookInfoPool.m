@@ -1,23 +1,27 @@
 //
-//  StingerInfoPool.m
+//  STHookInfoPool.m
 //  Stinger
 //
 //  Created by Assuner on 2018/1/9.
 //  Copyright © 2018年 Assuner. All rights reserved.
 //
 
-#import "StingerInfoPool.h"
+#import "STHookInfoPool.h"
 #import <Stinger/ffi.h>
 #import "STBlock.h"
 #import "STMethodSignature.h"
+#import <objc/runtime.h>
 
-@interface StingerInfoPool ()
+NSString * const STClassPrefix = @"st_class_";
+NSString * const STSelectorPrefix = @"st_sel";
+
+@interface STHookInfoPool ()
 @property (nonatomic, strong) NSLock *lock;
 @property (nonatomic, strong) STMethodSignature *signature;
 @property (nonatomic, strong) NSMethodSignature *ns_signature;
 @end
 
-@implementation StingerInfoPool {
+@implementation STHookInfoPool {
   ffi_cif _cif;
   ffi_cif _blockCif;
   ffi_type **_args;
@@ -37,15 +41,10 @@
 
 
 + (instancetype)poolWithTypeEncoding:(NSString *)typeEncoding originalIMP:(IMP)imp selector:(SEL)sel {
-  NSParameterAssert(typeEncoding);
-  NSParameterAssert(imp);
-  NSParameterAssert(sel);
-  
-  StingerInfoPool *pool = [[StingerInfoPool alloc] init];
+  STHookInfoPool *pool = [[STHookInfoPool alloc] init];
   pool.typeEncoding = typeEncoding;
   pool.originalIMP = imp;
   pool.sel = sel;
-  pool.ns_signature = [NSMethodSignature signatureWithObjCTypes:[typeEncoding UTF8String]];
   return pool;
 }
 
@@ -61,29 +60,30 @@
 }
 
 - (void)setTypeEncoding:(NSString *)typeEncoding {
-  NSParameterAssert(typeEncoding);
   _typeEncoding = typeEncoding;
-  _signature = [[STMethodSignature alloc] initWithObjCTypes:typeEncoding];
+  _signature = typeEncoding ? [[STMethodSignature alloc] initWithObjCTypes:typeEncoding] : nil;
+  _ns_signature = typeEncoding ? [NSMethodSignature signatureWithObjCTypes:[typeEncoding UTF8String]]: nil;
 }
 
-- (BOOL)addInfo:(id<StingerInfo>)info {
+- (BOOL)addInfo:(id<STHookInfo>)info {
   NSParameterAssert(info);
   [_lock lock];
   if (![_identifiers containsObject:info.identifier]) {
     switch (info.option) {
-      case STOptionBefore:
-        [_beforeInfos insertObject:info atIndex:0];
+      case STOptionBefore: {
+        [_beforeInfos addObject:info];
         break;
-        
-      case STOptionInstead:
+      }
+      case STOptionInstead: {
         [_insteadInfos removeAllObjects];
         [_insteadInfos addObject:info];
         break;
-        
+      }
       case STOptionAfter:
-      default:
+      default: {
         [_afterInfos addObject:info];
         break;
+      }
     }
     [_identifiers addObject:info.identifier];
     [_lock unlock];
@@ -101,11 +101,11 @@
   return NO;
 }
 
-- (BOOL)_removeInfoForIdentifier:(STIdentifier)identifier inInfos:(NSMutableArray<id<StingerInfo>> *)infos {
+- (BOOL)_removeInfoForIdentifier:(STIdentifier)identifier inInfos:(NSMutableArray<id<STHookInfo>> *)infos {
   [_lock lock];
   BOOL flag = NO;
   for (int i = 0; i < infos.count; i ++) {
-    id<StingerInfo> info = infos[i];
+    id<STHookInfo> info = infos[i];
     if ([info.identifier isEqualToString:identifier]) {
       [infos removeObject:info];
       [_identifiers removeObject:identifier];
@@ -166,17 +166,51 @@
   }
 }
 
+- (void)dealloc {
+  ffi_closure_free(_closure);
+  free(_args);
+  free(_blockArgs);
+}
+
+id<STHookInfoPool> st_getHookInfoPool(id obj, SEL key) {
+  NSCParameterAssert(obj);
+  NSCParameterAssert(key);
+  return objc_getAssociatedObject(obj, NSSelectorFromString([STSelectorPrefix stringByAppendingString:NSStringFromSelector(key)]));
+}
+
+void st_setHookInfoPool(id obj, SEL key, id<STHookInfoPool> infoPool) {
+  NSCParameterAssert(obj);
+  NSCParameterAssert(key);
+  objc_setAssociatedObject(obj, NSSelectorFromString([STSelectorPrefix stringByAppendingString:NSStringFromSelector(key)]), infoPool, OBJC_ASSOCIATION_RETAIN);
+}
+
+#define ffi_call_infos(infos) \
+for (id<STHookInfo> info in infos) { \
+  id block = info.block; \
+  innerArgs[0] = &block; \
+  ffi_call(&(isaClassHookInfoPool->_blockCif), impForBlock(block), NULL, innerArgs); \
+}  \
+
 static void ffi_function(ffi_cif *cif, void *ret, void **args, void *userdata) {
-  StingerInfoPool *self = (__bridge StingerInfoPool *)userdata;
-  NSUInteger count = self.signature.argumentTypes.count;
+  STHookInfoPool *isaClassHookInfoPool = (__bridge STHookInfoPool *)userdata;
+  STHookInfoPool *originalClassHookInfoPool = nil;
+  STHookInfoPool *instanceHookInfoPool = nil;
+  Class isaClass = isaClassHookInfoPool.cls;
+  SEL key = isaClassHookInfoPool.sel;
+  if ([NSStringFromClass(isaClass) hasPrefix:STClassPrefix]) {
+    originalClassHookInfoPool = st_getHookInfoPool(class_getSuperclass(isaClass), key); // may be nil
+  } else {
+    originalClassHookInfoPool = isaClassHookInfoPool;
+  }
+  NSUInteger count = isaClassHookInfoPool.signature.argumentTypes.count;
   void **innerArgs = malloc(count * sizeof(*innerArgs));
-  
   StingerParams *params = [[StingerParams alloc] init];
   void **slf = args[0];
+  instanceHookInfoPool = st_getHookInfoPool((__bridge id)(*slf), key);
   params.slf = (__bridge id)(*slf);
-  params.sel = self.sel;
-  [params addOriginalIMP:self.originalIMP];
-  NSInvocation *originalInvocation = [NSInvocation invocationWithMethodSignature:self.ns_signature];
+  params.sel = isaClassHookInfoPool.sel;
+  [params addOriginalIMP:isaClassHookInfoPool.originalIMP];
+  NSInvocation *originalInvocation = [NSInvocation invocationWithMethodSignature:isaClassHookInfoPool.ns_signature];
   for (int i = 0; i < count; i ++) {
     [originalInvocation setArgument:args[i] atIndex:i];
   }
@@ -185,34 +219,29 @@ static void ffi_function(ffi_cif *cif, void *ret, void **args, void *userdata) {
   innerArgs[1] = &params;
   memcpy(innerArgs + 2, args + 2, (count - 2) * sizeof(*args));
   
-  #define ffi_call_infos(infos) \
-    for (id<StingerInfo> info in infos) { \
-    id block = info.block; \
-    innerArgs[0] = &block; \
-    ffi_call(&(self->_blockCif), impForBlock(block), NULL, innerArgs); \
-  }  \
   // before hooks
-  ffi_call_infos(self.beforeInfos);
+  ffi_call_infos(originalClassHookInfoPool.beforeInfos);
+  ffi_call_infos(instanceHookInfoPool.beforeInfos);
+  
   // instead hooks
-  if (self.insteadInfos.count) {
-    id <StingerInfo> info = self.insteadInfos[0];
+  if (instanceHookInfoPool.insteadInfos.count) {
+    id <STHookInfo> info = instanceHookInfoPool.insteadInfos[0];
     id block = info.block;
     innerArgs[0] = &block;
-    ffi_call(&(self->_blockCif), impForBlock(block), ret, innerArgs);
+    ffi_call(&(isaClassHookInfoPool->_blockCif), impForBlock(block), ret, innerArgs);
+  } else if (originalClassHookInfoPool.insteadInfos.count) {
+    id <STHookInfo> info = originalClassHookInfoPool.insteadInfos[0];
+    id block = info.block;
+    innerArgs[0] = &block;
+    ffi_call(&(isaClassHookInfoPool->_blockCif), impForBlock(block), ret, innerArgs);
   } else {
     // original IMP
-    ffi_call(cif, (void (*)(void))self.originalIMP, ret, args);
+    ffi_call(cif, (void (*)(void))isaClassHookInfoPool.originalIMP, ret, args);
   }
   // after hooks
-  ffi_call_infos(self.afterInfos);
-  
+  ffi_call_infos(originalClassHookInfoPool.afterInfos);
+  ffi_call_infos(instanceHookInfoPool.afterInfos);
   free(innerArgs);
-}
-
-- (void)dealloc {
-  ffi_closure_free(_closure);
-  free(_args);
-  free(_blockArgs);
 }
 
 @end
