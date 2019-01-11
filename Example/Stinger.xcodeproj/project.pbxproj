@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		243495F313045EB30CF94EB2 /* libPods-Stinger_Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 21F7D4EE6855E30149E51D1A /* libPods-Stinger_Tests.a */; };
+		2979077B21E88D87002684DB /* README_中文.md in Resources */ = {isa = PBXBuildFile; fileRef = 2979077A21E88D87002684DB /* README_中文.md */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -41,6 +42,7 @@
 		02028ED63962C6F898B533E2 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		21F7D4EE6855E30149E51D1A /* libPods-Stinger_Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Stinger_Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		26029EEE123E5F3DD35E00C4 /* libPods-Stinger_Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Stinger_Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2979077A21E88D87002684DB /* README_中文.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = "README_中文.md"; path = "../README_中文.md"; sourceTree = "<group>"; };
 		4A2FC9F2CFEB57D74DD57D5D /* Stinger.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Stinger.podspec; path = ../Stinger.podspec; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* Stinger_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stinger_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -185,6 +187,7 @@
 			children = (
 				4A2FC9F2CFEB57D74DD57D5D /* Stinger.podspec */,
 				650BAB541E1123FD7738DAEF /* README.md */,
+				2979077A21E88D87002684DB /* README_中文.md */,
 				02028ED63962C6F898B533E2 /* LICENSE */,
 			);
 			name = "Podspec Metadata";
@@ -288,6 +291,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
+				2979077B21E88D87002684DB /* README_中文.md in Resources */,
 				71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
