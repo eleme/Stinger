@@ -4,6 +4,8 @@
 [![License](https://img.shields.io/cocoapods/l/Stinger.svg?style=flat)](http://cocoapods.org/pods/Stinger)
 [![Platform](https://img.shields.io/cocoapods/p/Stinger.svg?style=flat)](http://cocoapods.org/pods/Stinger)
 
+#### [中文说明](https://github.com/Assuner-Lee/Stinger/blob/master/README_%E4%B8%AD%E6%96%87.md)
+
 Stinger is a high-efficiency library with great compatibility, for aop in Objective-C. It allows you to add code to existing methods, whilst thinking of the insertion point e.g. before/instead/after. Stinger automatically deals with calling super and is easier to use than regular method swizzling, **using libffi instead of Objective-C message forwarding**.
 
 Stinger extends NSObject with the following methods:
