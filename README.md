@@ -168,6 +168,7 @@ Assuner-Lee, assuner@foxmail.com
 | ------ | ------ | 
 | 0.1.1 | init. | 
 | 0.2.0 | support hooking specific instance.|
+| 0.2.1 | Improve compatibility with hook using message-forwarding like aspects or rac.|
 
 ## License
 

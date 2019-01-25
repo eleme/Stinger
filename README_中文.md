@@ -155,6 +155,7 @@ Assuner-Lee, assuner@foxmail.com
 | ------ | ------ | 
 | 0.1.1 | 初始化 | 
 | 0.2.0 | 支持hook特定实例对象|
+| 0.2.1 | 提升了与使用消息转发hook方式的兼容性，如aspects, rac等|
 
 ## License
 
