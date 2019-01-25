@@ -107,24 +107,29 @@ NS_INLINE STHookResult hookMethod(Class hookedCls, SEL sel, STOption option, STI
   if (! isMatched(methodSignature, blockSignature, option, hookedCls, sel, identifier)) {
     return STHookResultErrorBlockNotMatched;
   }
-
-  IMP originalImp = method_getImplementation(m);
   
+  IMP originalImp = method_getImplementation(m);
   @synchronized(hookedCls) {
     id<STHookInfoPool> hookInfoPool = st_getHookInfoPool(hookedCls, sel);
     if (!hookInfoPool) {
-      hookInfoPool = [STHookInfoPool poolWithTypeEncoding:[NSString stringWithUTF8String:typeEncoding] originalIMP:originalImp selector:sel];
+      hookInfoPool = [STHookInfoPool poolWithTypeEncoding:[NSString stringWithUTF8String:typeEncoding] originalIMP:NULL selector:sel];
       hookInfoPool.hookedCls = hookedCls;
       hookInfoPool.statedCls = [hookedCls class];
-      IMP stingerIMP = [hookInfoPool stingerIMP];
-      
-      if (!(class_addMethod(hookedCls, sel, stingerIMP, typeEncoding))) {
-        class_replaceMethod(hookedCls, sel, stingerIMP, typeEncoding);
-      }
-      const char * st_original_SelName = [[STMethodPrefix stringByAppendingString:NSStringFromSelector(sel)] UTF8String];
-      class_addMethod(hookedCls, sel_registerName(st_original_SelName), originalImp, typeEncoding);
       
       st_setHookInfoPool(hookedCls, sel, hookInfoPool);
+    }
+    
+    IMP stingerIMP = [hookInfoPool stingerIMP];
+    if (originalImp != stingerIMP) {
+      hookInfoPool.originalIMP = originalImp;
+      if (!class_addMethod(hookedCls, sel, stingerIMP, typeEncoding)) {
+        class_replaceMethod(hookedCls, sel, stingerIMP, typeEncoding);
+      }
+      
+      const char * st_original_SelName = [[STMethodPrefix stringByAppendingString:NSStringFromSelector(sel)] UTF8String];
+      if(!class_addMethod(hookedCls, sel_registerName(st_original_SelName), originalImp, typeEncoding)) {
+        class_replaceMethod(hookedCls, sel_registerName(st_original_SelName), originalImp, typeEncoding);
+      };
     }
     
     if ([NSStringFromClass(hookedCls) hasPrefix:STClassPrefix]) {

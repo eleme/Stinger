@@ -11,6 +11,7 @@
 #import "STBlock.h"
 #import "STMethodSignature.h"
 #import <objc/runtime.h>
+#import <objc/message.h>
 
 NSString * const STClassPrefix = @"st_class_";
 NSString * const STSelectorPrefix = @"st_sel";
@@ -37,6 +38,7 @@ NSString * const STSelectorPrefix = @"st_sel";
 @synthesize originalIMP = _originalIMP;
 @synthesize typeEncoding = _typeEncoding;
 @synthesize sel = _sel;
+@synthesize stingerIMP = _stingerIMP;
 @synthesize hookedCls = _hookedCls;
 @synthesize statedCls = _statedCls;
 
@@ -119,31 +121,32 @@ NSString * const STSelectorPrefix = @"st_sel";
 }
 
 - (StingerIMP)stingerIMP {
-  ffi_type *returnType = ffiTypeWithType(self.signature.returnType);
-  NSAssert(returnType, @"can't find a ffi_type of %@", self.signature.returnType);
-  
-  NSUInteger argumentCount = self.signature.argumentTypes.count;
-  StingerIMP stingerIMP = NULL;
-  _args = malloc(sizeof(ffi_type *) * argumentCount) ;
-  
-  for (int i = 0; i < argumentCount; i++) {
-    ffi_type* current_ffi_type = ffiTypeWithType(self.signature.argumentTypes[i]);
-    NSAssert(current_ffi_type, @"can't find a ffi_type of %@", self.signature.argumentTypes[i]);
-    _args[i] = current_ffi_type;
-  }
-  
-  _closure = ffi_closure_alloc(sizeof(ffi_closure), (void **)&stingerIMP);
-  
-  if(ffi_prep_cif(&_cif, FFI_DEFAULT_ABI, (unsigned int)argumentCount, returnType, _args) == FFI_OK) {
-    if (ffi_prep_closure_loc(_closure, &_cif, ffi_function, (__bridge void *)(self), stingerIMP) != FFI_OK) {
-      NSAssert(NO, @"genarate IMP failed");
+  if (_stingerIMP == NULL) {
+    ffi_type *returnType = ffiTypeWithType(self.signature.returnType);
+    NSAssert(returnType, @"can't find a ffi_type of %@", self.signature.returnType);
+    
+    NSUInteger argumentCount = self.signature.argumentTypes.count;
+    _args = malloc(sizeof(ffi_type *) * argumentCount) ;
+    
+    for (int i = 0; i < argumentCount; i++) {
+      ffi_type* current_ffi_type = ffiTypeWithType(self.signature.argumentTypes[i]);
+      NSAssert(current_ffi_type, @"can't find a ffi_type of %@", self.signature.argumentTypes[i]);
+      _args[i] = current_ffi_type;
     }
-  } else {
-    NSAssert(NO, @"FUCK");
+    
+    _closure = ffi_closure_alloc(sizeof(ffi_closure), (void **)&_stingerIMP);
+    
+    if(ffi_prep_cif(&_cif, FFI_DEFAULT_ABI, (unsigned int)argumentCount, returnType, _args) == FFI_OK) {
+      if (ffi_prep_closure_loc(_closure, &_cif, ffi_function, (__bridge void *)(self), _stingerIMP) != FFI_OK) {
+        NSAssert(NO, @"genarate IMP failed");
+      }
+    } else {
+      NSAssert(NO, @"FUCK");
+    }
+    
+    [self _genarateBlockCif];
   }
-  
-  [self _genarateBlockCif];
-  return stingerIMP;
+  return _stingerIMP;
 }
 
 - (void)_genarateBlockCif {
@@ -198,7 +201,7 @@ static void ffi_function(ffi_cif *cif, void *ret, void **args, void *userdata) {
   STHookInfoPool *instanceInfoPool = nil;
   SEL sel = hookedClassInfoPool->_sel;
   if ([NSStringFromClass(hookedClassInfoPool->_hookedCls) hasPrefix:STClassPrefix]) {
-    statedClassInfoPool = st_getHookInfoPool(hookedClassInfoPool->_statedCls, sel); // may be nil
+    statedClassInfoPool = st_getHookInfoPool(hookedClassInfoPool->_statedCls, sel);
   } else {
     statedClassInfoPool = hookedClassInfoPool;
   }
@@ -211,6 +214,7 @@ static void ffi_function(ffi_cif *cif, void *ret, void **args, void *userdata) {
   params.sel = sel;
   [params addOriginalIMP:hookedClassInfoPool->_originalIMP];
   NSInvocation *originalInvocation = [NSInvocation invocationWithMethodSignature:hookedClassInfoPool->_ns_signature];
+  
   for (int i = 0; i < count; i ++) {
     [originalInvocation setArgument:args[i] atIndex:i];
   }
@@ -236,7 +240,17 @@ static void ffi_function(ffi_cif *cif, void *ret, void **args, void *userdata) {
     ffi_call(&(hookedClassInfoPool->_blockCif), impForBlock(block), ret, innerArgs);
   } else {
     // original IMP
-    ffi_call(cif, (void (*)(void))hookedClassInfoPool->_originalIMP, ret, args);
+    /// if hooked by aspects or jspatch.. which use message-forwarding.
+    BOOL isForward = hookedClassInfoPool->_originalIMP == _objc_msgForward
+#if !defined(__arm64__)
+    || hookedClassInfoPool->_originalIMP == (IMP)_objc_msgForward_stret
+#endif
+    ;
+    if (isForward) {
+      [params invokeAndGetOriginalRetValue:ret];
+    } else {
+      ffi_call(cif, (void (*)(void))hookedClassInfoPool->_originalIMP, ret, args);
+    }
   }
   // after hooks
   ffi_call_infos(statedClassInfoPool->_afterInfos);

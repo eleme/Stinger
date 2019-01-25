@@ -27,8 +27,8 @@ extern id st_getHookInfoPool(id obj, SEL key);
 @property (nonatomic, copy) NSString *typeEncoding;
 @property (nonatomic) IMP originalIMP;
 @property (nonatomic) SEL sel;
+@property (nonatomic) StingerIMP stingerIMP;
 
-- (StingerIMP)stingerIMP;
 - (BOOL)addInfo:(id<STHookInfo>)info;
 - (BOOL)removeInfoForIdentifier:(STIdentifier)identifier;
 
