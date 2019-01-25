@@ -8,7 +8,6 @@
 
 #import "ASViewController.h"
 #import <Stinger/Stinger.h>
-#import <Stinger/ffi.h>
 #import <Stinger/STBlock.h>
 #import <objc/runtime.h>
 
@@ -22,7 +21,11 @@
   [super viewDidLoad];
   // hook for specific instance
   [self st_hookInstanceMethod:@selector(print3:) option:STOptionAfter usingIdentifier:@"hook_print3_after1" withBlock:^(id<StingerParams> params, NSString *s) {
-    NSLog(@"---instance after print3: %@", s);
+    NSLog(@"---specific instance-self after print3: %@", s);
+  }];
+  
+  [self.class st_hookInstanceMethod:@selector(print3:) option:STOptionAfter usingIdentifier:@"all_hook_print3_after1" withBlock:^(id<StingerParams> params, NSString *s) {
+    NSLog(@"---specific class after print3: %@", s);
   }];
 }
 
@@ -77,14 +80,14 @@
 }
 
 - (IBAction)hookForSpecificIntance:(id)sender {
-  [self print3:@"---instance 0"];
+  [self print3:@"---instance-self"];
   
   ASViewController *otherInstance1 = [ASViewController new];
   [otherInstance1 print3:@"---instance 1"];
   
   ASViewController *otherInstance2 = [ASViewController new];
   [otherInstance2 st_hookInstanceMethod:@selector(print3:) option:STOptionAfter usingIdentifier:@"hook_print3_after1" withBlock:^(id<StingerParams> params, NSString *s) {
-    NSLog(@"---instance2 after print3: %@", s);
+    NSLog(@"---specific-instance2 after print3: %@", s);
   }];
   [otherInstance2 print3:@"---instance 2"];
   

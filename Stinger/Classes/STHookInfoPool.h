@@ -33,7 +33,8 @@ extern id st_getHookInfoPool(id obj, SEL key);
 - (BOOL)removeInfoForIdentifier:(STIdentifier)identifier;
 
 @optional
-@property (nonatomic, weak) Class cls;
+@property (nonatomic, weak) Class hookedCls;
+@property (nonatomic, weak) Class statedCls;
 + (instancetype)poolWithTypeEncoding:(NSString *)typeEncoding originalIMP:(IMP)imp selector:(SEL)sel;
 
 @end

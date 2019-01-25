@@ -7,7 +7,7 @@
 //
 
 #import "STHookInfoPool.h"
-#import <Stinger/ffi.h>
+#import "ffi.h"
 #import "STBlock.h"
 #import "STMethodSignature.h"
 #import <objc/runtime.h>
@@ -37,7 +37,8 @@ NSString * const STSelectorPrefix = @"st_sel";
 @synthesize originalIMP = _originalIMP;
 @synthesize typeEncoding = _typeEncoding;
 @synthesize sel = _sel;
-@synthesize cls = _cls;
+@synthesize hookedCls = _hookedCls;
+@synthesize statedCls = _statedCls;
 
 
 + (instancetype)poolWithTypeEncoding:(NSString *)typeEncoding originalIMP:(IMP)imp selector:(SEL)sel {
@@ -89,7 +90,7 @@ NSString * const STSelectorPrefix = @"st_sel";
     [_lock unlock];
     return YES;
   }
-  NSAssert(NO, @"Class (%@) has had identifier (%@) with SEL (%@)", self.cls, info.identifier, NSStringFromSelector(self.sel));
+  NSAssert(NO, @"Class (%@) has had identifier (%@) with SEL (%@)", self.hookedCls, info.identifier, NSStringFromSelector(self.sel));
   return NO;
 }
 
@@ -188,29 +189,28 @@ void st_setHookInfoPool(id obj, SEL key, id<STHookInfoPool> infoPool) {
 for (id<STHookInfo> info in infos) { \
   id block = info.block; \
   innerArgs[0] = &block; \
-  ffi_call(&(isaClassHookInfoPool->_blockCif), impForBlock(block), NULL, innerArgs); \
+  ffi_call(&(hookedClassInfoPool->_blockCif), impForBlock(block), NULL, innerArgs); \
 }  \
 
 static void ffi_function(ffi_cif *cif, void *ret, void **args, void *userdata) {
-  STHookInfoPool *isaClassHookInfoPool = (__bridge STHookInfoPool *)userdata;
-  STHookInfoPool *originalClassHookInfoPool = nil;
-  STHookInfoPool *instanceHookInfoPool = nil;
-  Class isaClass = isaClassHookInfoPool.cls;
-  SEL key = isaClassHookInfoPool.sel;
-  if ([NSStringFromClass(isaClass) hasPrefix:STClassPrefix]) {
-    originalClassHookInfoPool = st_getHookInfoPool(class_getSuperclass(isaClass), key); // may be nil
+  STHookInfoPool *hookedClassInfoPool = (__bridge STHookInfoPool *)userdata;
+  STHookInfoPool *statedClassInfoPool = nil;
+  STHookInfoPool *instanceInfoPool = nil;
+  SEL sel = hookedClassInfoPool->_sel;
+  if ([NSStringFromClass(hookedClassInfoPool->_hookedCls) hasPrefix:STClassPrefix]) {
+    statedClassInfoPool = st_getHookInfoPool(hookedClassInfoPool->_statedCls, sel); // may be nil
   } else {
-    originalClassHookInfoPool = isaClassHookInfoPool;
+    statedClassInfoPool = hookedClassInfoPool;
   }
-  NSUInteger count = isaClassHookInfoPool.signature.argumentTypes.count;
+  NSUInteger count = hookedClassInfoPool->_signature.argumentTypes.count;
   void **innerArgs = malloc(count * sizeof(*innerArgs));
   StingerParams *params = [[StingerParams alloc] init];
   void **slf = args[0];
-  instanceHookInfoPool = st_getHookInfoPool((__bridge id)(*slf), key);
+  instanceInfoPool = st_getHookInfoPool((__bridge id)(*slf), sel);
   params.slf = (__bridge id)(*slf);
-  params.sel = isaClassHookInfoPool.sel;
-  [params addOriginalIMP:isaClassHookInfoPool.originalIMP];
-  NSInvocation *originalInvocation = [NSInvocation invocationWithMethodSignature:isaClassHookInfoPool.ns_signature];
+  params.sel = sel;
+  [params addOriginalIMP:hookedClassInfoPool->_originalIMP];
+  NSInvocation *originalInvocation = [NSInvocation invocationWithMethodSignature:hookedClassInfoPool->_ns_signature];
   for (int i = 0; i < count; i ++) {
     [originalInvocation setArgument:args[i] atIndex:i];
   }
@@ -220,27 +220,28 @@ static void ffi_function(ffi_cif *cif, void *ret, void **args, void *userdata) {
   memcpy(innerArgs + 2, args + 2, (count - 2) * sizeof(*args));
   
   // before hooks
-  ffi_call_infos(originalClassHookInfoPool.beforeInfos);
-  ffi_call_infos(instanceHookInfoPool.beforeInfos);
+  ffi_call_infos(statedClassInfoPool->_beforeInfos);
+  if (instanceInfoPool) ffi_call_infos(instanceInfoPool->_beforeInfos);
   
   // instead hooks
-  if (instanceHookInfoPool.insteadInfos.count) {
-    id <STHookInfo> info = instanceHookInfoPool.insteadInfos[0];
+  if (instanceInfoPool && instanceInfoPool->_insteadInfos.count) {
+    id <STHookInfo> info = instanceInfoPool->_insteadInfos[0];
     id block = info.block;
     innerArgs[0] = &block;
-    ffi_call(&(isaClassHookInfoPool->_blockCif), impForBlock(block), ret, innerArgs);
-  } else if (originalClassHookInfoPool.insteadInfos.count) {
-    id <STHookInfo> info = originalClassHookInfoPool.insteadInfos[0];
+    ffi_call(&(hookedClassInfoPool->_blockCif), impForBlock(block), ret, innerArgs);
+  } else if (statedClassInfoPool->_insteadInfos.count) {
+    id <STHookInfo> info = statedClassInfoPool->_insteadInfos[0];
     id block = info.block;
     innerArgs[0] = &block;
-    ffi_call(&(isaClassHookInfoPool->_blockCif), impForBlock(block), ret, innerArgs);
+    ffi_call(&(hookedClassInfoPool->_blockCif), impForBlock(block), ret, innerArgs);
   } else {
     // original IMP
-    ffi_call(cif, (void (*)(void))isaClassHookInfoPool.originalIMP, ret, args);
+    ffi_call(cif, (void (*)(void))hookedClassInfoPool->_originalIMP, ret, args);
   }
   // after hooks
-  ffi_call_infos(originalClassHookInfoPool.afterInfos);
-  ffi_call_infos(instanceHookInfoPool.afterInfos);
+  ffi_call_infos(statedClassInfoPool->_afterInfos);
+  if (instanceInfoPool) ffi_call_infos(instanceInfoPool->_afterInfos);
+  
   free(innerArgs);
 }
 

@@ -14,6 +14,7 @@
 #import "STMethodSignature.h"
 
 NSString * const STMethodPrefix = @"st_original_";
+static void *STSubClassKey = &STSubClassKey;
 
 @implementation NSObject (Stinger)
 
@@ -54,13 +55,17 @@ NSString * const STMethodPrefix = @"st_original_";
 #pragma mark - For specific instance
 
 - (STHookResult)st_hookInstanceMethod:(SEL)sel option:(STOption)option usingIdentifier:(STIdentifier)identifier withBlock:(id)block {
-  Class stSubClass = getSTSubClass(self);
-  if (!stSubClass) return STHookResultOther;
-  STHookResult hookMethodResult = hookMethod(stSubClass, sel, option, identifier, block);
-  if (hookMethodResult != STHookResultSuccuss) return hookMethodResult;
-  object_setClass(self, stSubClass);
-  
   @synchronized(self) {
+    Class stSubClass = getSTSubClass(self);
+    if (!stSubClass) return STHookResultOther;
+    
+    STHookResult hookMethodResult = hookMethod(stSubClass, sel, option, identifier, block);
+    if (hookMethodResult != STHookResultSuccuss) return hookMethodResult;
+    if (!objc_getAssociatedObject(self, STSubClassKey)) {
+      object_setClass(self, stSubClass);
+      objc_setAssociatedObject(self, STSubClassKey, stSubClass, OBJC_ASSOCIATION_ASSIGN);
+    }
+    
     id<STHookInfoPool> instanceHookInfoPool = st_getHookInfoPool(self, sel);
     if (!instanceHookInfoPool) {
       instanceHookInfoPool = [STHookInfoPool poolWithTypeEncoding:nil originalIMP:NULL selector:sel];
@@ -80,57 +85,51 @@ NSString * const STMethodPrefix = @"st_original_";
   BOOL hasRemoved = NO;
   @synchronized(self) {
     id<STHookInfoPool> infoPool = st_getHookInfoPool(self, key);
-    if ([infoPool removeInfoForIdentifier:identifier]) {
-      hasRemoved = YES;
-      if (!infoPool.identifiers.count) {
-        object_setClass(self, class_getSuperclass(object_getClass(self)));
-      }
-    }
+    hasRemoved = [infoPool removeInfoForIdentifier:identifier];
+    return hasRemoved;
   }
-  return hasRemoved;
 }
 
 #pragma mark - inline functions
 
-NS_INLINE STHookResult hookMethod(Class cls, SEL sel, STOption option, STIdentifier identifier, id block) {
-  NSCParameterAssert(cls);
+NS_INLINE STHookResult hookMethod(Class hookedCls, SEL sel, STOption option, STIdentifier identifier, id block) {
+  NSCParameterAssert(hookedCls);
   NSCParameterAssert(sel);
   NSCParameterAssert(option == 0 || option == 1 || option == 2);
   NSCParameterAssert(identifier);
   NSCParameterAssert(block);
-  Method m = class_getInstanceMethod(cls, sel);
-  NSCAssert(m, @"SEL (%@) doesn't has a imp in Class (%@) originally", NSStringFromSelector(sel), cls);
+  Method m = class_getInstanceMethod(hookedCls, sel);
+  NSCAssert(m, @"SEL (%@) doesn't has a imp in Class (%@) originally", NSStringFromSelector(sel), hookedCls);
   if (!m) return STHookResultErrorMethodNotFound;
   const char * typeEncoding = method_getTypeEncoding(m);
   STMethodSignature *methodSignature = [[STMethodSignature alloc] initWithObjCTypes:[NSString stringWithUTF8String:typeEncoding]];
   STMethodSignature *blockSignature = [[STMethodSignature alloc] initWithObjCTypes:signatureForBlock(block)];
-  if (! isMatched(methodSignature, blockSignature, option, cls, sel, identifier)) {
+  if (! isMatched(methodSignature, blockSignature, option, hookedCls, sel, identifier)) {
     return STHookResultErrorBlockNotMatched;
   }
 
   IMP originalImp = method_getImplementation(m);
   
-  @synchronized(cls) {
-    id<STHookInfoPool> hookInfoPool = st_getHookInfoPool(cls, sel);
+  @synchronized(hookedCls) {
+    id<STHookInfoPool> hookInfoPool = st_getHookInfoPool(hookedCls, sel);
     if (!hookInfoPool) {
       hookInfoPool = [STHookInfoPool poolWithTypeEncoding:[NSString stringWithUTF8String:typeEncoding] originalIMP:originalImp selector:sel];
-      hookInfoPool.cls = cls;
-      
+      hookInfoPool.hookedCls = hookedCls;
+      hookInfoPool.statedCls = [hookedCls class];
       IMP stingerIMP = [hookInfoPool stingerIMP];
       
-      if (!(class_addMethod(cls, sel, stingerIMP, typeEncoding))) {
-        class_replaceMethod(cls, sel, stingerIMP, typeEncoding);
+      if (!(class_addMethod(hookedCls, sel, stingerIMP, typeEncoding))) {
+        class_replaceMethod(hookedCls, sel, stingerIMP, typeEncoding);
       }
       const char * st_original_SelName = [[STMethodPrefix stringByAppendingString:NSStringFromSelector(sel)] UTF8String];
-      class_addMethod(cls, sel_registerName(st_original_SelName), originalImp, typeEncoding);
+      class_addMethod(hookedCls, sel_registerName(st_original_SelName), originalImp, typeEncoding);
       
-      st_setHookInfoPool(cls, sel, hookInfoPool);
+      st_setHookInfoPool(hookedCls, sel, hookInfoPool);
     }
     
-    if ([NSStringFromClass(cls) hasPrefix:STClassPrefix]) {
+    if ([NSStringFromClass(hookedCls) hasPrefix:STClassPrefix]) {
       return STHookResultSuccuss;
     } else {
-      
       STHookInfo *hookInfo = [STHookInfo infoWithOption:option withIdentifier:identifier withBlock:block];
       return [hookInfoPool addInfo:hookInfo] ? STHookResultErrorIDExisted : STHookResultSuccuss;
     }
@@ -139,27 +138,24 @@ NS_INLINE STHookResult hookMethod(Class cls, SEL sel, STOption option, STIdentif
 
 NS_INLINE Class getSTSubClass(id object) {
   NSCParameterAssert(object);
+  Class stSubClass = objc_getAssociatedObject(object, STSubClassKey);
+  if (stSubClass) return stSubClass;
+    
   Class isaClass = object_getClass(object);
   NSString *isaClassName = NSStringFromClass(isaClass);
-  if ([isaClassName hasPrefix:STClassPrefix]) {
-    return isaClass;
-  }
-    
   const char *subclassName = [STClassPrefix stringByAppendingString:isaClassName].UTF8String;
-  Class subclass = objc_getClass(subclassName);
-  if (!subclass) {
-    subclass = objc_allocateClassPair(isaClass, subclassName, 0);
-    NSCAssert(subclass, @"Class %s allocate failed!", subclassName);
-    if (!subclass) {
-        return nil;
-    }
+  stSubClass = objc_getClass(subclassName);
+  if (!stSubClass) {
+    stSubClass = objc_allocateClassPair(isaClass, subclassName, 0);
+    NSCAssert(stSubClass, @"Class %s allocate failed!", subclassName);
+    if (!stSubClass) return nil;
     
-  objc_registerClassPair(subclass);
+  objc_registerClassPair(stSubClass);
   Class realClass = [object class];
-  hookGetClassMessage(subclass, realClass);
-  hookGetClassMessage(object_getClass(subclass), realClass);
+  hookGetClassMessage(stSubClass, realClass);
+  hookGetClassMessage(object_getClass(stSubClass), realClass);
 }
-  return subclass;
+  return stSubClass;
 }
 
 
