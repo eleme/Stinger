@@ -92,6 +92,7 @@ NSString * const STSelectorPrefix = @"st_sel";
     [_lock unlock];
     return YES;
   }
+  [_lock unlock];
   NSAssert(NO, @"Class (%@) has had identifier (%@) with SEL (%@)", self.hookedCls, info.identifier, NSStringFromSelector(self.sel));
   return NO;
 }

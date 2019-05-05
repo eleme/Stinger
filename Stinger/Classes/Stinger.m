@@ -73,7 +73,7 @@ static void *STSubClassKey = &STSubClassKey;
     }
     
     STHookInfo *instanceHookInfo = [STHookInfo infoWithOption:option withIdentifier:identifier withBlock:block];
-    return [instanceHookInfoPool addInfo:instanceHookInfo] ? STHookResultErrorIDExisted : STHookResultSuccuss;
+    return [instanceHookInfoPool addInfo:instanceHookInfo] ? STHookResultSuccuss : STHookResultErrorIDExisted;
   }
 }
 
@@ -136,7 +136,7 @@ NS_INLINE STHookResult hookMethod(Class hookedCls, SEL sel, STOption option, STI
       return STHookResultSuccuss;
     } else {
       STHookInfo *hookInfo = [STHookInfo infoWithOption:option withIdentifier:identifier withBlock:block];
-      return [hookInfoPool addInfo:hookInfo] ? STHookResultErrorIDExisted : STHookResultSuccuss;
+      return [hookInfoPool addInfo:hookInfo] ? STHookResultSuccuss :  STHookResultErrorIDExisted;
     }
   }
 }
