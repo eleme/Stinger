@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Stinger'
-  s.version          = '0.2.2'
+  s.version          = '0.2.3'
   s.summary          = 'Implementing HOOK & AOP using libffi for Objective-C.'
 
 # This description is used to generate tags and improve search results.
@@ -21,11 +21,11 @@ Pod::Spec.new do |s|
 TODO: Add long description of the pod here.
                        DESC
 
-  s.homepage         = 'https://github.com/Assuner-Lee/Stinger'
+  s.homepage         = 'https://github.com/eleme/Stinger'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Assuner-Lee' => 'yongguang.li@ele.me' }
-  s.source           = { :git => 'https://github.com/Assuner-Lee/Stinger.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/eleme/Stinger.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '8.0'
