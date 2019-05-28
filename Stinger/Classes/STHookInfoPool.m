@@ -225,7 +225,7 @@ static void ffi_function(ffi_cif *cif, void *ret, void **args, void *userdata) {
   memcpy(innerArgs + 2, args + 2, (count - 2) * sizeof(*args));
   
   // before hooks
-  ffi_call_infos(statedClassInfoPool->_beforeInfos);
+  if (statedClassInfoPool) ffi_call_infos(statedClassInfoPool->_beforeInfos);
   if (instanceInfoPool) ffi_call_infos(instanceInfoPool->_beforeInfos);
   
   // instead hooks
@@ -234,7 +234,7 @@ static void ffi_function(ffi_cif *cif, void *ret, void **args, void *userdata) {
     id block = info.block;
     innerArgs[0] = &block;
     ffi_call(&(hookedClassInfoPool->_blockCif), impForBlock(block), ret, innerArgs);
-  } else if (statedClassInfoPool->_insteadInfos.count) {
+  } else if (statedClassInfoPool && statedClassInfoPool->_insteadInfos.count) {
     id <STHookInfo> info = statedClassInfoPool->_insteadInfos[0];
     id block = info.block;
     innerArgs[0] = &block;
@@ -254,7 +254,7 @@ static void ffi_function(ffi_cif *cif, void *ret, void **args, void *userdata) {
     }
   }
   // after hooks
-  ffi_call_infos(statedClassInfoPool->_afterInfos);
+  if (statedClassInfoPool) ffi_call_infos(statedClassInfoPool->_afterInfos);
   if (instanceInfoPool) ffi_call_infos(instanceInfoPool->_afterInfos);
   
   free(innerArgs);
