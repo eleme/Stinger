@@ -158,6 +158,7 @@ Assuner-Lee, assuner@foxmail.com
 | 0.2.1 | 提升了与使用消息转发hook方式的兼容性，如aspects, rac等|
 | 0.2.2 | 修掉一些Bug.|
 | 0.2.3 | 修掉一些Bug.|
+| 0.2.4 | 解决实例对象Hook的一个crash.|
 
 ## License
 

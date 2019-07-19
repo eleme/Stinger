@@ -172,9 +172,9 @@ NSString * const STSelectorPrefix = @"st_sel";
 }
 
 - (void)dealloc {
-  ffi_closure_free(_closure);
-  free(_args);
-  free(_blockArgs);
+  if (_closure != NULL) ffi_closure_free(_closure);
+  if (_args != NULL) free(_args);
+  if (_blockArgs != NULL) free(_blockArgs);
 }
 
 id<STHookInfoPool> st_getHookInfoPool(id obj, SEL key) {
