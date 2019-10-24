@@ -1,0 +1,1 @@
+../../../../../Stinger/Classes/STHookInfo.h

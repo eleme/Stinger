@@ -1,9 +1,9 @@
 {
   "name": "Stinger",
-  "version": "0.1.0",
-  "summary": "A short description of Stinger.",
+  "version": "0.2.4",
+  "summary": "Implementing HOOK & AOP using libffi for Objective-C.",
   "description": "TODO: Add long description of the pod here.",
-  "homepage": "https://github.com/Assuner-Lee/Stinger",
+  "homepage": "https://github.com/eleme/Stinger",
   "license": {
     "type": "MIT",
     "file": "LICENSE"
@@ -12,8 +12,8 @@
     "Assuner-Lee": "yongguang.li@ele.me"
   },
   "source": {
-    "git": "https://github.com/Assuner-Lee/Stinger.git",
-    "tag": "0.1.0"
+    "git": "https://github.com/eleme/Stinger.git",
+    "tag": "0.2.4"
   },
   "platforms": {
     "ios": "8.0"

@@ -7,315 +7,358 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		06A7D8C6FBF3D777DD251F9A23611BD5 /* ffitarget_arm64.h in Headers */ = {isa = PBXBuildFile; fileRef = DCA76F0BA529846346033D9B5951FD52 /* ffitarget_arm64.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		08DA913E9975ACBE7BABAA655B139047 /* ffi_arm.h in Headers */ = {isa = PBXBuildFile; fileRef = 1016EC3457E0A0A86370E247C07EA06E /* ffi_arm.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0C27F1BE3E1EC32A1EE1CDCB330D4CF0 /* STHookInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 90C20ED5B2591D2306A2E0F2EC160FDD /* STHookInfo.m */; };
-		0C697C6397371A2EEC5B1D975CED39F7 /* STMethodSignature.m in Sources */ = {isa = PBXBuildFile; fileRef = F13939FFF996069E16C425C91684522E /* STMethodSignature.m */; };
-		0F02A3A3B7E4CDE1D567CD8F590DC70F /* ffitarget_x86_64.h in Headers */ = {isa = PBXBuildFile; fileRef = DB431D34E57E1240C9E0AABA84AF7B08 /* ffitarget_x86_64.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1CC805005CEBDF089CD247E2B6615DDC /* ffi_common.h in Headers */ = {isa = PBXBuildFile; fileRef = 1F35013B77D54AF827F1924928B6D7CB /* ffi_common.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		205687061AF713307445DF86B879B260 /* Pods-Stinger_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = DE19EDB06E96498B8850D81DAEA921C1 /* Pods-Stinger_Example-dummy.m */; };
-		25CFE987BC8B9B32ED42D0172953BFB6 /* STHookInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 4C10EB9D3C4FF5ED54D46666C2D99CE2 /* STHookInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		3D5DDFB80397765CEB42AE40E24765A0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
-		4F3461FF6E769514F49613D3979DE8CF /* Pods-Stinger_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E2FC701FA29F7FD30407C0A8DE1725C /* Pods-Stinger_Tests-dummy.m */; };
-		51278625F34A12BC1FE705115969F9CE /* STHookInfoPool.m in Sources */ = {isa = PBXBuildFile; fileRef = 09753E0831A556C590D6FC4AAD5809CF /* STHookInfoPool.m */; };
-		527579C4DBD2825901CD5DE228A442CB /* Stinger.h in Headers */ = {isa = PBXBuildFile; fileRef = FDA58DD8186B255C2E1F02C1C59384AD /* Stinger.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5CAB88E2FDC017CA14D2FA4DBB25773E /* STMethodSignature.h in Headers */ = {isa = PBXBuildFile; fileRef = F746F4E028E1E4426C7ADFB5E25FC593 /* STMethodSignature.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6B738BF9C46636C0D8A36584B55ACD50 /* ffitarget_arm.h in Headers */ = {isa = PBXBuildFile; fileRef = D8C6CDFEB84E37239A5DA02373DD1BAC /* ffitarget_arm.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6FF1C80CEC1079BA142A102259AF3125 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
-		73A7EDFB8ED630CBD1F7C97AC9AFCAA1 /* ffitarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A6DC332B27EF0F0B10DFCDD8E252154 /* ffitarget.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		7605CCCF586A75D9B1B7EB45A60CCFD5 /* Stinger-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C1BB50CD7E7BFDC76AE3DB4A413DD2D7 /* Stinger-dummy.m */; };
-		7D2FE01C1CD5B409203A4773C66C6B55 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
-		7E98ACB5DF6B8E25A370AA96FCDD160B /* STHookInfoPool.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FDD6A7C55DF3E00665D303E925A2F94 /* STHookInfoPool.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		83EFC170B8BD245B6FED5A8CBD4DDB85 /* ffitarget_i386.h in Headers */ = {isa = PBXBuildFile; fileRef = 0F8D578A5BE97EE6DA2659DE3B299943 /* ffitarget_i386.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		96F792783A25DB961C8F5F9AA2841AE0 /* libffi.a in Sources */ = {isa = PBXBuildFile; fileRef = C34A278170557C5ED785AE49FF98BE1F /* libffi.a */; };
-		973E8FBE304CACC1EAB2EF58F68CE505 /* ffi_i386.h in Headers */ = {isa = PBXBuildFile; fileRef = FFDB37F2E2B5772400984B1DD8EA41FF /* ffi_i386.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A331E208E2A29C01F6DD798FC2BC16E6 /* STBlock.h in Headers */ = {isa = PBXBuildFile; fileRef = 7321D3648B9970DAF8C7358E0E372F80 /* STBlock.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		AA3D6EB8E8A45BFDF4DA44EBB9BB78EB /* StingerParams.h in Headers */ = {isa = PBXBuildFile; fileRef = 72DE21D0866F7D3F3A0B894266C8C016 /* StingerParams.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		AFFFF8353E810EADF8CE4DD20353746C /* ffi_x86_64.h in Headers */ = {isa = PBXBuildFile; fileRef = 2DAFB64ED573397069E7EB2D49299E45 /* ffi_x86_64.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		B02608A74B8FC1B90C2E3A1741D63C99 /* StingerParams.m in Sources */ = {isa = PBXBuildFile; fileRef = C6FA75AEF22B3581559FA5C760922C9D /* StingerParams.m */; };
-		C13FA8176DE49042B30A0884799EF6AF /* ffi.h in Headers */ = {isa = PBXBuildFile; fileRef = CAC83F83F39C6C7313A73EC18B0ABD19 /* ffi.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CC22E6D7BBB315D63923DA1C1FDE0152 /* Stinger.m in Sources */ = {isa = PBXBuildFile; fileRef = DBBA22C94AEDE2F810B6CF2C168B0E67 /* Stinger.m */; };
-		D4C4E20B7C14A6C1538A3B615E1A162C /* STBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = ADE703917BF83DEF568A4D11773CC3E2 /* STBlock.m */; };
-		DDDC584937EB7EE98F2774004C888CE5 /* ffi_arm64.h in Headers */ = {isa = PBXBuildFile; fileRef = C1B82163244C797C12A0E450CB19C1EB /* ffi_arm64.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		04D1945AB27402507FFCF59AA5403B83 /* Pods-Stinger_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A411BDEEDCAEF81AF43CFEA51C47B0E /* Pods-Stinger_Tests-dummy.m */; };
+		09E027C6A4D88D39FB0396AFE8888FB9 /* Stinger.m in Sources */ = {isa = PBXBuildFile; fileRef = C7CA8FECB9DA2B1133687C8ECB1AFB1E /* Stinger.m */; };
+		22390F09293307DA9C9C8CBCE9220A35 /* STBlock.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FCD5875A4C49EFD3C71D107E6860686 /* STBlock.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		27CF8D087C109B457FBD56D44155F538 /* STBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 937F40472B073C57046DBCF573947A05 /* STBlock.m */; };
+		2B00C1E7CA4AB7D3ED8FAA3EB71320BA /* ffitarget_arm64.h in Headers */ = {isa = PBXBuildFile; fileRef = 045FB95FD2CAFDFAC6C558C941F5DFC5 /* ffitarget_arm64.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		2C15207A1197769ED6208C79C5F9BFF0 /* STHookInfoPool.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A27EBEF5ACBD0E2ABCD409CD1D48870 /* STHookInfoPool.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		2E125C23CFD24EA79F7755CF4CFA9B54 /* StingerParams.h in Headers */ = {isa = PBXBuildFile; fileRef = A847C4A8F17D72BC5DC19855C194EFB3 /* StingerParams.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		324059BED7040C45FC526342541A125F /* STHookInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 8692FE01A90ED6F6443729196A616096 /* STHookInfo.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		5385944C9E4ACC3B7129E25C1D69A7D8 /* ffitarget_x86_64.h in Headers */ = {isa = PBXBuildFile; fileRef = 1B4009A45C54233DB8CEDC8507841EAA /* ffitarget_x86_64.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		599F2D5C0DB733091BDBF1409EFB6E2C /* Stinger-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 63A7334F13DE22EDAC529223FF14B075 /* Stinger-dummy.m */; };
+		6BB894925385F44C19783FE5B1FA2B58 /* STHookInfoPool.m in Sources */ = {isa = PBXBuildFile; fileRef = 4937E72CEF22E754BB0921A27ACFFC29 /* STHookInfoPool.m */; };
+		73ADACBB2F02C8912155BE51AA6528C7 /* STHookInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3EA8B3DA27EEBA0FD0F4269B7D4156 /* STHookInfo.m */; };
+		7DE8EC1B2C44230DD0EEE8DD8FD2891F /* Stinger.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B11C767D19AF865C5EF011B7FC30A3A /* Stinger.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		7FF645EDC2D8DDBC47EED0C663760244 /* ffi_arm.h in Headers */ = {isa = PBXBuildFile; fileRef = 726DA4EF573468180533705471B47318 /* ffi_arm.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		8C6FC0CBCF698CC10E6FE624B389B788 /* ffi.h in Headers */ = {isa = PBXBuildFile; fileRef = AFCE1BBFFE139E77D4ACE83C330EB77D /* ffi.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		90A1DC868CA68ECE91AB019F08F8776D /* ffitarget_arm.h in Headers */ = {isa = PBXBuildFile; fileRef = E54D84AC7B5552703592A507C18A4181 /* ffitarget_arm.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		95A5DFD32C23619D4B2876090C17E4EE /* STMethodSignature.m in Sources */ = {isa = PBXBuildFile; fileRef = 67CD5FA6A5FCFDF45A649FE2EC7D7808 /* STMethodSignature.m */; };
+		99CCFF1F237BDA00D65509933F360530 /* libffi.a in Sources */ = {isa = PBXBuildFile; fileRef = 1728C51E25A9CA88F43ED7CE17035028 /* libffi.a */; };
+		B0E545B5148E92A5C60379AFD8E23D3F /* ffi_i386.h in Headers */ = {isa = PBXBuildFile; fileRef = 5BC379BB82D593481A178AE817E367F2 /* ffi_i386.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		B7AF0819F86ADCDCF6CF16AE51C0C31B /* ffi_arm64.h in Headers */ = {isa = PBXBuildFile; fileRef = 08E634633EA871897CC09C1B4182E8D0 /* ffi_arm64.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		D790971F2E9062B5D58F42BCE522D892 /* ffitarget_i386.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C38EFA6E982D1278E39EFD2A055FE2A /* ffitarget_i386.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		DE29776E0F4BA01902316DB642107AF1 /* Pods-Stinger_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C66E08F1B604A83BD59D347B57D300 /* Pods-Stinger_Example-dummy.m */; };
+		E219CC344A2504F7A4212328F007FE36 /* StingerParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 08BDCC53048156A736F5044DA1D7C951 /* StingerParams.m */; };
+		E362EFE8AEFE506FE497234D6CA811E6 /* STMethodSignature.h in Headers */ = {isa = PBXBuildFile; fileRef = E42275E05F77609A2BF3174F89E5E0AD /* STMethodSignature.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		E9ACCE73BBD17726C07261598CCDD2C8 /* ffi_x86_64.h in Headers */ = {isa = PBXBuildFile; fileRef = 048DBE25F73E5C0CA108951E9495A525 /* ffi_x86_64.h */; settings = {ATTRIBUTES = (Project, ); }; };
+		ED3F85159245C6D424E4BD554C15B3CE /* ffitarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 25D6041273E44EAD4899392845A7057A /* ffitarget.h */; settings = {ATTRIBUTES = (Project, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		3409980417CB667D6DD54E48AAAFC63D /* PBXContainerItemProxy */ = {
+		2C6C2A2DAB22DF72C1D375555F3BEE0B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 803F001658046953695EE8C58DB0243C;
+			remoteGlobalIDString = 6F1051228C38F74B264B92989406BA1E;
+			remoteInfo = "Pods-Stinger_Example";
+		};
+		9577970A21A2AE232BBC91B325DE3C81 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AA3639DD87A9A005F4F60D65C8EC099C;
 			remoteInfo = Stinger;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0270526483B69F4A4508FBD112B2D712 /* Pods-Stinger_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Stinger_Example-resources.sh"; sourceTree = "<group>"; };
-		09753E0831A556C590D6FC4AAD5809CF /* STHookInfoPool.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = STHookInfoPool.m; path = Stinger/Classes/STHookInfoPool.m; sourceTree = "<group>"; };
-		0F8D578A5BE97EE6DA2659DE3B299943 /* ffitarget_i386.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ffitarget_i386.h; sourceTree = "<group>"; };
-		1016EC3457E0A0A86370E247C07EA06E /* ffi_arm.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ffi_arm.h; sourceTree = "<group>"; };
-		1E396F1FC432B8B1670352F867926581 /* libStinger.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libStinger.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		1F35013B77D54AF827F1924928B6D7CB /* ffi_common.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ffi_common.h; sourceTree = "<group>"; };
-		262E3F4F65086B1CA506C0CD5371A548 /* libPods-Stinger_Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Stinger_Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2DAFB64ED573397069E7EB2D49299E45 /* ffi_x86_64.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ffi_x86_64.h; sourceTree = "<group>"; };
-		3FDC680BE1C3EE788A73FCEDE4C9DD11 /* Pods-Stinger_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Stinger_Tests-resources.sh"; sourceTree = "<group>"; };
-		42234E24B6EA7DD648069E79657D06CE /* Pods-Stinger_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Stinger_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		4C10EB9D3C4FF5ED54D46666C2D99CE2 /* STHookInfo.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = STHookInfo.h; path = Stinger/Classes/STHookInfo.h; sourceTree = "<group>"; };
-		4E8246671D8A50544D5EBC2B7F50AF26 /* Stinger.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Stinger.xcconfig; sourceTree = "<group>"; };
-		4FD8FF7D164C270475A1C5214124AF2B /* Pods-Stinger_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Stinger_Example-acknowledgements.plist"; sourceTree = "<group>"; };
-		52A918A88C56FAAD8626D51C15B07CD8 /* Pods-Stinger_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Stinger_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		68423C916876F731AD6F8AB40CB4433D /* Stinger-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Stinger-prefix.pch"; sourceTree = "<group>"; };
-		72DE21D0866F7D3F3A0B894266C8C016 /* StingerParams.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = StingerParams.h; path = Stinger/Classes/StingerParams.h; sourceTree = "<group>"; };
-		7321D3648B9970DAF8C7358E0E372F80 /* STBlock.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = STBlock.h; path = Stinger/Classes/STBlock.h; sourceTree = "<group>"; };
-		8598418FC67F01D6076F9C4170F0303C /* libPods-Stinger_Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Stinger_Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		8A6DC332B27EF0F0B10DFCDD8E252154 /* ffitarget.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ffitarget.h; sourceTree = "<group>"; };
-		8FDD6A7C55DF3E00665D303E925A2F94 /* STHookInfoPool.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = STHookInfoPool.h; path = Stinger/Classes/STHookInfoPool.h; sourceTree = "<group>"; };
-		90C20ED5B2591D2306A2E0F2EC160FDD /* STHookInfo.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = STHookInfo.m; path = Stinger/Classes/STHookInfo.m; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		9E2FC701FA29F7FD30407C0A8DE1725C /* Pods-Stinger_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Stinger_Tests-dummy.m"; sourceTree = "<group>"; };
-		A06AA1CAD4B30B25315A90F084AFB1E2 /* Pods-Stinger_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Stinger_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
-		ACB0573538BEB510A3B0DED4A706A38E /* Pods-Stinger_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Stinger_Example.debug.xcconfig"; sourceTree = "<group>"; };
-		ADE703917BF83DEF568A4D11773CC3E2 /* STBlock.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = STBlock.m; path = Stinger/Classes/STBlock.m; sourceTree = "<group>"; };
-		BC8D8A60A049F88E6ACC0137869F0745 /* Pods-Stinger_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Stinger_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
-		BD559C94AEE39ADAD07F36AF34F4DB40 /* Pods-Stinger_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Stinger_Example.release.xcconfig"; sourceTree = "<group>"; };
-		C0B0D76CF3D2FD47DEA5C2B7C42ED208 /* Pods-Stinger_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Stinger_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
-		C1B82163244C797C12A0E450CB19C1EB /* ffi_arm64.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ffi_arm64.h; sourceTree = "<group>"; };
-		C1BB50CD7E7BFDC76AE3DB4A413DD2D7 /* Stinger-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Stinger-dummy.m"; sourceTree = "<group>"; };
-		C277F5A93A8C6046AE56EF1B85C1820F /* Pods-Stinger_Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Stinger_Tests-frameworks.sh"; sourceTree = "<group>"; };
-		C34A278170557C5ED785AE49FF98BE1F /* libffi.a */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = archive.ar; path = libffi.a; sourceTree = "<group>"; };
-		C6FA75AEF22B3581559FA5C760922C9D /* StingerParams.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = StingerParams.m; path = Stinger/Classes/StingerParams.m; sourceTree = "<group>"; };
-		CAC83F83F39C6C7313A73EC18B0ABD19 /* ffi.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ffi.h; sourceTree = "<group>"; };
-		D8C6CDFEB84E37239A5DA02373DD1BAC /* ffitarget_arm.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ffitarget_arm.h; sourceTree = "<group>"; };
-		DA3D4B2260F5557D7473EEA7004C2B0E /* Pods-Stinger_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Stinger_Example-frameworks.sh"; sourceTree = "<group>"; };
-		DB431D34E57E1240C9E0AABA84AF7B08 /* ffitarget_x86_64.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ffitarget_x86_64.h; sourceTree = "<group>"; };
-		DBBA22C94AEDE2F810B6CF2C168B0E67 /* Stinger.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = Stinger.m; path = Stinger/Classes/Stinger.m; sourceTree = "<group>"; };
-		DCA76F0BA529846346033D9B5951FD52 /* ffitarget_arm64.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ffitarget_arm64.h; sourceTree = "<group>"; };
-		DE19EDB06E96498B8850D81DAEA921C1 /* Pods-Stinger_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Stinger_Example-dummy.m"; sourceTree = "<group>"; };
-		F13939FFF996069E16C425C91684522E /* STMethodSignature.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = STMethodSignature.m; path = Stinger/Classes/STMethodSignature.m; sourceTree = "<group>"; };
-		F746F4E028E1E4426C7ADFB5E25FC593 /* STMethodSignature.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = STMethodSignature.h; path = Stinger/Classes/STMethodSignature.h; sourceTree = "<group>"; };
-		FDA58DD8186B255C2E1F02C1C59384AD /* Stinger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Stinger.h; path = Stinger/Classes/Stinger.h; sourceTree = "<group>"; };
-		FFDB37F2E2B5772400984B1DD8EA41FF /* ffi_i386.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ffi_i386.h; sourceTree = "<group>"; };
+		045FB95FD2CAFDFAC6C558C941F5DFC5 /* ffitarget_arm64.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ffitarget_arm64.h; sourceTree = "<group>"; };
+		048DBE25F73E5C0CA108951E9495A525 /* ffi_x86_64.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ffi_x86_64.h; sourceTree = "<group>"; };
+		08BDCC53048156A736F5044DA1D7C951 /* StingerParams.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = StingerParams.m; path = Stinger/Classes/StingerParams.m; sourceTree = "<group>"; };
+		08E634633EA871897CC09C1B4182E8D0 /* ffi_arm64.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ffi_arm64.h; sourceTree = "<group>"; };
+		11F648DD8B98DBCE00AE5E1D734F89C7 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		15EF62661C8F6FFAECE59DC0234759FA /* Pods-Stinger_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Stinger_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
+		164D82369A5BAAE7878CE8D28A358CEE /* Pods-Stinger_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Stinger_Tests-resources.sh"; sourceTree = "<group>"; };
+		17152B1695F1430BA6290310FF6D830E /* Stinger.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; path = Stinger.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		1728C51E25A9CA88F43ED7CE17035028 /* libffi.a */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = archive.ar; path = libffi.a; sourceTree = "<group>"; };
+		1A82045B2A543F949A82C7E9D2707E4F /* Pods-Stinger_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Stinger_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		1B4009A45C54233DB8CEDC8507841EAA /* ffitarget_x86_64.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ffitarget_x86_64.h; sourceTree = "<group>"; };
+		1C3EA8B3DA27EEBA0FD0F4269B7D4156 /* STHookInfo.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = STHookInfo.m; path = Stinger/Classes/STHookInfo.m; sourceTree = "<group>"; };
+		24390EFD555DD124430DFF9724065945 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		25D6041273E44EAD4899392845A7057A /* ffitarget.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ffitarget.h; sourceTree = "<group>"; };
+		268E3F6FBBEC6A280545E4AA149EE56F /* libPods-Stinger_Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-Stinger_Example.a"; path = "libPods-Stinger_Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2C239CFA86731E2E0FF4FBF4298FEE74 /* Stinger-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Stinger-prefix.pch"; sourceTree = "<group>"; };
+		3BD8768806DD5586EFBC77AC2D671DE0 /* Stinger.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Stinger.xcconfig; sourceTree = "<group>"; };
+		414F804F6345B2BCF653286085BC3EC4 /* Pods-Stinger_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Stinger_Tests.release.xcconfig"; sourceTree = "<group>"; };
+		4937E72CEF22E754BB0921A27ACFFC29 /* STHookInfoPool.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = STHookInfoPool.m; path = Stinger/Classes/STHookInfoPool.m; sourceTree = "<group>"; };
+		4A27EBEF5ACBD0E2ABCD409CD1D48870 /* STHookInfoPool.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = STHookInfoPool.h; path = Stinger/Classes/STHookInfoPool.h; sourceTree = "<group>"; };
+		5B11C767D19AF865C5EF011B7FC30A3A /* Stinger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Stinger.h; path = Stinger/Classes/Stinger.h; sourceTree = "<group>"; };
+		5BC379BB82D593481A178AE817E367F2 /* ffi_i386.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ffi_i386.h; sourceTree = "<group>"; };
+		5FCD5875A4C49EFD3C71D107E6860686 /* STBlock.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = STBlock.h; path = Stinger/Classes/STBlock.h; sourceTree = "<group>"; };
+		63A7334F13DE22EDAC529223FF14B075 /* Stinger-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Stinger-dummy.m"; sourceTree = "<group>"; };
+		6517CC03DFBB00A4B1CC09FA47FDBC81 /* Pods-Stinger_Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Stinger_Tests-frameworks.sh"; sourceTree = "<group>"; };
+		67CD5FA6A5FCFDF45A649FE2EC7D7808 /* STMethodSignature.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = STMethodSignature.m; path = Stinger/Classes/STMethodSignature.m; sourceTree = "<group>"; };
+		6C38EFA6E982D1278E39EFD2A055FE2A /* ffitarget_i386.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ffitarget_i386.h; sourceTree = "<group>"; };
+		726DA4EF573468180533705471B47318 /* ffi_arm.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ffi_arm.h; sourceTree = "<group>"; };
+		7A411BDEEDCAEF81AF43CFEA51C47B0E /* Pods-Stinger_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Stinger_Tests-dummy.m"; sourceTree = "<group>"; };
+		7DD8C2D7442C13ABAE7458B7D8029FA9 /* Pods-Stinger_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Stinger_Example-acknowledgements.plist"; sourceTree = "<group>"; };
+		8692FE01A90ED6F6443729196A616096 /* STHookInfo.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = STHookInfo.h; path = Stinger/Classes/STHookInfo.h; sourceTree = "<group>"; };
+		8EA94A02CAEE8329A14A9FFD66324148 /* Pods-Stinger_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Stinger_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		937F40472B073C57046DBCF573947A05 /* STBlock.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = STBlock.m; path = Stinger/Classes/STBlock.m; sourceTree = "<group>"; };
+		93C66E08F1B604A83BD59D347B57D300 /* Pods-Stinger_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Stinger_Example-dummy.m"; sourceTree = "<group>"; };
+		957B3F6E3AF323F99E780FF5F070E2E3 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		A44CB32F05C4567ABC089EE32440650C /* Pods-Stinger_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Stinger_Example-resources.sh"; sourceTree = "<group>"; };
+		A847C4A8F17D72BC5DC19855C194EFB3 /* StingerParams.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = StingerParams.h; path = Stinger/Classes/StingerParams.h; sourceTree = "<group>"; };
+		AFCE1BBFFE139E77D4ACE83C330EB77D /* ffi.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ffi.h; sourceTree = "<group>"; };
+		C7CA8FECB9DA2B1133687C8ECB1AFB1E /* Stinger.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = Stinger.m; path = Stinger/Classes/Stinger.m; sourceTree = "<group>"; };
+		D1BA2BF4C84B7FEF4CB40400F0E18CDE /* Pods-Stinger_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Stinger_Example-frameworks.sh"; sourceTree = "<group>"; };
+		D59D2A4E98E700FA12C7C9F051E634F7 /* Pods-Stinger_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Stinger_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		DFB3CEB576CE5D60F0984A8BCB3EA430 /* libStinger.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libStinger.a; path = libStinger.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E15096DF921CBD2096FCBBA83732AF06 /* Pods-Stinger_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Stinger_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
+		E42275E05F77609A2BF3174F89E5E0AD /* STMethodSignature.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = STMethodSignature.h; path = Stinger/Classes/STMethodSignature.h; sourceTree = "<group>"; };
+		E54D84AC7B5552703592A507C18A4181 /* ffitarget_arm.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ffitarget_arm.h; sourceTree = "<group>"; };
+		E72DE60BAD0A6B6DF6A3F1FAA7497E31 /* libPods-Stinger_Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-Stinger_Tests.a"; path = "libPods-Stinger_Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FC77216670E284FB7A82F55FA2DF6A12 /* Pods-Stinger_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Stinger_Example.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		1C897484000E0E9DB7094DA803FDCA41 /* Frameworks */ = {
+		0E894265316F44B70B14342D7C63565F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6FF1C80CEC1079BA142A102259AF3125 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		39B65493B81CC37C2966FC76A7138950 /* Frameworks */ = {
+		BA57E2B559A25F7030FD8BB1291AF92E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7D2FE01C1CD5B409203A4773C66C6B55 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E435B0CE0CB4C1AD10757AC37044D471 /* Frameworks */ = {
+		EB7822887905BC0B32D6801B6DDBE112 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3D5DDFB80397765CEB42AE40E24765A0 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		233EF145619CE4DE3616AF9F63B837BF /* Products */ = {
+		0FB5841AF128AE7D4DA6A606201A6AD9 /* Pods-Stinger_Example */ = {
 			isa = PBXGroup;
 			children = (
-				262E3F4F65086B1CA506C0CD5371A548 /* libPods-Stinger_Example.a */,
-				8598418FC67F01D6076F9C4170F0303C /* libPods-Stinger_Tests.a */,
-				1E396F1FC432B8B1670352F867926581 /* libStinger.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		5B28AF786ACB9513DF0D9FEAECB127ED /* Development Pods */ = {
-			isa = PBXGroup;
-			children = (
-				80465CC3658DC5B54F936FAEED59351A /* Stinger */,
-			);
-			name = "Development Pods";
-			sourceTree = "<group>";
-		};
-		6D40CDEF4F60A5C80D32872D0CF50F7F /* Pods-Stinger_Example */ = {
-			isa = PBXGroup;
-			children = (
-				C0B0D76CF3D2FD47DEA5C2B7C42ED208 /* Pods-Stinger_Example-acknowledgements.markdown */,
-				4FD8FF7D164C270475A1C5214124AF2B /* Pods-Stinger_Example-acknowledgements.plist */,
-				DE19EDB06E96498B8850D81DAEA921C1 /* Pods-Stinger_Example-dummy.m */,
-				DA3D4B2260F5557D7473EEA7004C2B0E /* Pods-Stinger_Example-frameworks.sh */,
-				0270526483B69F4A4508FBD112B2D712 /* Pods-Stinger_Example-resources.sh */,
-				ACB0573538BEB510A3B0DED4A706A38E /* Pods-Stinger_Example.debug.xcconfig */,
-				BD559C94AEE39ADAD07F36AF34F4DB40 /* Pods-Stinger_Example.release.xcconfig */,
+				E15096DF921CBD2096FCBBA83732AF06 /* Pods-Stinger_Example-acknowledgements.markdown */,
+				7DD8C2D7442C13ABAE7458B7D8029FA9 /* Pods-Stinger_Example-acknowledgements.plist */,
+				93C66E08F1B604A83BD59D347B57D300 /* Pods-Stinger_Example-dummy.m */,
+				D1BA2BF4C84B7FEF4CB40400F0E18CDE /* Pods-Stinger_Example-frameworks.sh */,
+				A44CB32F05C4567ABC089EE32440650C /* Pods-Stinger_Example-resources.sh */,
+				D59D2A4E98E700FA12C7C9F051E634F7 /* Pods-Stinger_Example.debug.xcconfig */,
+				FC77216670E284FB7A82F55FA2DF6A12 /* Pods-Stinger_Example.release.xcconfig */,
 			);
 			name = "Pods-Stinger_Example";
 			path = "Target Support Files/Pods-Stinger_Example";
 			sourceTree = "<group>";
 		};
-		7B99325B1F7F6C791E98A15C0CFFFE49 /* Pods-Stinger_Tests */ = {
+		1DA6C3A27C146D747D29BF01B9979022 /* Stinger */ = {
 			isa = PBXGroup;
 			children = (
-				BC8D8A60A049F88E6ACC0137869F0745 /* Pods-Stinger_Tests-acknowledgements.markdown */,
-				A06AA1CAD4B30B25315A90F084AFB1E2 /* Pods-Stinger_Tests-acknowledgements.plist */,
-				9E2FC701FA29F7FD30407C0A8DE1725C /* Pods-Stinger_Tests-dummy.m */,
-				C277F5A93A8C6046AE56EF1B85C1820F /* Pods-Stinger_Tests-frameworks.sh */,
-				3FDC680BE1C3EE788A73FCEDE4C9DD11 /* Pods-Stinger_Tests-resources.sh */,
-				42234E24B6EA7DD648069E79657D06CE /* Pods-Stinger_Tests.debug.xcconfig */,
-				52A918A88C56FAAD8626D51C15B07CD8 /* Pods-Stinger_Tests.release.xcconfig */,
-			);
-			name = "Pods-Stinger_Tests";
-			path = "Target Support Files/Pods-Stinger_Tests";
-			sourceTree = "<group>";
-		};
-		7DB346D0F39D3F0E887471402A8071AB = {
-			isa = PBXGroup;
-			children = (
-				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
-				5B28AF786ACB9513DF0D9FEAECB127ED /* Development Pods */,
-				BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */,
-				233EF145619CE4DE3616AF9F63B837BF /* Products */,
-				CAEAFDC8409AC48D4760B7D0CDDE87AC /* Targets Support Files */,
-			);
-			sourceTree = "<group>";
-		};
-		80465CC3658DC5B54F936FAEED59351A /* Stinger */ = {
-			isa = PBXGroup;
-			children = (
-				7321D3648B9970DAF8C7358E0E372F80 /* STBlock.h */,
-				ADE703917BF83DEF568A4D11773CC3E2 /* STBlock.m */,
-				FDA58DD8186B255C2E1F02C1C59384AD /* Stinger.h */,
-				DBBA22C94AEDE2F810B6CF2C168B0E67 /* Stinger.m */,
-				4C10EB9D3C4FF5ED54D46666C2D99CE2 /* STHookInfo.h */,
-				90C20ED5B2591D2306A2E0F2EC160FDD /* STHookInfo.m */,
-				8FDD6A7C55DF3E00665D303E925A2F94 /* STHookInfoPool.h */,
-				09753E0831A556C590D6FC4AAD5809CF /* STHookInfoPool.m */,
-				72DE21D0866F7D3F3A0B894266C8C016 /* StingerParams.h */,
-				C6FA75AEF22B3581559FA5C760922C9D /* StingerParams.m */,
-				F746F4E028E1E4426C7ADFB5E25FC593 /* STMethodSignature.h */,
-				F13939FFF996069E16C425C91684522E /* STMethodSignature.m */,
-				BD4FCA9A7A305437D989437A863812AA /* libffi */,
-				BC1B0E11842AF343DA4DA327AEA7D5BB /* Support Files */,
+				5FCD5875A4C49EFD3C71D107E6860686 /* STBlock.h */,
+				937F40472B073C57046DBCF573947A05 /* STBlock.m */,
+				8692FE01A90ED6F6443729196A616096 /* STHookInfo.h */,
+				1C3EA8B3DA27EEBA0FD0F4269B7D4156 /* STHookInfo.m */,
+				4A27EBEF5ACBD0E2ABCD409CD1D48870 /* STHookInfoPool.h */,
+				4937E72CEF22E754BB0921A27ACFFC29 /* STHookInfoPool.m */,
+				5B11C767D19AF865C5EF011B7FC30A3A /* Stinger.h */,
+				C7CA8FECB9DA2B1133687C8ECB1AFB1E /* Stinger.m */,
+				A847C4A8F17D72BC5DC19855C194EFB3 /* StingerParams.h */,
+				08BDCC53048156A736F5044DA1D7C951 /* StingerParams.m */,
+				E42275E05F77609A2BF3174F89E5E0AD /* STMethodSignature.h */,
+				67CD5FA6A5FCFDF45A649FE2EC7D7808 /* STMethodSignature.m */,
+				9A8538721486B093A9329F3209DCC986 /* Frameworks */,
+				2437CD3E5941C3A0838276BF2469142E /* libffi */,
+				C7C42BA9051F979EF0EB48DBFBA04ADC /* Pod */,
+				954EB6B26FCD579BBDCF7142FCAB033C /* Support Files */,
 			);
 			name = Stinger;
 			path = ../..;
 			sourceTree = "<group>";
 		};
-		BC1B0E11842AF343DA4DA327AEA7D5BB /* Support Files */ = {
+		2437CD3E5941C3A0838276BF2469142E /* libffi */ = {
 			isa = PBXGroup;
 			children = (
-				4E8246671D8A50544D5EBC2B7F50AF26 /* Stinger.xcconfig */,
-				C1BB50CD7E7BFDC76AE3DB4A413DD2D7 /* Stinger-dummy.m */,
-				68423C916876F731AD6F8AB40CB4433D /* Stinger-prefix.pch */,
-			);
-			name = "Support Files";
-			path = "Example/Pods/Target Support Files/Stinger";
-			sourceTree = "<group>";
-		};
-		BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				D35AF013A5F0BAD4F32504907A52519E /* iOS */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		BD4FCA9A7A305437D989437A863812AA /* libffi */ = {
-			isa = PBXGroup;
-			children = (
-				CAC83F83F39C6C7313A73EC18B0ABD19 /* ffi.h */,
-				1016EC3457E0A0A86370E247C07EA06E /* ffi_arm.h */,
-				C1B82163244C797C12A0E450CB19C1EB /* ffi_arm64.h */,
-				1F35013B77D54AF827F1924928B6D7CB /* ffi_common.h */,
-				FFDB37F2E2B5772400984B1DD8EA41FF /* ffi_i386.h */,
-				2DAFB64ED573397069E7EB2D49299E45 /* ffi_x86_64.h */,
-				8A6DC332B27EF0F0B10DFCDD8E252154 /* ffitarget.h */,
-				D8C6CDFEB84E37239A5DA02373DD1BAC /* ffitarget_arm.h */,
-				DCA76F0BA529846346033D9B5951FD52 /* ffitarget_arm64.h */,
-				0F8D578A5BE97EE6DA2659DE3B299943 /* ffitarget_i386.h */,
-				DB431D34E57E1240C9E0AABA84AF7B08 /* ffitarget_x86_64.h */,
-				C34A278170557C5ED785AE49FF98BE1F /* libffi.a */,
+				AFCE1BBFFE139E77D4ACE83C330EB77D /* ffi.h */,
+				726DA4EF573468180533705471B47318 /* ffi_arm.h */,
+				08E634633EA871897CC09C1B4182E8D0 /* ffi_arm64.h */,
+				5BC379BB82D593481A178AE817E367F2 /* ffi_i386.h */,
+				048DBE25F73E5C0CA108951E9495A525 /* ffi_x86_64.h */,
+				25D6041273E44EAD4899392845A7057A /* ffitarget.h */,
+				E54D84AC7B5552703592A507C18A4181 /* ffitarget_arm.h */,
+				045FB95FD2CAFDFAC6C558C941F5DFC5 /* ffitarget_arm64.h */,
+				6C38EFA6E982D1278E39EFD2A055FE2A /* ffitarget_i386.h */,
+				1B4009A45C54233DB8CEDC8507841EAA /* ffitarget_x86_64.h */,
+				1728C51E25A9CA88F43ED7CE17035028 /* libffi.a */,
 			);
 			name = libffi;
 			path = Stinger/Classes/libffi;
 			sourceTree = "<group>";
 		};
-		CAEAFDC8409AC48D4760B7D0CDDE87AC /* Targets Support Files */ = {
+		4165A605F06945759ECE7811030B1C5B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6D40CDEF4F60A5C80D32872D0CF50F7F /* Pods-Stinger_Example */,
-				7B99325B1F7F6C791E98A15C0CFFFE49 /* Pods-Stinger_Tests */,
+				268E3F6FBBEC6A280545E4AA149EE56F /* libPods-Stinger_Example.a */,
+				E72DE60BAD0A6B6DF6A3F1FAA7497E31 /* libPods-Stinger_Tests.a */,
+				DFB3CEB576CE5D60F0984A8BCB3EA430 /* libStinger.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7E00CBD253A9071438E499A157578591 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				0FB5841AF128AE7D4DA6A606201A6AD9 /* Pods-Stinger_Example */,
+				DDA9824C985D37716E60CE77D1E4F5DA /* Pods-Stinger_Tests */,
 			);
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		D35AF013A5F0BAD4F32504907A52519E /* iOS */ = {
+		954EB6B26FCD579BBDCF7142FCAB033C /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */,
+				3BD8768806DD5586EFBC77AC2D671DE0 /* Stinger.xcconfig */,
+				63A7334F13DE22EDAC529223FF14B075 /* Stinger-dummy.m */,
+				2C239CFA86731E2E0FF4FBF4298FEE74 /* Stinger-prefix.pch */,
 			);
-			name = iOS;
+			name = "Support Files";
+			path = "Example/Pods/Target Support Files/Stinger";
+			sourceTree = "<group>";
+		};
+		9A8538721486B093A9329F3209DCC986 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C7C42BA9051F979EF0EB48DBFBA04ADC /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				11F648DD8B98DBCE00AE5E1D734F89C7 /* LICENSE */,
+				957B3F6E3AF323F99E780FF5F070E2E3 /* README.md */,
+				17152B1695F1430BA6290310FF6D830E /* Stinger.podspec */,
+			);
+			name = Pod;
+			sourceTree = "<group>";
+		};
+		CF1408CF629C7361332E53B88F7BD30C = {
+			isa = PBXGroup;
+			children = (
+				24390EFD555DD124430DFF9724065945 /* Podfile */,
+				EB22D869816514A28C01419FC75114B4 /* Development Pods */,
+				D89477F20FB1DE18A04690586D7808C4 /* Frameworks */,
+				4165A605F06945759ECE7811030B1C5B /* Products */,
+				7E00CBD253A9071438E499A157578591 /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		D89477F20FB1DE18A04690586D7808C4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DDA9824C985D37716E60CE77D1E4F5DA /* Pods-Stinger_Tests */ = {
+			isa = PBXGroup;
+			children = (
+				8EA94A02CAEE8329A14A9FFD66324148 /* Pods-Stinger_Tests-acknowledgements.markdown */,
+				15EF62661C8F6FFAECE59DC0234759FA /* Pods-Stinger_Tests-acknowledgements.plist */,
+				7A411BDEEDCAEF81AF43CFEA51C47B0E /* Pods-Stinger_Tests-dummy.m */,
+				6517CC03DFBB00A4B1CC09FA47FDBC81 /* Pods-Stinger_Tests-frameworks.sh */,
+				164D82369A5BAAE7878CE8D28A358CEE /* Pods-Stinger_Tests-resources.sh */,
+				1A82045B2A543F949A82C7E9D2707E4F /* Pods-Stinger_Tests.debug.xcconfig */,
+				414F804F6345B2BCF653286085BC3EC4 /* Pods-Stinger_Tests.release.xcconfig */,
+			);
+			name = "Pods-Stinger_Tests";
+			path = "Target Support Files/Pods-Stinger_Tests";
+			sourceTree = "<group>";
+		};
+		EB22D869816514A28C01419FC75114B4 /* Development Pods */ = {
+			isa = PBXGroup;
+			children = (
+				1DA6C3A27C146D747D29BF01B9979022 /* Stinger */,
+			);
+			name = "Development Pods";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		ED08077098F8D0B37B66EED81551AFBF /* Headers */ = {
+		304DD266793EAAF7F11B7DDE87086284 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C13FA8176DE49042B30A0884799EF6AF /* ffi.h in Headers */,
-				08DA913E9975ACBE7BABAA655B139047 /* ffi_arm.h in Headers */,
-				DDDC584937EB7EE98F2774004C888CE5 /* ffi_arm64.h in Headers */,
-				1CC805005CEBDF089CD247E2B6615DDC /* ffi_common.h in Headers */,
-				973E8FBE304CACC1EAB2EF58F68CE505 /* ffi_i386.h in Headers */,
-				AFFFF8353E810EADF8CE4DD20353746C /* ffi_x86_64.h in Headers */,
-				73A7EDFB8ED630CBD1F7C97AC9AFCAA1 /* ffitarget.h in Headers */,
-				6B738BF9C46636C0D8A36584B55ACD50 /* ffitarget_arm.h in Headers */,
-				06A7D8C6FBF3D777DD251F9A23611BD5 /* ffitarget_arm64.h in Headers */,
-				83EFC170B8BD245B6FED5A8CBD4DDB85 /* ffitarget_i386.h in Headers */,
-				0F02A3A3B7E4CDE1D567CD8F590DC70F /* ffitarget_x86_64.h in Headers */,
-				A331E208E2A29C01F6DD798FC2BC16E6 /* STBlock.h in Headers */,
-				527579C4DBD2825901CD5DE228A442CB /* Stinger.h in Headers */,
-				25CFE987BC8B9B32ED42D0172953BFB6 /* STHookInfo.h in Headers */,
-				7E98ACB5DF6B8E25A370AA96FCDD160B /* STHookInfoPool.h in Headers */,
-				AA3D6EB8E8A45BFDF4DA44EBB9BB78EB /* StingerParams.h in Headers */,
-				5CAB88E2FDC017CA14D2FA4DBB25773E /* STMethodSignature.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6224F53A9019A8037A1B8BDC7EC491B4 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		789BE5E2A94EC76A83C255984541A3FA /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C6FC0CBCF698CC10E6FE624B389B788 /* ffi.h in Headers */,
+				7FF645EDC2D8DDBC47EED0C663760244 /* ffi_arm.h in Headers */,
+				B7AF0819F86ADCDCF6CF16AE51C0C31B /* ffi_arm64.h in Headers */,
+				B0E545B5148E92A5C60379AFD8E23D3F /* ffi_i386.h in Headers */,
+				E9ACCE73BBD17726C07261598CCDD2C8 /* ffi_x86_64.h in Headers */,
+				ED3F85159245C6D424E4BD554C15B3CE /* ffitarget.h in Headers */,
+				90A1DC868CA68ECE91AB019F08F8776D /* ffitarget_arm.h in Headers */,
+				2B00C1E7CA4AB7D3ED8FAA3EB71320BA /* ffitarget_arm64.h in Headers */,
+				D790971F2E9062B5D58F42BCE522D892 /* ffitarget_i386.h in Headers */,
+				5385944C9E4ACC3B7129E25C1D69A7D8 /* ffitarget_x86_64.h in Headers */,
+				22390F09293307DA9C9C8CBCE9220A35 /* STBlock.h in Headers */,
+				324059BED7040C45FC526342541A125F /* STHookInfo.h in Headers */,
+				2C15207A1197769ED6208C79C5F9BFF0 /* STHookInfoPool.h in Headers */,
+				7DE8EC1B2C44230DD0EEE8DD8FD2891F /* Stinger.h in Headers */,
+				2E125C23CFD24EA79F7755CF4CFA9B54 /* StingerParams.h in Headers */,
+				E362EFE8AEFE506FE497234D6CA811E6 /* STMethodSignature.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		05FBD9CFE1592989B41703809998B9CA /* Pods-Stinger_Tests */ = {
+		1AC18FC38AE8C9C2CD60124A87E23C8D /* Pods-Stinger_Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1216547D471713F9781E9E74BB553E85 /* Build configuration list for PBXNativeTarget "Pods-Stinger_Tests" */;
+			buildConfigurationList = D9FEFFB08983E3761BA53748CB0806B4 /* Build configuration list for PBXNativeTarget "Pods-Stinger_Tests" */;
 			buildPhases = (
-				B822377A55BFDF63AAA1AD947618692D /* Sources */,
-				39B65493B81CC37C2966FC76A7138950 /* Frameworks */,
+				6224F53A9019A8037A1B8BDC7EC491B4 /* Headers */,
+				D8A95D99D71BECEAED64D1E3E8C1E0EF /* Sources */,
+				EB7822887905BC0B32D6801B6DDBE112 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				FECBA06278C17ECC09DC652631BFECA7 /* PBXTargetDependency */,
 			);
 			name = "Pods-Stinger_Tests";
 			productName = "Pods-Stinger_Tests";
-			productReference = 8598418FC67F01D6076F9C4170F0303C /* libPods-Stinger_Tests.a */;
+			productReference = E72DE60BAD0A6B6DF6A3F1FAA7497E31 /* libPods-Stinger_Tests.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		803F001658046953695EE8C58DB0243C /* Stinger */ = {
+		6F1051228C38F74B264B92989406BA1E /* Pods-Stinger_Example */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E545B411DC670E3E88A03ED10DD81C5E /* Build configuration list for PBXNativeTarget "Stinger" */;
+			buildConfigurationList = 0E58C677C592DD064005632A0BA4B71C /* Build configuration list for PBXNativeTarget "Pods-Stinger_Example" */;
 			buildPhases = (
-				76A089FD9FF169CCCEEB2CA19A6AAE39 /* Sources */,
-				1C897484000E0E9DB7094DA803FDCA41 /* Frameworks */,
-				ED08077098F8D0B37B66EED81551AFBF /* Headers */,
+				304DD266793EAAF7F11B7DDE87086284 /* Headers */,
+				839B55009C4E242E14D478E272D804D6 /* Sources */,
+				0E894265316F44B70B14342D7C63565F /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				971683344753DE884483DB4639006E96 /* PBXTargetDependency */,
+			);
+			name = "Pods-Stinger_Example";
+			productName = "Pods-Stinger_Example";
+			productReference = 268E3F6FBBEC6A280545E4AA149EE56F /* libPods-Stinger_Example.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		AA3639DD87A9A005F4F60D65C8EC099C /* Stinger */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 98DBE8458B5F04CF8E0F378D0DF0E48E /* Build configuration list for PBXNativeTarget "Stinger" */;
+			buildPhases = (
+				789BE5E2A94EC76A83C255984541A3FA /* Headers */,
+				6BA4C4248422150FEE074E7091FACD9D /* Sources */,
+				BA57E2B559A25F7030FD8BB1291AF92E /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -323,99 +366,155 @@
 			);
 			name = Stinger;
 			productName = Stinger;
-			productReference = 1E396F1FC432B8B1670352F867926581 /* libStinger.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		AC044D57DB083A78623E5E68B6E69B96 /* Pods-Stinger_Example */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = D95E560CB360F19BCCAFD9C8A674BC87 /* Build configuration list for PBXNativeTarget "Pods-Stinger_Example" */;
-			buildPhases = (
-				A9189E04A24E51D5CAE3C8A5C83648CF /* Sources */,
-				E435B0CE0CB4C1AD10757AC37044D471 /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				24A4625ECB9C8F608C4FA76CCA065E47 /* PBXTargetDependency */,
-			);
-			name = "Pods-Stinger_Example";
-			productName = "Pods-Stinger_Example";
-			productReference = 262E3F4F65086B1CA506C0CD5371A548 /* libPods-Stinger_Example.a */;
+			productReference = DFB3CEB576CE5D60F0984A8BCB3EA430 /* libStinger.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		D41D8CD98F00B204E9800998ECF8427E /* Project object */ = {
+		BFDFE7DC352907FC980B868725387E98 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 1000;
+				LastSwiftUpdateCheck = 1100;
+				LastUpgradeCheck = 1100;
 			};
-			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
+			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
-			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
-			productRefGroup = 233EF145619CE4DE3616AF9F63B837BF /* Products */;
+			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
+			productRefGroup = 4165A605F06945759ECE7811030B1C5B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				AC044D57DB083A78623E5E68B6E69B96 /* Pods-Stinger_Example */,
-				05FBD9CFE1592989B41703809998B9CA /* Pods-Stinger_Tests */,
-				803F001658046953695EE8C58DB0243C /* Stinger */,
+				6F1051228C38F74B264B92989406BA1E /* Pods-Stinger_Example */,
+				1AC18FC38AE8C9C2CD60124A87E23C8D /* Pods-Stinger_Tests */,
+				AA3639DD87A9A005F4F60D65C8EC099C /* Stinger */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		76A089FD9FF169CCCEEB2CA19A6AAE39 /* Sources */ = {
+		6BA4C4248422150FEE074E7091FACD9D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96F792783A25DB961C8F5F9AA2841AE0 /* libffi.a in Sources */,
-				D4C4E20B7C14A6C1538A3B615E1A162C /* STBlock.m in Sources */,
-				7605CCCF586A75D9B1B7EB45A60CCFD5 /* Stinger-dummy.m in Sources */,
-				CC22E6D7BBB315D63923DA1C1FDE0152 /* Stinger.m in Sources */,
-				0C27F1BE3E1EC32A1EE1CDCB330D4CF0 /* STHookInfo.m in Sources */,
-				51278625F34A12BC1FE705115969F9CE /* STHookInfoPool.m in Sources */,
-				B02608A74B8FC1B90C2E3A1741D63C99 /* StingerParams.m in Sources */,
-				0C697C6397371A2EEC5B1D975CED39F7 /* STMethodSignature.m in Sources */,
+				99CCFF1F237BDA00D65509933F360530 /* libffi.a in Sources */,
+				27CF8D087C109B457FBD56D44155F538 /* STBlock.m in Sources */,
+				73ADACBB2F02C8912155BE51AA6528C7 /* STHookInfo.m in Sources */,
+				6BB894925385F44C19783FE5B1FA2B58 /* STHookInfoPool.m in Sources */,
+				599F2D5C0DB733091BDBF1409EFB6E2C /* Stinger-dummy.m in Sources */,
+				09E027C6A4D88D39FB0396AFE8888FB9 /* Stinger.m in Sources */,
+				E219CC344A2504F7A4212328F007FE36 /* StingerParams.m in Sources */,
+				95A5DFD32C23619D4B2876090C17E4EE /* STMethodSignature.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A9189E04A24E51D5CAE3C8A5C83648CF /* Sources */ = {
+		839B55009C4E242E14D478E272D804D6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				205687061AF713307445DF86B879B260 /* Pods-Stinger_Example-dummy.m in Sources */,
+				DE29776E0F4BA01902316DB642107AF1 /* Pods-Stinger_Example-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		B822377A55BFDF63AAA1AD947618692D /* Sources */ = {
+		D8A95D99D71BECEAED64D1E3E8C1E0EF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4F3461FF6E769514F49613D3979DE8CF /* Pods-Stinger_Tests-dummy.m in Sources */,
+				04D1945AB27402507FFCF59AA5403B83 /* Pods-Stinger_Tests-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		24A4625ECB9C8F608C4FA76CCA065E47 /* PBXTargetDependency */ = {
+		971683344753DE884483DB4639006E96 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Stinger;
-			target = 803F001658046953695EE8C58DB0243C /* Stinger */;
-			targetProxy = 3409980417CB667D6DD54E48AAAFC63D /* PBXContainerItemProxy */;
+			target = AA3639DD87A9A005F4F60D65C8EC099C /* Stinger */;
+			targetProxy = 9577970A21A2AE232BBC91B325DE3C81 /* PBXContainerItemProxy */;
+		};
+		FECBA06278C17ECC09DC652631BFECA7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pods-Stinger_Example";
+			target = 6F1051228C38F74B264B92989406BA1E /* Pods-Stinger_Example */;
+			targetProxy = 2C6C2A2DAB22DF72C1D375555F3BEE0B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		33DA7F43A1D2FA3C74A8C8FC246E1FA6 /* Debug */ = {
+		0037FE14CACFFA6E97E04CBD389F902C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1A82045B2A543F949A82C7E9D2707E4F /* Pods-Stinger_Tests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MACH_O_TYPE = staticlib;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		07F729A242AE5F3D9CDAE181D4823ACF /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3BD8768806DD5586EFBC77AC2D671DE0 /* Stinger.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				GCC_PREFIX_HEADER = "Target Support Files/Stinger/Stinger-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = Stinger;
+				PRODUCT_NAME = Stinger;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		08AFDFED16ABF6892E88B2CC6036B83F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D59D2A4E98E700FA12C7C9F051E634F7 /* Pods-Stinger_Example.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MACH_O_TYPE = staticlib;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		2A506743CF140B1834F797F766E2A82E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -425,6 +524,7 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -446,6 +546,69 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Release;
+		};
+		A6A7DE9C902EFE38BE4A346301EA1DB9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGNING_REQUIRED = NO;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -467,20 +630,46 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
-				MTL_ENABLE_DEBUG_INFO = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
 				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				SYMROOT = "${SRCROOT}/../build";
 			};
 			name = Debug;
 		};
-		5D6EA68C4233A05071E1408AE021FFE6 /* Release */ = {
+		CAEA1938F766632B560F910DD6D04F4D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BD559C94AEE39ADAD07F36AF34F4DB40 /* Pods-Stinger_Example.release.xcconfig */;
+			baseConfigurationReference = 3BD8768806DD5586EFBC77AC2D671DE0 /* Stinger.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				GCC_PREFIX_HEADER = "Target Support Files/Stinger/Stinger-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = Stinger;
+				PRODUCT_NAME = Stinger;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D4A6347022F4E9AD6613ECDBEC5F2774 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 414F804F6345B2BCF653286085BC3EC4 /* Pods-Stinger_Tests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -498,150 +687,11 @@
 			};
 			name = Release;
 		};
-		63835364C7F51D2E0A06A4C385BC69F4 /* Release */ = {
+		E3F6077F2F64DA9AEB5A1013009DB573 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4E8246671D8A50544D5EBC2B7F50AF26 /* Stinger.xcconfig */;
+			baseConfigurationReference = FC77216670E284FB7A82F55FA2DF6A12 /* Pods-Stinger_Example.release.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/Stinger/Stinger-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		731DC216E1A58545B559F6E0A2418060 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGNING_REQUIRED = NO;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"POD_CONFIGURATION_RELEASE=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
-				STRIP_INSTALLED_PRODUCT = NO;
-				SYMROOT = "${SRCROOT}/../build";
-			};
-			name = Release;
-		};
-		7B2A94A471BFD8A5BA9F9CA31C71D6A4 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4E8246671D8A50544D5EBC2B7F50AF26 /* Stinger.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/Stinger/Stinger-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		9A0966DA034E6EB7C6DBB447035D4688 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = ACB0573538BEB510A3B0DED4A706A38E /* Pods-Stinger_Example.debug.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
-				MACH_O_TYPE = staticlib;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		CAB5FFF6C44496001D158010F565EF7F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 42234E24B6EA7DD648069E79657D06CE /* Pods-Stinger_Tests.debug.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
-				MACH_O_TYPE = staticlib;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		F2B828FAA881EDD00794A7D32B4355E4 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 52A918A88C56FAAD8626D51C15B07CD8 /* Pods-Stinger_Tests.release.xcconfig */;
-			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -662,43 +712,43 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1216547D471713F9781E9E74BB553E85 /* Build configuration list for PBXNativeTarget "Pods-Stinger_Tests" */ = {
+		0E58C677C592DD064005632A0BA4B71C /* Build configuration list for PBXNativeTarget "Pods-Stinger_Example" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				CAB5FFF6C44496001D158010F565EF7F /* Debug */,
-				F2B828FAA881EDD00794A7D32B4355E4 /* Release */,
+				08AFDFED16ABF6892E88B2CC6036B83F /* Debug */,
+				E3F6077F2F64DA9AEB5A1013009DB573 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
+		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				33DA7F43A1D2FA3C74A8C8FC246E1FA6 /* Debug */,
-				731DC216E1A58545B559F6E0A2418060 /* Release */,
+				A6A7DE9C902EFE38BE4A346301EA1DB9 /* Debug */,
+				2A506743CF140B1834F797F766E2A82E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D95E560CB360F19BCCAFD9C8A674BC87 /* Build configuration list for PBXNativeTarget "Pods-Stinger_Example" */ = {
+		98DBE8458B5F04CF8E0F378D0DF0E48E /* Build configuration list for PBXNativeTarget "Stinger" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				9A0966DA034E6EB7C6DBB447035D4688 /* Debug */,
-				5D6EA68C4233A05071E1408AE021FFE6 /* Release */,
+				CAEA1938F766632B560F910DD6D04F4D /* Debug */,
+				07F729A242AE5F3D9CDAE181D4823ACF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E545B411DC670E3E88A03ED10DD81C5E /* Build configuration list for PBXNativeTarget "Stinger" */ = {
+		D9FEFFB08983E3761BA53748CB0806B4 /* Build configuration list for PBXNativeTarget "Pods-Stinger_Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				7B2A94A471BFD8A5BA9F9CA31C71D6A4 /* Debug */,
-				63835364C7F51D2E0A06A4C385BC69F4 /* Release */,
+				0037FE14CACFFA6E97E04CBD389F902C /* Debug */,
+				D4A6347022F4E9AD6613ECDBEC5F2774 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+	rootObject = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 }

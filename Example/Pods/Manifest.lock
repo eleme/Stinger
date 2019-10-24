@@ -1,16 +1,16 @@
 PODS:
-  - Stinger (0.1.0)
+  - Stinger (0.2.4)
 
 DEPENDENCIES:
   - Stinger (from `../`)
 
 EXTERNAL SOURCES:
   Stinger:
-    :path: ../
+    :path: "../"
 
 SPEC CHECKSUMS:
-  Stinger: 540c7d73d80ec5bb7c77980ab6309ae1e45be1ef
+  Stinger: f0758c960b816ee988fac68002f631f4ba4b8ef2
 
 PODFILE CHECKSUM: 9047d2aaf55934118a70d3f52c0150171ff07b4c
 
-COCOAPODS: 1.4.0.beta.2
+COCOAPODS: 1.5.3
