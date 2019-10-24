@@ -45,7 +45,7 @@
 		290AEB1821FAD98900524132 /* Aspects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Aspects.h; sourceTree = "<group>"; };
 		290AEB1921FAD98900524132 /* Aspects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Aspects.m; sourceTree = "<group>"; };
 		2979077A21E88D87002684DB /* README_中文.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = "README_中文.md"; path = "../README_中文.md"; sourceTree = "<group>"; };
-		4A2FC9F2CFEB57D74DD57D5D /* Stinger.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Stinger.podspec; path = ../Stinger.podspec; sourceTree = "<group>"; };
+		4A2FC9F2CFEB57D74DD57D5D /* Stinger.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Stinger.podspec; path = ../Stinger.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		6003F58A195388D20070C39A /* Stinger_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stinger_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -267,6 +267,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
