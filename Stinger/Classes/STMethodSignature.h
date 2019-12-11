@@ -4,7 +4,7 @@
 //
 //  Created by Assuner on 2018/1/9.
 //  Copyright © 2018年 Assuner. All rights reserved.
-//
+//  TODO: can be optimized
 
 #import <Foundation/Foundation.h>
 #import "ffi.h"
@@ -17,6 +17,6 @@
 
 - (instancetype)initWithObjCTypes:(NSString *)objCTypes; // type encoding of method or block
 
-ffi_type * ffiTypeWithType (NSString *type);
+ffi_type *st_ffiTypeWithType(NSString *type);
 
 @end

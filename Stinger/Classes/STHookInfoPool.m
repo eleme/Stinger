@@ -123,14 +123,14 @@ NSString * const STSelectorPrefix = @"st_sel";
 
 - (StingerIMP)stingerIMP {
   if (_stingerIMP == NULL) {
-    ffi_type *returnType = ffiTypeWithType(self.signature.returnType);
+    ffi_type *returnType = st_ffiTypeWithType(self.signature.returnType);
     NSAssert(returnType, @"can't find a ffi_type of %@", self.signature.returnType);
     
     NSUInteger argumentCount = self.signature.argumentTypes.count;
     _args = malloc(sizeof(ffi_type *) * argumentCount) ;
     
     for (int i = 0; i < argumentCount; i++) {
-      ffi_type* current_ffi_type = ffiTypeWithType(self.signature.argumentTypes[i]);
+      ffi_type* current_ffi_type = st_ffiTypeWithType(self.signature.argumentTypes[i]);
       NSAssert(current_ffi_type, @"can't find a ffi_type of %@", self.signature.argumentTypes[i]);
       _args[i] = current_ffi_type;
     }
@@ -138,7 +138,7 @@ NSString * const STSelectorPrefix = @"st_sel";
     _closure = ffi_closure_alloc(sizeof(ffi_closure), (void **)&_stingerIMP);
     
     if(ffi_prep_cif(&_cif, FFI_DEFAULT_ABI, (unsigned int)argumentCount, returnType, _args) == FFI_OK) {
-      if (ffi_prep_closure_loc(_closure, &_cif, ffi_function, (__bridge void *)(self), _stingerIMP) != FFI_OK) {
+      if (ffi_prep_closure_loc(_closure, &_cif, _st_ffi_function, (__bridge void *)(self), _stingerIMP) != FFI_OK) {
         NSAssert(NO, @"genarate IMP failed");
       }
     } else {
@@ -151,18 +151,18 @@ NSString * const STSelectorPrefix = @"st_sel";
 }
 
 - (void)_genarateBlockCif {
-  ffi_type *returnType = ffiTypeWithType(self.signature.returnType);
+  ffi_type *returnType = st_ffiTypeWithType(self.signature.returnType);
   
   NSUInteger argumentCount = self.signature.argumentTypes.count;
   _blockArgs = malloc(sizeof(ffi_type *) *argumentCount);
   
-  ffi_type *current_ffi_type_0 = ffiTypeWithType(@"@?");
+  ffi_type *current_ffi_type_0 = st_ffiTypeWithType(@"@?");
   _blockArgs[0] = current_ffi_type_0;
-  ffi_type *current_ffi_type_1 = ffiTypeWithType(@"@");
+  ffi_type *current_ffi_type_1 = st_ffiTypeWithType(@"@");
   _blockArgs[1] = current_ffi_type_1;
   
   for (int i = 2; i < argumentCount; i++){
-    ffi_type* current_ffi_type = ffiTypeWithType(self.signature.argumentTypes[i]);
+    ffi_type* current_ffi_type = st_ffiTypeWithType(self.signature.argumentTypes[i]);
     _blockArgs[i] = current_ffi_type;
   }
   
@@ -196,7 +196,7 @@ for (id<STHookInfo> info in infos) { \
   ffi_call(&(hookedClassInfoPool->_blockCif), impForBlock(block), NULL, innerArgs); \
 }  \
 
-static void ffi_function(ffi_cif *cif, void *ret, void **args, void *userdata) {
+static void _st_ffi_function(ffi_cif *cif, void *ret, void **args, void *userdata) {
   STHookInfoPool *hookedClassInfoPool = (__bridge STHookInfoPool *)userdata;
   STHookInfoPool *statedClassInfoPool = nil;
   STHookInfoPool *instanceInfoPool = nil;
@@ -240,8 +240,8 @@ static void ffi_function(ffi_cif *cif, void *ret, void **args, void *userdata) {
     innerArgs[0] = &block;
     ffi_call(&(hookedClassInfoPool->_blockCif), impForBlock(block), ret, innerArgs);
   } else {
-    // original IMP
-    /// if hooked by aspects or jspatch.. which use message-forwarding.
+    /// original IMP
+    /// if original selector is hooked by aspects or jspatch.., which use message-forwarding, invoke invacation.
     BOOL isForward = hookedClassInfoPool->_originalIMP == _objc_msgForward
 #if !defined(__arm64__)
     || hookedClassInfoPool->_originalIMP == (IMP)_objc_msgForward_stret

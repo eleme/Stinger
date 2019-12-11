@@ -104,7 +104,7 @@ NS_INLINE STHookResult hookMethod(Class hookedCls, SEL sel, STOption option, STI
   const char * typeEncoding = method_getTypeEncoding(m);
   STMethodSignature *methodSignature = [[STMethodSignature alloc] initWithObjCTypes:[NSString stringWithUTF8String:typeEncoding]];
   STMethodSignature *blockSignature = [[STMethodSignature alloc] initWithObjCTypes:signatureForBlock(block)];
-  if (! isMatched(methodSignature, blockSignature, option, hookedCls, sel, identifier)) {
+  if (!isMatched(methodSignature, blockSignature, option, hookedCls, sel, identifier)) {
     return STHookResultErrorBlockNotMatched;
   }
   

@@ -11,20 +11,20 @@ Stinger is a high-efficiency library with great compatibility, for aop in Object
 Stinger extends NSObject with the following methods:
 
 ```objc
-ttypedef NSString *STIdentifier;
+typedef NSString *STIdentifier;
 
 typedef NS_ENUM(NSInteger, STOption) {
-STOptionAfter = 0,     // Called after the original implementation (default)
-STOptionInstead = 1,   // Will replace the original implementation.
-STOptionBefore = 2,    // Called before the original implementation.
+  STOptionAfter = 0,     // Called after the original implementation (default)
+  STOptionInstead = 1,   // Will replace the original implementation.
+  STOptionBefore = 2,    // Called before the original implementation.
 };
 
 typedef NS_ENUM(NSInteger, STHookResult) {
-STHookResultSuccuss = 1,
-STHookResultErrorMethodNotFound = -1,
-STHookResultErrorBlockNotMatched = -2,
-STHookResultErrorIDExisted = -3,
-STHookResultOther = -4,
+  STHookResultSuccuss = 1,
+  STHookResultErrorMethodNotFound = -1,
+  STHookResultErrorBlockNotMatched = -2,
+  STHookResultErrorIDExisted = -3,
+  STHookResultOther = -4,
 };
 
 @interface NSObject (Stinger)
@@ -172,6 +172,8 @@ Assuner-Lee, assuner@foxmail.com
 | 0.2.2 | fix some bug.|
 | 0.2.3 | fix some bug.|
 | 0.2.4 | fix specific instance hook crash.|
+| 0.2.5 | chg libffi version.|
+| 0.2.6 | support struct.|
 
 ## License
 

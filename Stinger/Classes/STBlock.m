@@ -80,8 +80,7 @@ NSString *signatureForBlock(id block) {
   if (layout->flags & BLOCK_HAS_COPY_DISPOSE)
     descRef += 2 * sizeof(void *);
   
-  if (!descRef)
-    return nil;
+  if (!descRef) return nil;
   
   const char *signature = (*(const char **)descRef);
   return [NSString stringWithUTF8String:signature];

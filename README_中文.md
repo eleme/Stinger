@@ -10,20 +10,20 @@ Stinger是一个实现Objective-C AOP功能的库，有着良好的兼容性。�
 Stinger 对NSObject做了以下方法扩展：
 
 ```objc
-ttypedef NSString *STIdentifier;
+typedef NSString *STIdentifier;
 
 typedef NS_ENUM(NSInteger, STOption) {
-STOptionAfter = 0,     // 在原方法后调用（默认）
-STOptionInstead = 1,   // 替换原实现
-STOptionBefore = 2,    // 在原方法前调用
+  STOptionAfter = 0,     // 在原方法后调用（默认）
+  STOptionInstead = 1,   // 替换原实现
+  STOptionBefore = 2,    // 在原方法前调用
 };
 
 typedef NS_ENUM(NSInteger, STHookResult) {
-STHookResultSuccuss = 1,
-STHookResultErrorMethodNotFound = -1,
-STHookResultErrorBlockNotMatched = -2,
-STHookResultErrorIDExisted = -3,
-STHookResultOther = -4,
+  STHookResultSuccuss = 1,
+  STHookResultErrorMethodNotFound = -1,
+  STHookResultErrorBlockNotMatched = -2,
+  STHookResultErrorIDExisted = -3,
+  STHookResultOther = -4,
 };
 
 @interface NSObject (Stinger)
@@ -159,6 +159,8 @@ Assuner-Lee, assuner@foxmail.com
 | 0.2.2 | 修掉一些Bug.|
 | 0.2.3 | 修掉一些Bug.|
 | 0.2.4 | 解决实例对象Hook的一个crash.|
+| 0.2.5 | 更正libffi版本.|
+| 0.2.6 | 支持结构体.|
 
 ## License
 
