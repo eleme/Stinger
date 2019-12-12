@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Stinger'
-  s.version          = '0.2.6'
+  s.version          = '0.2.7'
   s.summary          = 'Implementing HOOK & AOP using libffi for Objective-C.'
 
 # This description is used to generate tags and improve search results.

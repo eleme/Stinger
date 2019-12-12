@@ -1,6 +1,6 @@
 PODS:
   - Aspects (1.4.1)
-  - Stinger (0.2.5)
+  - Stinger (0.2.6)
 
 DEPENDENCIES:
   - Aspects
@@ -16,7 +16,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Aspects: 7595ba96a6727a58ebcbfc954497fc5d2fdde546
-  Stinger: 551eb1262f733396c83cd9fba4ae9d9e963f0c92
+  Stinger: 62ce4cd94935217a13a8db639b6f87364bba45e3
 
 PODFILE CHECKSUM: 6df52b616ee208569510c4defb2313f601db9f5e
 

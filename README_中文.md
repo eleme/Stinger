@@ -161,6 +161,7 @@ Assuner-Lee, assuner@foxmail.com
 | 0.2.4 | 解决实例对象Hook的一个crash.|
 | 0.2.5 | 更正libffi版本.|
 | 0.2.6 | 支持结构体.|
+| 0.2.7 | 提升性能.|
 
 ## License
 

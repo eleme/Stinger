@@ -1,6 +1,6 @@
 {
   "name": "Stinger",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "summary": "Implementing HOOK & AOP using libffi for Objective-C.",
   "description": "TODO: Add long description of the pod here.",
   "homepage": "https://github.com/eleme/Stinger",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/eleme/Stinger.git",
-    "tag": "0.2.5"
+    "tag": "0.2.6"
   },
   "platforms": {
     "ios": "8.0"

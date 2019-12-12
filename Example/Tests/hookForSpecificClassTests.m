@@ -9,6 +9,19 @@
 #import <XCTest/XCTest.h>
 #import <Stinger/Stinger.h>
 
+typedef struct  {
+  NSInteger a;
+  NSInteger b;
+} structA;
+
+typedef struct {
+  NSInteger a;
+  NSInteger b;
+  double c;
+  structA structVar;
+} structB;
+
+
 @interface TestClassA : NSObject
 - (void)instanceMethodA;
 - (void)instanceMethodBWithText:(NSString *)str;
@@ -17,6 +30,8 @@
 - (void)instanceMethodEWithBlock:(NSString *(^)(NSString *))block;
 - (SEL)instanceMethodFWithSelector:(SEL)sel;
 - (CGRect)instanceGWithRect:(CGRect)rect;
+- (structB)instanceHWithStruct:(structB)rect;
+- (CGSize)instanceIWithSize:(CGSize)size;
 + (NSInteger)classMethodAWithNumA:(NSInteger)a numB:(NSInteger)b;
 @end
 
@@ -52,21 +67,12 @@ static NSString *TestClassA_string_a = @"";
     return CGRectMake(1, 2, 3, rect.size.height);
 }
 
-typedef struct  {
-  NSInteger a;
-  NSInteger b;
-} structA;
-
-typedef struct {
-  NSInteger a;
-  NSInteger b;
-  double c;
-  structA structVar;
-} structB;
-
-
 - (structB)instanceHWithStruct:(structB)rect {
   return rect;
+}
+
+- (CGSize)instanceIWithSize:(CGSize)size {
+  return size;
 }
 
 
@@ -268,7 +274,7 @@ typedef struct {
 }
 
 
-- (void)testinstanceH {
+- (void)testInstanceMethodH {
   [TestClassA st_hookInstanceMethod:@selector(instanceHWithStruct:) option:STOptionInstead usingIdentifier:@"instead hook instanceHWithStruct:" withBlock:^structB(id<StingerParams> params, structB rect) {
     structB oldValue;
     [params invokeAndGetOriginalRetValue:&oldValue];
@@ -287,5 +293,19 @@ typedef struct {
   structB result = [[TestClassA new] instanceHWithStruct:arg];
   XCTAssertTrue(result.a == 2, @"should be equal");
 }
+
+
+- (void)testInstanceMethodI {
+  [TestClassA st_hookInstanceMethod:@selector(instanceIWithSize:) option:STOptionInstead usingIdentifier:@"instead hook instanceHWithStruct:" withBlock:^CGSize(id<StingerParams> params, CGSize size) {
+    CGSize oldValue;
+    [params invokeAndGetOriginalRetValue:&oldValue];
+    oldValue.width++;
+    return oldValue;
+  }];
+  
+  CGSize result = [[TestClassA new] instanceIWithSize:CGSizeMake(1, 1)];
+  XCTAssertTrue(CGSizeEqualToSize(result, CGSizeMake(2, 1)), @"should be equal");
+}
+
 
 @end

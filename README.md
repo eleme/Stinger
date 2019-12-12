@@ -174,6 +174,7 @@ Assuner-Lee, assuner@foxmail.com
 | 0.2.4 | fix specific instance hook crash.|
 | 0.2.5 | chg libffi version.|
 | 0.2.6 | support struct.|
+| 0.2.7 | improve performance.|
 
 ## License
 

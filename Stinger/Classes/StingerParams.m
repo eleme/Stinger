@@ -13,32 +13,45 @@
 @end
 
 @interface StingerParams ()
-
-@property (nonatomic, strong) NSInvocation *originalInvocation;
+@property (nonatomic, strong) NSString *types;
+@property (nonatomic) SEL sel;
 @property (nonatomic) IMP originalIMP;
-
+@property (nonatomic) void **args;
 @end
 
 @implementation StingerParams
 
-@synthesize slf = _slf;
-@synthesize sel = _sel;
+- (instancetype)initWithType:(NSString *)types originalIMP:(IMP)imp sel:(SEL)sel args:(void **)args {
+  if (self = [super init]) {
+    _types = types;
+    _sel = sel;
+    _originalIMP = imp;
+    _args = args;
+  }
+  return self;
+}
+
+- (id)slf {
+  void **slfPointer = _args[0];
+  return (__bridge id)(*slfPointer);
+}
+
+- (SEL)sel {
+  return _sel;
+}
+
 
 - (void)invokeAndGetOriginalRetValue:(void *)retLoc {
-  [self.originalInvocation invokeUsingIMP:self.originalIMP];
-  if (self.originalInvocation.methodSignature.methodReturnLength && !(retLoc == NULL)) {
-    [self.originalInvocation getReturnValue:retLoc];
+  NSMethodSignature *signature = [NSMethodSignature signatureWithObjCTypes:_types.UTF8String];
+  NSInteger count = signature.numberOfArguments;
+  NSInvocation *originalInvocation = [NSInvocation invocationWithMethodSignature:signature];
+  for (int i = 0; i < count; i ++) {
+    [originalInvocation setArgument:_args[i] atIndex:i];
   }
-}
-
-- (void)addOriginalInvocation:(NSInvocation *)invocation {
-  NSParameterAssert(invocation);
-  self.originalInvocation = invocation;
-}
-
-- (void)addOriginalIMP:(IMP)imp {
-  NSParameterAssert(imp);
-  self.originalIMP = imp;
+  [originalInvocation invokeUsingIMP:_originalIMP];
+  if (originalInvocation.methodSignature.methodReturnLength && !(retLoc == NULL)) {
+    [originalInvocation getReturnValue:retLoc];
+  }
 }
 
 @end

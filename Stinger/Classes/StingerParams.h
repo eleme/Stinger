@@ -7,23 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-
-#define ST_NO_RET NULL
-
-@protocol StingerParams
-
-@required
-@property (nonatomic, unsafe_unretained) id slf;
-@property (nonatomic) SEL sel;
-
-- (void)invokeAndGetOriginalRetValue:(void *)retLoc;
-
-@end
+#import <Stinger/STDefines.h>
 
 
 @interface StingerParams : NSObject <StingerParams>
-
-- (void)addOriginalInvocation:(NSInvocation *)invocation;
-- (void)addOriginalIMP:(IMP)imp;
-
+- (instancetype)initWithType:(NSString *)types originalIMP:(IMP)imp sel:(SEL)sel args:(void **)args;
 @end

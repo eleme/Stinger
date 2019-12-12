@@ -10,7 +10,7 @@
 		243495F313045EB30CF94EB2 /* libPods-Stinger_Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 21F7D4EE6855E30149E51D1A /* libPods-Stinger_Tests.a */; };
 		295C52A92398A6F400C3E9D5 /* hookForSpecificClassTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 295C52A82398A6F400C3E9D5 /* hookForSpecificClassTests.m */; };
 		295C52AC23991DAA00C3E9D5 /* MethodSignatureTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 295C52AB23991DAA00C3E9D5 /* MethodSignatureTests.m */; };
-		295C52AF239A3F5300C3E9D5 /* BlockTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 295C52AE239A3F5300C3E9D5 /* BlockTests.m */; };
+		295D1B0D23A101C9001A882D /* PerformanceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 295D1B0C23A101C9001A882D /* PerformanceTests.m */; };
 		2977986E239CF4AB00512AC7 /* hookForSpecificInstanceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2977986D239CF4AB00512AC7 /* hookForSpecificInstanceTests.m */; };
 		2979077B21E88D87002684DB /* README_中文.md in Resources */ = {isa = PBXBuildFile; fileRef = 2979077A21E88D87002684DB /* README_中文.md */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
@@ -46,7 +46,7 @@
 		26029EEE123E5F3DD35E00C4 /* libPods-Stinger_Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Stinger_Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		295C52A82398A6F400C3E9D5 /* hookForSpecificClassTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = hookForSpecificClassTests.m; sourceTree = "<group>"; };
 		295C52AB23991DAA00C3E9D5 /* MethodSignatureTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MethodSignatureTests.m; sourceTree = "<group>"; };
-		295C52AE239A3F5300C3E9D5 /* BlockTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BlockTests.m; sourceTree = "<group>"; };
+		295D1B0C23A101C9001A882D /* PerformanceTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PerformanceTests.m; sourceTree = "<group>"; };
 		2977986D239CF4AB00512AC7 /* hookForSpecificInstanceTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = hookForSpecificInstanceTests.m; sourceTree = "<group>"; };
 		2979077A21E88D87002684DB /* README_中文.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = "README_中文.md"; path = "../README_中文.md"; sourceTree = "<group>"; };
 		4A2FC9F2CFEB57D74DD57D5D /* Stinger.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Stinger.podspec; path = ../Stinger.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -170,8 +170,8 @@
 				6003F5B6195388D20070C39A /* Supporting Files */,
 				295C52A82398A6F400C3E9D5 /* hookForSpecificClassTests.m */,
 				295C52AB23991DAA00C3E9D5 /* MethodSignatureTests.m */,
-				295C52AE239A3F5300C3E9D5 /* BlockTests.m */,
 				2977986D239CF4AB00512AC7 /* hookForSpecificInstanceTests.m */,
+				295D1B0C23A101C9001A882D /* PerformanceTests.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -363,9 +363,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				295C52AF239A3F5300C3E9D5 /* BlockTests.m in Sources */,
 				295C52A92398A6F400C3E9D5 /* hookForSpecificClassTests.m in Sources */,
 				295C52AC23991DAA00C3E9D5 /* MethodSignatureTests.m in Sources */,
+				295D1B0D23A101C9001A882D /* PerformanceTests.m in Sources */,
 				2977986E239CF4AB00512AC7 /* hookForSpecificInstanceTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

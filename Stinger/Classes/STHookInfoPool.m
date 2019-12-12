@@ -8,10 +8,79 @@
 
 #import "STHookInfoPool.h"
 #import "ffi.h"
-#import "STBlock.h"
 #import "STMethodSignature.h"
 #import <objc/runtime.h>
 #import <objc/message.h>
+#import "StingerParams.h"
+#import "STHookInfo.h"
+
+enum {
+  BLOCK_DEALLOCATING =      (0x0001),  // runtime
+  BLOCK_REFCOUNT_MASK =     (0xfffe),  // runtime
+  BLOCK_NEEDS_FREE =        (1 << 24), // runtime
+  BLOCK_HAS_COPY_DISPOSE =  (1 << 25), // compiler
+  BLOCK_HAS_CTOR =          (1 << 26), // compiler: helpers have C++ code
+  BLOCK_IS_GC =             (1 << 27), // runtime
+  BLOCK_IS_GLOBAL =         (1 << 28), // compiler
+  BLOCK_USE_STRET =         (1 << 29), // compiler: undefined if !BLOCK_HAS_SIGNATURE
+  BLOCK_HAS_SIGNATURE  =    (1 << 30)  // compiler
+};
+
+// revised new layout
+
+#define BLOCK_DESCRIPTOR_1 1
+struct Block_descriptor_1 {
+  unsigned long int reserved;
+  unsigned long int size;
+};
+
+#define BLOCK_DESCRIPTOR_2 1
+struct Block_descriptor_2 {
+  // requires BLOCK_HAS_COPY_DISPOSE
+  void (*copy)(void *dst, const void *src);
+  void (*dispose)(const void *);
+};
+
+#define BLOCK_DESCRIPTOR_3 1
+struct Block_descriptor_3 {
+  // requires BLOCK_HAS_SIGNATURE
+  const char *signature;
+  const char *layout;
+};
+
+struct Block_layout {
+  void *isa;
+  volatile int flags; // contains ref count
+  int reserved;
+  void (*invoke)(void *, ...);
+  struct Block_descriptor_1 *descriptor;
+  // imported variables
+};
+
+
+NSString *signatureForBlock(id block) {
+  struct Block_layout *layout = (__bridge void *)block;
+  if (!(layout->flags & BLOCK_HAS_SIGNATURE))
+    return nil;
+  
+  void *descRef = layout->descriptor;
+  descRef += 2 * sizeof(unsigned long int);
+  
+  if (layout->flags & BLOCK_HAS_COPY_DISPOSE)
+    descRef += 2 * sizeof(void *);
+  
+  if (!descRef) return nil;
+  
+  const char *signature = (*(const char **)descRef);
+  return [NSString stringWithUTF8String:signature];
+}
+
+NS_INLINE void *impForBlock(id block) {
+  struct Block_layout *layout = (__bridge void *)block;
+  return layout->invoke;
+}
+
+
 
 NSString * const STClassPrefix = @"st_class_";
 NSString * const STSelectorPrefix = @"st_sel";
@@ -20,6 +89,7 @@ NSString * const STSelectorPrefix = @"st_sel";
 @property (nonatomic, strong) NSLock *lock;
 @property (nonatomic, strong) STMethodSignature *signature;
 @property (nonatomic, strong) NSMethodSignature *ns_signature;
+@property (nonatomic, assign) NSUInteger argsCount;
 @end
 
 @implementation STHookInfoPool {
@@ -32,7 +102,7 @@ NSString * const STSelectorPrefix = @"st_sel";
 
 
 @synthesize beforeInfos = _beforeInfos;
-@synthesize insteadInfos = _insteadInfos;
+@synthesize insteadInfo = _insteadInfo;
 @synthesize afterInfos = _afterInfos;
 @synthesize identifiers = _identifiers;
 @synthesize originalIMP = _originalIMP;
@@ -41,6 +111,7 @@ NSString * const STSelectorPrefix = @"st_sel";
 @synthesize stingerIMP = _stingerIMP;
 @synthesize hookedCls = _hookedCls;
 @synthesize statedCls = _statedCls;
+@synthesize isInstanceHook = _isInstanceHook;
 
 
 + (instancetype)poolWithTypeEncoding:(NSString *)typeEncoding originalIMP:(IMP)imp selector:(SEL)sel {
@@ -54,7 +125,7 @@ NSString * const STSelectorPrefix = @"st_sel";
 - (instancetype)init {
   if (self = [super init]) {
     _beforeInfos = [[NSMutableArray alloc] init];
-    _insteadInfos = [[NSMutableArray alloc] init];
+    _insteadInfo = nil;
     _afterInfos = [[NSMutableArray alloc] init];
     _identifiers = [[NSMutableArray alloc] init];
     _lock = [[NSLock alloc] init];
@@ -66,6 +137,12 @@ NSString * const STSelectorPrefix = @"st_sel";
   _typeEncoding = typeEncoding;
   _signature = typeEncoding ? [[STMethodSignature alloc] initWithObjCTypes:typeEncoding] : nil;
   _ns_signature = typeEncoding ? [NSMethodSignature signatureWithObjCTypes:[typeEncoding UTF8String]]: nil;
+  _argsCount = _signature.argumentTypes.count;
+}
+
+- (void)setHookedCls:(Class)hookedCls {
+  _hookedCls = hookedCls;
+  _isInstanceHook = [NSStringFromClass(hookedCls) hasPrefix:STClassPrefix];
 }
 
 - (BOOL)addInfo:(id<STHookInfo>)info {
@@ -78,8 +155,7 @@ NSString * const STSelectorPrefix = @"st_sel";
         break;
       }
       case STOptionInstead: {
-        [_insteadInfos removeAllObjects];
-        [_insteadInfos addObject:info];
+        _insteadInfo = info;
         break;
       }
       case STOptionAfter:
@@ -99,9 +175,11 @@ NSString * const STSelectorPrefix = @"st_sel";
 
 - (BOOL)removeInfoForIdentifier:(STIdentifier)identifier {
   if ([self _removeInfoForIdentifier:identifier inInfos:self.beforeInfos]) return YES;
-  if ([self _removeInfoForIdentifier:identifier inInfos:self.insteadInfos]) return YES;
+  if (_insteadInfo && [_insteadInfo.identifier isEqualToString:identifier]) {
+    _insteadInfo = nil;
+    return YES;
+  }
   if ([self _removeInfoForIdentifier:identifier inInfos:self.afterInfos]) return YES;
-  
   return NO;
 }
 
@@ -126,7 +204,7 @@ NSString * const STSelectorPrefix = @"st_sel";
     ffi_type *returnType = st_ffiTypeWithType(self.signature.returnType);
     NSAssert(returnType, @"can't find a ffi_type of %@", self.signature.returnType);
     
-    NSUInteger argumentCount = self.signature.argumentTypes.count;
+    NSUInteger argumentCount = self->_argsCount;
     _args = malloc(sizeof(ffi_type *) * argumentCount) ;
     
     for (int i = 0; i < argumentCount; i++) {
@@ -153,7 +231,7 @@ NSString * const STSelectorPrefix = @"st_sel";
 - (void)_genarateBlockCif {
   ffi_type *returnType = st_ffiTypeWithType(self.signature.returnType);
   
-  NSUInteger argumentCount = self.signature.argumentTypes.count;
+  NSUInteger argumentCount = self->_argsCount;
   _blockArgs = malloc(sizeof(ffi_type *) *argumentCount);
   
   ffi_type *current_ffi_type_0 = st_ffiTypeWithType(@"@?");
@@ -189,56 +267,44 @@ void st_setHookInfoPool(id obj, SEL key, id<STHookInfoPool> infoPool) {
   objc_setAssociatedObject(obj, NSSelectorFromString([STSelectorPrefix stringByAppendingString:NSStringFromSelector(key)]), infoPool, OBJC_ASSOCIATION_RETAIN);
 }
 
+
+#define REAL_STATED_CALSS_INFO_POOL (statedClassInfoPool ?: hookedClassInfoPool)
+
 #define ffi_call_infos(infos) \
-for (id<STHookInfo> info in infos) { \
-  id block = info.block; \
-  innerArgs[0] = &block; \
-  ffi_call(&(hookedClassInfoPool->_blockCif), impForBlock(block), NULL, innerArgs); \
+for (STHookInfo *info in infos) { \
+  innerArgs[0] = &(info->_block); \
+  ffi_call(&(hookedClassInfoPool->_blockCif), impForBlock(info->_block), NULL, innerArgs); \
 }  \
 
-static void _st_ffi_function(ffi_cif *cif, void *ret, void **args, void *userdata) {
+NS_INLINE void _st_ffi_function(ffi_cif *cif, void *ret, void **args, void *userdata) {
   STHookInfoPool *hookedClassInfoPool = (__bridge STHookInfoPool *)userdata;
   STHookInfoPool *statedClassInfoPool = nil;
   STHookInfoPool *instanceInfoPool = nil;
-  SEL sel = hookedClassInfoPool->_sel;
-  if ([NSStringFromClass(hookedClassInfoPool->_hookedCls) hasPrefix:STClassPrefix]) {
-    statedClassInfoPool = st_getHookInfoPool(hookedClassInfoPool->_statedCls, sel);
-  } else {
-    statedClassInfoPool = hookedClassInfoPool;
-  }
-  NSUInteger count = hookedClassInfoPool->_signature.argumentTypes.count;
-  void **innerArgs = malloc(count * sizeof(*innerArgs));
-  StingerParams *params = [[StingerParams alloc] init];
+  
+  void **innerArgs = alloca(hookedClassInfoPool->_argsCount * sizeof(*innerArgs));
   void **slf = args[0];
-  instanceInfoPool = st_getHookInfoPool((__bridge id)(*slf), sel);
-  params.slf = (__bridge id)(*slf);
-  params.sel = sel;
-  [params addOriginalIMP:hookedClassInfoPool->_originalIMP];
-  NSInvocation *originalInvocation = [NSInvocation invocationWithMethodSignature:hookedClassInfoPool->_ns_signature];
   
-  for (int i = 0; i < count; i ++) {
-    [originalInvocation setArgument:args[i] atIndex:i];
+  if (hookedClassInfoPool->_isInstanceHook) {
+    statedClassInfoPool = st_getHookInfoPool(hookedClassInfoPool->_statedCls, hookedClassInfoPool->_sel);
+    instanceInfoPool = st_getHookInfoPool((__bridge id)(*slf), hookedClassInfoPool->_sel);
   }
-  [params addOriginalInvocation:originalInvocation];
-  
+
+  StingerParams *params = [[StingerParams alloc] initWithType:hookedClassInfoPool->_typeEncoding originalIMP:hookedClassInfoPool->_originalIMP sel:hookedClassInfoPool->_sel args:args];
   innerArgs[1] = &params;
-  memcpy(innerArgs + 2, args + 2, (count - 2) * sizeof(*args));
+  
+  memcpy(innerArgs + 2, args + 2, (hookedClassInfoPool->_argsCount - 2) * sizeof(*args));
   
   // before hooks
-  if (statedClassInfoPool) ffi_call_infos(statedClassInfoPool->_beforeInfos);
+  if (REAL_STATED_CALSS_INFO_POOL) ffi_call_infos(REAL_STATED_CALSS_INFO_POOL->_beforeInfos);
   if (instanceInfoPool) ffi_call_infos(instanceInfoPool->_beforeInfos);
-  
+
   // instead hooks
-  if (instanceInfoPool && instanceInfoPool->_insteadInfos.count) {
-    id <STHookInfo> info = instanceInfoPool->_insteadInfos[0];
-    id block = info.block;
-    innerArgs[0] = &block;
-    ffi_call(&(hookedClassInfoPool->_blockCif), impForBlock(block), ret, innerArgs);
-  } else if (statedClassInfoPool && statedClassInfoPool->_insteadInfos.count) {
-    id <STHookInfo> info = statedClassInfoPool->_insteadInfos[0];
-    id block = info.block;
-    innerArgs[0] = &block;
-    ffi_call(&(hookedClassInfoPool->_blockCif), impForBlock(block), ret, innerArgs);
+  if (instanceInfoPool && instanceInfoPool->_insteadInfo) {
+    innerArgs[0] = &(((STHookInfo *)(instanceInfoPool->_insteadInfo))->_block);
+    ffi_call(&(hookedClassInfoPool->_blockCif), impForBlock(((STHookInfo *)(instanceInfoPool->_insteadInfo))->_block), ret, innerArgs);
+  } else if (REAL_STATED_CALSS_INFO_POOL && REAL_STATED_CALSS_INFO_POOL->_insteadInfo) {
+    innerArgs[0] = &(((STHookInfo *)(REAL_STATED_CALSS_INFO_POOL->_insteadInfo))->_block);
+    ffi_call(&(hookedClassInfoPool->_blockCif), impForBlock(((STHookInfo *)(REAL_STATED_CALSS_INFO_POOL->_insteadInfo))->_block), ret, innerArgs);
   } else {
     /// original IMP
     /// if original selector is hooked by aspects or jspatch.., which use message-forwarding, invoke invacation.
@@ -254,10 +320,8 @@ static void _st_ffi_function(ffi_cif *cif, void *ret, void **args, void *userdat
     }
   }
   // after hooks
-  if (statedClassInfoPool) ffi_call_infos(statedClassInfoPool->_afterInfos);
+  if (REAL_STATED_CALSS_INFO_POOL) ffi_call_infos(REAL_STATED_CALSS_INFO_POOL->_afterInfos);
   if (instanceInfoPool) ffi_call_infos(instanceInfoPool->_afterInfos);
-  
-  free(innerArgs);
 }
 
 @end

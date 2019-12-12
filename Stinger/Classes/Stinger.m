@@ -10,7 +10,6 @@
 #import <objc/runtime.h>
 #import "STHookInfo.h"
 #import "STHookInfoPool.h"
-#import "STBlock.h"
 #import "STMethodSignature.h"
 
 NSString * const STMethodPrefix = @"st_original_";

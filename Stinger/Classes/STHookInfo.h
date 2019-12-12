@@ -7,21 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Stinger.h"
-#import "StingerParams.h"
-
-@protocol STHookInfo <NSObject>
-
-@required
-@property (nonatomic, copy) id block;
-@property (nonatomic, assign) STOption option;
-@property (nonatomic, copy) STIdentifier identifier;
-
-@optional
-+ (instancetype)infoWithOption:(STOption)option withIdentifier:(STIdentifier)identifier withBlock:(id)block;
-
-@end
+#import <Stinger/STDefines.h>
 
 @interface STHookInfo : NSObject <STHookInfo>
-
+{
+  @public
+  id _block;
+}
 @end

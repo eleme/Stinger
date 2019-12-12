@@ -53,6 +53,8 @@ static NSString *TestClassB_string_b = @"";
   TestClassB *object1 = [TestClassB new];
   [object1 st_hookInstanceMethod:@selector(instanceMethodA) option:STOptionBefore usingIdentifier:@"hook InstanceMethodA before 1" withBlock:^(id<StingerParams> params){
       TestClassB_string_b = [TestClassB_string_b stringByAppendingString:@"before 1 instanceMethodA called--"];
+    XCTAssertTrue(object1 == params.slf, @"should be equal");
+    XCTAssertTrue(@selector(instanceMethodA) == params.sel, @"should be equal");
   }];
   [object1 st_hookInstanceMethod:@selector(instanceMethodA) option:STOptionBefore usingIdentifier:@"hook InstanceMethodA before 2" withBlock:^(id<StingerParams> params){
          TestClassB_string_b = [TestClassB_string_b stringByAppendingString:@"before 2 instanceMethodA called--"];

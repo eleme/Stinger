@@ -7,23 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "StingerParams.h"
+#import <Stinger/STDefines.h>
 
-typedef NSString *STIdentifier;
-
-typedef NS_ENUM(NSInteger, STOption) {
-  STOptionAfter = 0,     // Called after the original implementation (default)
-  STOptionInstead = 1,   // Will replace the original implementation.
-  STOptionBefore = 2,    // Called before the original implementation.
-};
-
-typedef NS_ENUM(NSInteger, STHookResult) {
-  STHookResultSuccuss = 1,
-  STHookResultErrorMethodNotFound = -1,
-  STHookResultErrorBlockNotMatched = -2,
-  STHookResultErrorIDExisted = -3,
-  STHookResultOther = -4,
-};
 
 @interface NSObject (Stinger)
 
