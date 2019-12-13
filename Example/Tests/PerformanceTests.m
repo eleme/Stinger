@@ -11,6 +11,7 @@
 #import <Aspects/Aspects.h>
 
 @interface TestClassC : NSObject
+- (void)methodA;
 - (void)methodA1;
 - (void)methodB1;
 - (void)methodA2;
@@ -20,6 +21,9 @@
 @end
 
 @implementation TestClassC
+
+- (void)methodA {
+}
 
 - (void)methodA1 {
 }
@@ -49,6 +53,18 @@
 
 
 @implementation PerformanceTests
+
+- (void)testMethodA {
+  TestClassC *object1 = [TestClassC new];
+  [self measureBlock:^{
+    for (NSInteger i = 0; i < 10000; i++) {
+      [object1 methodA];
+      [object1 methodA];
+      [object1 methodA];
+    }
+  }];
+}
+
 
 - (void)testStingerHookMethodA1 {
   [TestClassC st_hookInstanceMethod:@selector(methodA1) option:STOptionBefore usingIdentifier:@"hook methodA before" withBlock:^(id<StingerParams> params) {
