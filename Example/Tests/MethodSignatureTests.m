@@ -76,7 +76,7 @@ BOOL stringArrayIsEqual(NSArray<NSString *> *a, NSArray<NSString *> *b) {
     id block = ^{
         
     };
-    st_signature = [[STMethodSignature alloc] initWithObjCTypes:signatureForBlock(block)];
+    st_signature = [[STMethodSignature alloc] initWithObjCTypes:st_getSignatureForBlock(block)];
     pass = [st_signature.returnType isEqualToString:@"v"] && stringArrayIsEqual(st_signature.argumentTypes, @[@"@?"]);
     XCTAssertTrue(pass, @"should equal");
     
@@ -84,21 +84,21 @@ BOOL stringArrayIsEqual(NSArray<NSString *> *a, NSArray<NSString *> *b) {
     block = ^NSString *(NSString *str){
         return @"xxx";
     };
-    st_signature = [[STMethodSignature alloc] initWithObjCTypes:signatureForBlock(block)];
+    st_signature = [[STMethodSignature alloc] initWithObjCTypes:st_getSignatureForBlock(block)];
     pass = [st_signature.returnType isEqualToString:@"@"] && stringArrayIsEqual(st_signature.argumentTypes, @[@"@?", @"@"]);
     XCTAssertTrue(pass, @"should equal");
     
     block = ^NSInteger (int a, float b) {
         return a+b;
     };
-    st_signature = [[STMethodSignature alloc] initWithObjCTypes:signatureForBlock(block)];
+    st_signature = [[STMethodSignature alloc] initWithObjCTypes:st_getSignatureForBlock(block)];
     pass = [st_signature.returnType isEqualToString:@"q"] && stringArrayIsEqual(st_signature.argumentTypes, @[@"@?", @"i", @"f"]);
     XCTAssertTrue(pass, @"should equal");
     
     block = ^NSInteger (id<NSCopying> object) {
         return 1;
     };
-    st_signature = [[STMethodSignature alloc] initWithObjCTypes:signatureForBlock(block)];
+    st_signature = [[STMethodSignature alloc] initWithObjCTypes:st_getSignatureForBlock(block)];
     pass = [st_signature.returnType isEqualToString:@"q"] && stringArrayIsEqual(st_signature.argumentTypes, @[@"@?", @"@"]);
     XCTAssertTrue(pass, @"should equal");
     
@@ -106,56 +106,56 @@ BOOL stringArrayIsEqual(NSArray<NSString *> *a, NSArray<NSString *> *b) {
     block = ^NSUInteger (void(^aBlock)(NSString *)) {
            return 1;
        };
-    st_signature = [[STMethodSignature alloc] initWithObjCTypes:signatureForBlock(block)];
+    st_signature = [[STMethodSignature alloc] initWithObjCTypes:st_getSignatureForBlock(block)];
     pass = [st_signature.returnType isEqualToString:@"Q"] && stringArrayIsEqual(st_signature.argumentTypes, @[@"@?", @"@?"]);
     XCTAssertTrue(pass, @"should equal");
     
     block = ^NSUInteger (void(^aBlock)(void(^blockParams)(NSString *x))) {
            return 1;
     };
-    st_signature = [[STMethodSignature alloc] initWithObjCTypes:signatureForBlock(block)];
+    st_signature = [[STMethodSignature alloc] initWithObjCTypes:st_getSignatureForBlock(block)];
     pass = [st_signature.returnType isEqualToString:@"Q"] && stringArrayIsEqual(st_signature.argumentTypes, @[@"@?", @"@?"]);
     XCTAssertTrue(pass, @"should equal");
     
     block = ^NSUInteger (void(^aBlock)(void(^blockParams)(NSString<NSCopying> *x))) {
            return 1;
     };
-    st_signature = [[STMethodSignature alloc] initWithObjCTypes:signatureForBlock(block)];
+    st_signature = [[STMethodSignature alloc] initWithObjCTypes:st_getSignatureForBlock(block)];
     pass = [st_signature.returnType isEqualToString:@"Q"] && stringArrayIsEqual(st_signature.argumentTypes, @[@"@?", @"@?"]);
     XCTAssertTrue(pass, @"should equal");
     
     block = ^NSUInteger (CGPoint point) {
            return 1;
     };
-    st_signature = [[STMethodSignature alloc] initWithObjCTypes:signatureForBlock(block)];
+    st_signature = [[STMethodSignature alloc] initWithObjCTypes:st_getSignatureForBlock(block)];
     pass = [st_signature.returnType isEqualToString:@"Q"] && stringArrayIsEqual(st_signature.argumentTypes, @[@"@?", @"{CGPoint=dd}"]);
     XCTAssertTrue(pass, @"should equal");
     
     block = ^CGRect (CGPoint point) {
         return CGRectMake(1, 2, 3, 4);
     };
-    st_signature = [[STMethodSignature alloc] initWithObjCTypes:signatureForBlock(block)];
+    st_signature = [[STMethodSignature alloc] initWithObjCTypes:st_getSignatureForBlock(block)];
     pass = [st_signature.returnType isEqualToString:@"{CGRect={CGPoint=dd}{CGSize=dd}}"] && stringArrayIsEqual(st_signature.argumentTypes, @[@"@?", @"{CGPoint=dd}"]);
     XCTAssertTrue(pass, @"should equal");
   
     block = ^CGRect (CGRect rect) {
         return CGRectMake(1, 2, 3, 4);
     };
-    st_signature = [[STMethodSignature alloc] initWithObjCTypes:signatureForBlock(block)];
+    st_signature = [[STMethodSignature alloc] initWithObjCTypes:st_getSignatureForBlock(block)];
     pass = [st_signature.returnType isEqualToString:@"{CGRect={CGPoint=dd}{CGSize=dd}}"] && stringArrayIsEqual(st_signature.argumentTypes, @[@"@?", @"{CGRect={CGPoint=dd}{CGSize=dd}}"]);
     XCTAssertTrue(pass, @"should equal");
     
     block = ^NSUInteger (void *pointer) {
         return 1;
     };
-    st_signature = [[STMethodSignature alloc] initWithObjCTypes:signatureForBlock(block)];
+    st_signature = [[STMethodSignature alloc] initWithObjCTypes:st_getSignatureForBlock(block)];
     pass = [st_signature.returnType isEqualToString:@"Q"] && stringArrayIsEqual(st_signature.argumentTypes, @[@"@?", @"^v"]);
     XCTAssertTrue(pass, @"should equal");
     
     block = ^NSUInteger (SEL sel) {
         return 1;
     };
-    st_signature = [[STMethodSignature alloc] initWithObjCTypes:signatureForBlock(block)];
+    st_signature = [[STMethodSignature alloc] initWithObjCTypes:st_getSignatureForBlock(block)];
     pass = [st_signature.returnType isEqualToString:@"Q"] && stringArrayIsEqual(st_signature.argumentTypes, @[@"@?", @":"]);
     XCTAssertTrue(pass, @"should equal");
 }

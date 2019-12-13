@@ -84,11 +84,11 @@ static NSString *TestClassA_string_a = @"";
 @end
 
 
-@interface hookForSpecificClassTests : XCTestCase
+@interface HookForSpecificClassTests : XCTestCase
 
 @end
 
-@implementation hookForSpecificClassTests
+@implementation HookForSpecificClassTests
 
 - (void)setUp {
    TestClassA_string_a = @"";

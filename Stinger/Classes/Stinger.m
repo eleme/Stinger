@@ -12,7 +12,6 @@
 #import "STHookInfoPool.h"
 #import "STMethodSignature.h"
 
-NSString * const STMethodPrefix = @"st_original_";
 static void *STSubClassKey = &STSubClassKey;
 
 @implementation NSObject (Stinger)
@@ -102,7 +101,7 @@ NS_INLINE STHookResult hookMethod(Class hookedCls, SEL sel, STOption option, STI
   if (!m) return STHookResultErrorMethodNotFound;
   const char * typeEncoding = method_getTypeEncoding(m);
   STMethodSignature *methodSignature = [[STMethodSignature alloc] initWithObjCTypes:[NSString stringWithUTF8String:typeEncoding]];
-  STMethodSignature *blockSignature = [[STMethodSignature alloc] initWithObjCTypes:signatureForBlock(block)];
+  STMethodSignature *blockSignature = [[STMethodSignature alloc] initWithObjCTypes:st_getSignatureForBlock(block)];
   if (!isMatched(methodSignature, blockSignature, option, hookedCls, sel, identifier)) {
     return STHookResultErrorBlockNotMatched;
   }
@@ -115,20 +114,13 @@ NS_INLINE STHookResult hookMethod(Class hookedCls, SEL sel, STOption option, STI
       hookInfoPool.hookedCls = hookedCls;
       hookInfoPool.statedCls = [hookedCls class];
       
-      st_setHookInfoPool(hookedCls, sel, hookInfoPool);
-    }
-    
-    IMP stingerIMP = [hookInfoPool stingerIMP];
-    if (originalImp != stingerIMP) {
+      IMP stingerIMP = [hookInfoPool stingerIMP];
       hookInfoPool.originalIMP = originalImp;
       if (!class_addMethod(hookedCls, sel, stingerIMP, typeEncoding)) {
         class_replaceMethod(hookedCls, sel, stingerIMP, typeEncoding);
       }
       
-      const char * st_original_SelName = [[STMethodPrefix stringByAppendingString:NSStringFromSelector(sel)] UTF8String];
-      if(!class_addMethod(hookedCls, sel_registerName(st_original_SelName), originalImp, typeEncoding)) {
-        class_replaceMethod(hookedCls, sel_registerName(st_original_SelName), originalImp, typeEncoding);
-      };
+      st_setHookInfoPool(hookedCls, sel, hookInfoPool);
     }
     
     if ([NSStringFromClass(hookedCls) hasPrefix:STClassPrefix]) {

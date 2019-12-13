@@ -9,10 +9,12 @@
 #import <Foundation/Foundation.h>
 #import <Stinger/STDefines.h>
 
-extern NSString *signatureForBlock(id block);
+extern NSString *st_getSignatureForBlock(id block);
 extern NSString * const STClassPrefix;
 extern void st_setHookInfoPool(id obj, SEL key, id infoPool);
 extern id st_getHookInfoPool(id obj, SEL key);
+
+static NSString * const STSelectorPrefix = @"st_sel";
 
 @interface STHookInfoPool : NSObject <STHookInfoPool>
 @end

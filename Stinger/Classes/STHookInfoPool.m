@@ -14,6 +14,8 @@
 #import "StingerParams.h"
 #import "STHookInfo.h"
 
+#pragma mark - Block_layout
+
 enum {
   BLOCK_DEALLOCATING =      (0x0001),  // runtime
   BLOCK_REFCOUNT_MASK =     (0xfffe),  // runtime
@@ -58,7 +60,7 @@ struct Block_layout {
 };
 
 
-NSString *signatureForBlock(id block) {
+NSString *st_getSignatureForBlock(id block) {
   struct Block_layout *layout = (__bridge void *)block;
   if (!(layout->flags & BLOCK_HAS_SIGNATURE))
     return nil;
@@ -75,21 +77,23 @@ NSString *signatureForBlock(id block) {
   return [NSString stringWithUTF8String:signature];
 }
 
-NS_INLINE void *impForBlock(id block) {
+NS_INLINE void *_st_impForBlock(id block) {
   struct Block_layout *layout = (__bridge void *)block;
   return layout->invoke;
 }
 
 
+#pragma mark - STHookInfoPool
 
 NSString * const STClassPrefix = @"st_class_";
-NSString * const STSelectorPrefix = @"st_sel";
+
 
 @interface STHookInfoPool ()
 @property (nonatomic, strong) NSLock *lock;
 @property (nonatomic, strong) STMethodSignature *signature;
 @property (nonatomic, strong) NSMethodSignature *ns_signature;
 @property (nonatomic, assign) NSUInteger argsCount;
+@property (nonatomic) SEL uniqueKey;
 @end
 
 @implementation STHookInfoPool {
@@ -99,7 +103,6 @@ NSString * const STSelectorPrefix = @"st_sel";
   ffi_type **_blockArgs;
   ffi_closure *_closure;
 }
-
 
 @synthesize beforeInfos = _beforeInfos;
 @synthesize insteadInfo = _insteadInfo;
@@ -122,6 +125,7 @@ NSString * const STSelectorPrefix = @"st_sel";
   return pool;
 }
 
+
 - (instancetype)init {
   if (self = [super init]) {
     _beforeInfos = [[NSMutableArray alloc] init];
@@ -133,6 +137,7 @@ NSString * const STSelectorPrefix = @"st_sel";
   return self;
 }
 
+
 - (void)setTypeEncoding:(NSString *)typeEncoding {
   _typeEncoding = typeEncoding;
   _signature = typeEncoding ? [[STMethodSignature alloc] initWithObjCTypes:typeEncoding] : nil;
@@ -140,10 +145,18 @@ NSString * const STSelectorPrefix = @"st_sel";
   _argsCount = _signature.argumentTypes.count;
 }
 
+
 - (void)setHookedCls:(Class)hookedCls {
   _hookedCls = hookedCls;
   _isInstanceHook = [NSStringFromClass(hookedCls) hasPrefix:STClassPrefix];
 }
+
+
+- (void)setSel:(SEL)sel {
+  _sel = sel;
+  _uniqueKey = NSSelectorFromString([NSString stringWithFormat:@"%@%@", STSelectorPrefix, NSStringFromSelector(sel)]);
+}
+
 
 - (BOOL)addInfo:(id<STHookInfo>)info {
   NSParameterAssert(info);
@@ -169,9 +182,9 @@ NSString * const STSelectorPrefix = @"st_sel";
     return YES;
   }
   [_lock unlock];
-  NSAssert(NO, @"Class (%@) has had identifier (%@) with SEL (%@)", self.hookedCls, info.identifier, NSStringFromSelector(self.sel));
   return NO;
 }
+
 
 - (BOOL)removeInfoForIdentifier:(STIdentifier)identifier {
   if ([self _removeInfoForIdentifier:identifier inInfos:self.beforeInfos]) return YES;
@@ -183,21 +196,6 @@ NSString * const STSelectorPrefix = @"st_sel";
   return NO;
 }
 
-- (BOOL)_removeInfoForIdentifier:(STIdentifier)identifier inInfos:(NSMutableArray<id<STHookInfo>> *)infos {
-  [_lock lock];
-  BOOL flag = NO;
-  for (int i = 0; i < infos.count; i ++) {
-    id<STHookInfo> info = infos[i];
-    if ([info.identifier isEqualToString:identifier]) {
-      [infos removeObject:info];
-      [_identifiers removeObject:identifier];
-      flag = YES;
-      break;
-    }
-  }
-  [_lock unlock];
-  return flag;
-}
 
 - (StingerIMP)stingerIMP {
   if (_stingerIMP == NULL) {
@@ -228,6 +226,31 @@ NSString * const STSelectorPrefix = @"st_sel";
   return _stingerIMP;
 }
 
+
+- (void)dealloc {
+  if (_closure != NULL) ffi_closure_free(_closure);
+  if (_args != NULL) free(_args);
+  if (_blockArgs != NULL) free(_blockArgs);
+}
+
+#pragma mark - Private methods
+
+- (BOOL)_removeInfoForIdentifier:(STIdentifier)identifier inInfos:(NSMutableArray<id<STHookInfo>> *)infos {
+  [_lock lock];
+  BOOL flag = NO;
+  for (int i = 0; i < infos.count; i ++) {
+    id<STHookInfo> info = infos[i];
+    if ([info.identifier isEqualToString:identifier]) {
+      [infos removeObject:info];
+      [_identifiers removeObject:identifier];
+      flag = YES;
+      break;
+    }
+  }
+  [_lock unlock];
+  return flag;
+}
+
 - (void)_genarateBlockCif {
   ffi_type *returnType = st_ffiTypeWithType(self.signature.returnType);
   
@@ -249,31 +272,15 @@ NSString * const STSelectorPrefix = @"st_sel";
   }
 }
 
-- (void)dealloc {
-  if (_closure != NULL) ffi_closure_free(_closure);
-  if (_args != NULL) free(_args);
-  if (_blockArgs != NULL) free(_blockArgs);
-}
 
-id<STHookInfoPool> st_getHookInfoPool(id obj, SEL key) {
-  NSCParameterAssert(obj);
-  NSCParameterAssert(key);
-  return objc_getAssociatedObject(obj, NSSelectorFromString([STSelectorPrefix stringByAppendingString:NSStringFromSelector(key)]));
-}
-
-void st_setHookInfoPool(id obj, SEL key, id<STHookInfoPool> infoPool) {
-  NSCParameterAssert(obj);
-  NSCParameterAssert(key);
-  objc_setAssociatedObject(obj, NSSelectorFromString([STSelectorPrefix stringByAppendingString:NSStringFromSelector(key)]), infoPool, OBJC_ASSOCIATION_RETAIN);
-}
-
+#pragma mark - _st_ffi_function
 
 #define REAL_STATED_CALSS_INFO_POOL (statedClassInfoPool ?: hookedClassInfoPool)
 
 #define ffi_call_infos(infos) \
 for (STHookInfo *info in infos) { \
   innerArgs[0] = &(info->_block); \
-  ffi_call(&(hookedClassInfoPool->_blockCif), impForBlock(info->_block), NULL, innerArgs); \
+  ffi_call(&(hookedClassInfoPool->_blockCif), _st_impForBlock(info->_block), NULL, innerArgs); \
 }  \
 
 NS_INLINE void _st_ffi_function(ffi_cif *cif, void *ret, void **args, void *userdata) {
@@ -285,8 +292,8 @@ NS_INLINE void _st_ffi_function(ffi_cif *cif, void *ret, void **args, void *user
   void **slf = args[0];
   
   if (hookedClassInfoPool->_isInstanceHook) {
-    statedClassInfoPool = st_getHookInfoPool(hookedClassInfoPool->_statedCls, hookedClassInfoPool->_sel);
-    instanceInfoPool = st_getHookInfoPool((__bridge id)(*slf), hookedClassInfoPool->_sel);
+    statedClassInfoPool = _st_fast_get_HookInfoPool(hookedClassInfoPool->_statedCls, hookedClassInfoPool->_uniqueKey);
+    instanceInfoPool = _st_fast_get_HookInfoPool((__bridge id)(*slf), hookedClassInfoPool->_uniqueKey);
   }
 
   StingerParams *params = [[StingerParams alloc] initWithType:hookedClassInfoPool->_typeEncoding originalIMP:hookedClassInfoPool->_originalIMP sel:hookedClassInfoPool->_sel args:args];
@@ -301,10 +308,10 @@ NS_INLINE void _st_ffi_function(ffi_cif *cif, void *ret, void **args, void *user
   // instead hooks
   if (instanceInfoPool && instanceInfoPool->_insteadInfo) {
     innerArgs[0] = &(((STHookInfo *)(instanceInfoPool->_insteadInfo))->_block);
-    ffi_call(&(hookedClassInfoPool->_blockCif), impForBlock(((STHookInfo *)(instanceInfoPool->_insteadInfo))->_block), ret, innerArgs);
+    ffi_call(&(hookedClassInfoPool->_blockCif), _st_impForBlock(((STHookInfo *)(instanceInfoPool->_insteadInfo))->_block), ret, innerArgs);
   } else if (REAL_STATED_CALSS_INFO_POOL && REAL_STATED_CALSS_INFO_POOL->_insteadInfo) {
     innerArgs[0] = &(((STHookInfo *)(REAL_STATED_CALSS_INFO_POOL->_insteadInfo))->_block);
-    ffi_call(&(hookedClassInfoPool->_blockCif), impForBlock(((STHookInfo *)(REAL_STATED_CALSS_INFO_POOL->_insteadInfo))->_block), ret, innerArgs);
+    ffi_call(&(hookedClassInfoPool->_blockCif), _st_impForBlock(((STHookInfo *)(REAL_STATED_CALSS_INFO_POOL->_insteadInfo))->_block), ret, innerArgs);
   } else {
     /// original IMP
     /// if original selector is hooked by aspects or jspatch.., which use message-forwarding, invoke invacation.
@@ -322,6 +329,28 @@ NS_INLINE void _st_ffi_function(ffi_cif *cif, void *ret, void **args, void *user
   // after hooks
   if (REAL_STATED_CALSS_INFO_POOL) ffi_call_infos(REAL_STATED_CALSS_INFO_POOL->_afterInfos);
   if (instanceInfoPool) ffi_call_infos(instanceInfoPool->_afterInfos);
+}
+
+
+#pragma mark - Get or set HookInfoPool
+
+void st_setHookInfoPool(id obj, SEL key, id<STHookInfoPool> infoPool) {
+  NSCParameterAssert(obj);
+  NSCParameterAssert(key);
+  objc_setAssociatedObject(obj, NSSelectorFromString([STSelectorPrefix stringByAppendingString:NSStringFromSelector(key)]), infoPool, OBJC_ASSOCIATION_RETAIN);
+}
+
+
+id<STHookInfoPool> st_getHookInfoPool(id obj, SEL key) {
+  NSCParameterAssert(obj);
+  NSCParameterAssert(key);
+  return objc_getAssociatedObject(obj, NSSelectorFromString([NSString stringWithFormat:@"%@%@", STSelectorPrefix, NSStringFromSelector(key)]));
+}
+
+
+// mush faster than id<STHookInfoPool> st_getHookInfoPool(id obj, SEL key)
+NS_INLINE id<STHookInfoPool> _st_fast_get_HookInfoPool(id obj, SEL uqiqueKey) {
+  return objc_getAssociatedObject(obj, uqiqueKey);
 }
 
 @end
