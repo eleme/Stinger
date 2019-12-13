@@ -54,10 +54,21 @@
 
 @implementation PerformanceTests
 
+
+- (void)testaBlankMethod {
+  
+  [self measureBlock:^{
+    for (NSInteger i = 0; i < 1000000; i++) {
+      
+    }
+  }];
+}
+
+
 - (void)testMethodA {
   TestClassC *object1 = [TestClassC new];
   [self measureBlock:^{
-    for (NSInteger i = 0; i < 10000; i++) {
+    for (NSInteger i = 0; i < 1000000; i++) {
       [object1 methodA];
       [object1 methodA];
       [object1 methodA];
@@ -74,7 +85,7 @@
   
   TestClassC *object1 = [TestClassC new];
   [self measureBlock:^{
-    for (NSInteger i = 0; i < 10000; i++) {
+    for (NSInteger i = 0; i < 1000000; i++) {
       [object1 methodA1];
     }
   }];
@@ -88,7 +99,7 @@
   
   TestClassC *object1 = [TestClassC new];
   [self measureBlock:^{
-    for (NSInteger i = 0; i < 10000; i++) {
+    for (NSInteger i = 0; i < 1000000; i++) {
       [object1 methodB1];
     }
   }];
@@ -102,7 +113,7 @@
   }];
   
   [self measureBlock:^{
-    for (NSInteger i = 0; i < 10000; i++) {
+    for (NSInteger i = 0; i < 1000000; i++) {
       [object1 methodA2];
     }
   }];
@@ -116,7 +127,7 @@
   } error:nil];
   
   [self measureBlock:^{
-    for (NSInteger i = 0; i < 10000; i++) {
+    for (NSInteger i = 0; i < 1000000; i++) {
       [object1 methodB2];
     }
   }];
@@ -134,7 +145,7 @@
   
   __block NSString *result;
   [self measureBlock:^{
-    for (NSInteger i = 0; i < 10000; i++) {
+    for (NSInteger i = 0; i < 1000000; i++) {
       result = [object1 methodC:@""];
     }
   }];
@@ -152,7 +163,7 @@
   TestClassC *object1 = [TestClassC new];
   __block NSString *result;
   [self measureBlock:^{
-    for (NSInteger i = 0; i < 10000; i++) {
+    for (NSInteger i = 0; i < 1000000; i++) {
       result = [object1 methodD:@""];
     }
   }];
