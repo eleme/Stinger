@@ -189,7 +189,7 @@ Please refer to [PerformanceTests.m](https://github.com/eleme/Stinger/blob/maste
 @end
 ```
 
-#### Case1:  For specific Class
+#### Case1:  For Specific Class
 ##### Test Code 
 Stinger
 
@@ -239,7 +239,7 @@ Aspects
 
 AVG|1| 2 | 3 | 4| 5| 6| 7| 8| 9| 10 
 :-: |:-: |:-: |:-: |:-: |:-: |:-: |:-: |:-: |:-: |:-: |
-6.135|6.34| 6.19 | 6.12 | 6.19 | 6.11 | 6.1 | 6.12| 6.12| 0.273 |0.270 |
+6.135|6.34| 6.19 | 6.12 | 6.19 | 6.11 | 6.1 | 6.12| 6.12| 6.09 |6.1 |
 
 > More case:  https://github.com/eleme/Stinger/blob/master/Example/Tests/PerformanceTests.m
 
