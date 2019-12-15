@@ -189,7 +189,7 @@ Please refer to [PerformanceTests.m](https://github.com/eleme/Stinger/blob/maste
 @end
 ```
 
-#### Case1
+#### Case1:  For specific Class
 ##### Test Code 
 Stinger
 
@@ -244,7 +244,7 @@ AVG|1| 2 | 3 | 4| 5| 6| 7| 8| 9| 10
 > More case:  https://github.com/eleme/Stinger/blob/master/Example/Tests/PerformanceTests.m
 
 
-#### Case2
+#### Case2: For specific Instance
 ##### Test Code
 Stinger
 
