@@ -5,7 +5,7 @@
 [![Platform](https://img.shields.io/cocoapods/p/Stinger.svg?style=flat)](http://cocoapods.org/pods/Stinger)
 
 
-Stinger是一个实现Objective-C AOP功能的库，有着良好的兼容性。你可以使用它在原方法的 前/替换/后位置插入(或替换)代码，实现起来比常规的方法交换更容易和灵活。**Stinger使用了libffi，没有使用OC的消息转发**。
+Stinger是一个实现Objective-C AOP功能的库，有着良好的兼容性。你可以使用它在原方法的 前/替换/后位置插入(或替换)代码，实现起来比常规的方法交换更容易和灵活。**Stinger使用了libffi，没有使用OC的消息转发**。从消息发送到切面代码执行完毕，Stinger比Aspects快20倍，请参阅和运行这个`test case` [PerformanceTests](https://github.com/eleme/Stinger/blob/master/Example/Tests/PerformanceTests.m)
 
 Stinger 对NSObject做了以下方法扩展：
 
