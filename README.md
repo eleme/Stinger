@@ -6,7 +6,7 @@
 
 #### [中文说明](https://github.com/eleme/Stinger/blob/master/README_%E4%B8%AD%E6%96%87.md)   [相关文章1](https://juejin.im/post/5a600d20518825732c539622) [相关文章2](https://juejin.im/post/5c84d4e0f265da2dda6981b4)
 
-Stinger is a high-efficiency library with great compatibility, for aop in Objective-C. It allows you to add code to existing methods, whilst thinking of the insertion point e.g. before/instead/after. Stinger automatically deals with calling super and is easier to use than regular method swizzling, **using libffi instead of Objective-C message forwarding**. It is 20 times faster than the Aspects, from message-sending to Aspect-oriented code ends, please refer to this test case and run it  [PerformanceTests](https://github.com/eleme/Stinger/blob/master/Example/Tests/PerformanceTests.m)
+Stinger is a high-efficiency library with great compatibility, for aop in Objective-C. It allows you to add code to existing methods, whilst thinking of the insertion point e.g. before/instead/after. Stinger automatically deals with calling super and is easier to use than regular method swizzling, **using libffi instead of Objective-C message forwarding**. It is 20 times faster than the Aspects, from message-sending to Aspect-oriented code ends, please refer to this test case and run it. [PerformanceTests](https://github.com/eleme/Stinger/blob/master/Example/Tests/PerformanceTests.m)
 
 Stinger extends NSObject with the following methods:
 
@@ -147,6 +147,159 @@ AOP lets us modularize these cross-cutting requirements, and then cleanly identi
 
 ```
 
+## Performance Tests
+Please refer to [PerformanceTests.m](https://github.com/eleme/Stinger/blob/master/Example/Tests/PerformanceTests.m) and run it.
+### 1. Environment
+* Device：iPhone 7，iOS 13.2
+* Xcode：Version 11.3 (11C29)
+* Stinger：`https://github.com/eleme/Stinger` `0.2.8`
+* Aspects：`https://github.com/steipete/Aspects` `1.4.1`
+
+### 2. Test Case
+#### * Preparation
+
+```
+@interface TestClassC : NSObject
+- (void)methodBeforeA;
+- (void)methodA;
+- (void)methodAfterA;
+- (void)methodA1;
+- (void)methodB1;
+- (void)methodA2;
+- (void)methodB2;
+...
+@end
+
+@implementation TestClassC
+- (void)methodBeforeA {
+}
+- (void)methodA {
+}
+- (void)methodAfterA {
+}
+- (void)methodA1 {
+}
+- (void)methodB1 {
+}
+- (void)methodA2 {
+}
+- (void)methodB2 {
+}
+...
+@end
+```
+
+#### Case1
+##### Test Code 
+Stinger
+
+```
+- (void)testStingerHookMethodA1 {
+  [TestClassC st_hookInstanceMethod:@selector(methodA1) option:STOptionBefore usingIdentifier:@"hook methodA1 before" withBlock:^(id<StingerParams> params) {
+     }];
+  [TestClassC st_hookInstanceMethod:@selector(methodA1) option:STOptionAfter usingIdentifier:@"hook methodA1 After" withBlock:^(id<StingerParams> params) {
+  }];
+  
+  TestClassC *object1 = [TestClassC new];
+  [self measureBlock:^{
+    for (NSInteger i = 0; i < 1000000; i++) {
+      [object1 methodA1];
+    }
+  }];
+}
+```
+Aspects
+
+```
+- (void)testAspectHookMethodB1 {
+  [TestClassC aspect_hookSelector:@selector(methodB1) withOptions:AspectPositionBefore usingBlock:^(id<AspectInfo> params) {
+   } error:nil];
+  [TestClassC aspect_hookSelector:@selector(methodB1) withOptions:AspectPositionAfter usingBlock:^(id<AspectInfo> params) {
+  } error:nil];
+  
+  TestClassC *object1 = [TestClassC new];
+  [self measureBlock:^{
+    for (NSInteger i = 0; i < 1000000; i++) {
+      [object1 methodB1];
+    }
+  }];
+}
+```
+##### Test Result
+Stinger
+![](https://user-gold-cdn.xitu.io/2019/12/15/16f08dbfb9011fad?w=1872&h=852&f=png&s=390868)
+
+AVG|1| 2 | 3 | 4| 5| 6| 7| 8| 9| 10 
+:-: |:-: |:-: |:-: |:-: |:-: |:-: |:-: |:-: |:-: |:-: |
+0.283|0.368| 0.273 | 0.277 | 0.273 | 0.271 | 0.271 | 0.272| 0.271| 0.273 |0.270 |
+
+***
+Aspects
+![](https://user-gold-cdn.xitu.io/2019/12/15/16f08df137616890?w=1898&h=764&f=png&s=392047)
+
+AVG|1| 2 | 3 | 4| 5| 6| 7| 8| 9| 10 
+:-: |:-: |:-: |:-: |:-: |:-: |:-: |:-: |:-: |:-: |:-: |
+6.135|6.34| 6.19 | 6.12 | 6.19 | 6.11 | 6.1 | 6.12| 6.12| 0.273 |0.270 |
+
+> More case:  https://github.com/eleme/Stinger/blob/master/Example/Tests/PerformanceTests.m
+
+
+#### Case2
+##### Test Code
+Stinger
+
+```
+- (void)testStingerHookMethodA2 {
+  TestClassC *object1 = [TestClassC new];
+  [object1 st_hookInstanceMethod:@selector(methodA2) option:STOptionBefore usingIdentifier:@"hook methodA2 before" withBlock:^(id<StingerParams> params) {
+     }];
+  [object1 st_hookInstanceMethod:@selector(methodA2) option:STOptionAfter usingIdentifier:@"hook methodA2 After" withBlock:^(id<StingerParams> params) {
+  }];
+  
+  [self measureBlock:^{
+    for (NSInteger i = 0; i < 1000000; i++) {
+      [object1 methodA2];
+    }
+  }];
+}
+```
+
+Aspects
+
+```
+- (void)testAspectHookMethodB2 {
+  TestClassC *object1 = [TestClassC new];
+  [object1 aspect_hookSelector:@selector(methodB2) withOptions:AspectPositionBefore usingBlock:^(id<AspectInfo> params) {
+   } error:nil];
+  [object1 aspect_hookSelector:@selector(methodB2) withOptions:AspectPositionAfter usingBlock:^(id<AspectInfo> params) {
+  } error:nil];
+  
+  [self measureBlock:^{
+    for (NSInteger i = 0; i < 1000000; i++) {
+      [object1 methodB2];
+    }
+  }];
+}
+```
+
+##### Test Result
+Stinger
+![](https://user-gold-cdn.xitu.io/2019/12/15/16f08e8910ba2edd?w=1876&h=840&f=png&s=380580)
+
+AVG|1| 2 | 3 | 4| 5| 6| 7| 8| 9| 10 
+:-: |:-: |:-: |:-: |:-: |:-: |:-: |:-: |:-: |:-: |:-: |
+0.547|0.567| 0.546 | 0.543 | 0.556 | 0.543 | 0.542 | 0.545| 0.54| 0.544 |0.542 |
+
+*** 
+
+Aspects
+
+![](https://user-gold-cdn.xitu.io/2019/12/15/16f08f152600546b?w=1834&h=744&f=png&s=343505)
+
+AVG|1| 2 | 3 | 4| 5| 6| 7| 8| 9| 10 
+:-: |:-: |:-: |:-: |:-: |:-: |:-: |:-: |:-: |:-: |:-: |
+6.261|6.32| 6.24 | 6.34 | 6.25 | 6.25 | 6.23 | 6.24| 6.26| 6.23 |6.24 |
+
 ## Credits
 The idea to use libffi. It can create shell function(`ffi_prep_closure_loc`) having same types compared with signature of hooked method. we can get all arguments and invoke Aspect-oriented code in ffi_function(`void (*fun)(ffi_cif*,void*,void**,void*)`).
 
@@ -180,4 +333,5 @@ Assuner-Lee, assuner@foxmail.com
 ## License
 
 Stinger is available under the MIT license. See the LICENSE file for more info.
+
 
