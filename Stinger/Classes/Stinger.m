@@ -27,12 +27,10 @@ static void *STSubClassKey = &STSubClassKey;
 }
 
 + (NSArray<STIdentifier> *)st_allIdentifiersForKey:(SEL)key {
-  NSMutableArray *mArray = [[NSMutableArray alloc] init];
-  @synchronized(self) {
+    NSMutableArray *mArray = [[NSMutableArray alloc] init];
     [mArray addObjectsFromArray:getAllIdentifiers(self, key)];
     [mArray addObjectsFromArray:getAllIdentifiers(object_getClass(self), key)];
-  }
-  return [mArray copy];
+    return [mArray copy];
 }
 
 + (BOOL)st_removeHookWithIdentifier:(STIdentifier)identifier forKey:(SEL)key {
