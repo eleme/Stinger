@@ -89,7 +89,7 @@ NSString * const STClassPrefix = @"st_class_";
 
 
 @interface STHookInfoPool ()
-@property (nonatomic, strong) NSLock *lock;
+@property (nonatomic, strong) dispatch_semaphore_t semaphore;
 @property (nonatomic, strong) STMethodSignature *signature;
 @property (nonatomic, strong) NSMethodSignature *ns_signature;
 @property (nonatomic, assign) NSUInteger argsCount;
@@ -115,6 +115,7 @@ NSString * const STClassPrefix = @"st_class_";
 @synthesize hookedCls = _hookedCls;
 @synthesize statedCls = _statedCls;
 @synthesize isInstanceHook = _isInstanceHook;
+@synthesize semaphore = _semaphore;
 
 
 + (instancetype)poolWithTypeEncoding:(NSString *)typeEncoding originalIMP:(IMP)imp selector:(SEL)sel {
@@ -132,7 +133,7 @@ NSString * const STClassPrefix = @"st_class_";
     _insteadInfo = nil;
     _afterInfos = [[NSMutableArray alloc] init];
     _identifiers = [[NSMutableArray alloc] init];
-    _lock = [[NSLock alloc] init];
+    _semaphore = dispatch_semaphore_create(1);
   }
   return self;
 }
@@ -160,7 +161,7 @@ NSString * const STClassPrefix = @"st_class_";
 
 - (BOOL)addInfo:(id<STHookInfo>)info {
   NSParameterAssert(info);
-  [_lock lock];
+  dispatch_semaphore_wait(_semaphore, DISPATCH_TIME_FOREVER);
   if (![_identifiers containsObject:info.identifier]) {
     switch (info.option) {
       case STOptionBefore: {
@@ -178,10 +179,10 @@ NSString * const STClassPrefix = @"st_class_";
       }
     }
     [_identifiers addObject:info.identifier];
-    [_lock unlock];
+    dispatch_semaphore_signal(_semaphore);
     return YES;
   }
-  [_lock unlock];
+  dispatch_semaphore_signal(_semaphore);
   return NO;
 }
 
@@ -236,7 +237,7 @@ NSString * const STClassPrefix = @"st_class_";
 #pragma mark - Private methods
 
 - (BOOL)_removeInfoForIdentifier:(STIdentifier)identifier inInfos:(NSMutableArray<id<STHookInfo>> *)infos {
-  [_lock lock];
+  dispatch_semaphore_wait(_semaphore, DISPATCH_TIME_FOREVER);
   BOOL flag = NO;
   for (int i = 0; i < infos.count; i ++) {
     id<STHookInfo> info = infos[i];
@@ -247,7 +248,7 @@ NSString * const STClassPrefix = @"st_class_";
       break;
     }
   }
-  [_lock unlock];
+  dispatch_semaphore_signal(_semaphore);
   return flag;
 }
 
