@@ -139,6 +139,11 @@ NS_INLINE Class getSTSubClass(id object) {
   Class stSubClass = objc_getAssociatedObject(object, STSubClassKey);
   if (stSubClass) return stSubClass;
     
+  /* if KVO'ed Object,we return it's subClass-> NSKVONotifying_xxx directly. */
+  if ([object class] != object_getClass(object)) {
+    return object_getClass(object);
+  }
+  
   Class isaClass = object_getClass(object);
   NSString *isaClassName = NSStringFromClass(isaClass);
   const char *subclassName = [STClassPrefix stringByAppendingString:isaClassName].UTF8String;
