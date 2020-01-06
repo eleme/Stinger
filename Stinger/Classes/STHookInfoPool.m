@@ -279,7 +279,8 @@ NSString * const STClassPrefix = @"st_class_";
 #define REAL_STATED_CALSS_INFO_POOL (statedClassInfoPool ?: hookedClassInfoPool)
 
 #define ffi_call_infos(infos) \
-for (STHookInfo *info in infos) { \
+for (NSUInteger i = 0; i < infos.count; i++) { \
+  STHookInfo *info = infos[i];\
   innerArgs[0] = &(info->_block); \
   ffi_call(&(hookedClassInfoPool->_blockCif), _st_impForBlock(info->_block), NULL, innerArgs); \
 }  \
