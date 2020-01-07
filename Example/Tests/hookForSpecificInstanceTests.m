@@ -13,6 +13,7 @@
 - (void)instanceMethodA;
 - (void)instanceMethodB;
 - (double)instanceMethodCWithNumA:(double)a numB:(double)b;
+- (void)instanceMethodD;
 @end
 
 static NSString *TestClassB_string_b = @"";
@@ -154,7 +155,7 @@ static NSString *TestClassB_string_b = @"";
 }
 
 
-- (void)testInstanceC {
+- (void)testInstanceMethodC {
   TestClassB *object1 = [TestClassB new];
   TestClassB *object2 = [TestClassB new];
   TestClassB *object3 = [TestClassB new];
@@ -188,6 +189,33 @@ static NSString *TestClassB_string_b = @"";
   XCTAssertTrue(([[NSString stringWithFormat:@"%.1f", result] isEqualToString:@"6.3"]), @"should be equal");
   result = [object3 instanceMethodCWithNumA:1.1 numB:2.2];
   XCTAssertTrue(([[NSString stringWithFormat:@"%.1f", result] isEqualToString:@"3.3"]), @"should be equal");
+}
+
+- (void)testInstanceMethodD {
+  TestClassB *object1 = [TestClassB new];
+  [object1 st_hookInstanceMethod:@selector(instanceMethodD) option:STOptionAfter | STOptionAutomaticRemoval usingIdentifier:@"hook instanceMethodD After 1" withBlock:^(id<StingerParams> params){
+    NSLog(@"hook instanceMethodD After 1");
+  }];
+  
+  [object1 st_hookInstanceMethod:@selector(instanceMethodD) option:STOptionAfter | STOptionAutomaticRemoval usingIdentifier:@"hook instanceMethodD After 2" withBlock:^(id<StingerParams> params){
+    NSLog(@"hook instanceMethodD After 2");
+  }];
+  
+  [object1 st_hookInstanceMethod:@selector(instanceMethodD) option:STOptionAfter usingIdentifier:@"hook instanceMethodD After 3" withBlock:^(id<StingerParams> params){
+    NSLog(@"hook instanceMethodD After 3");
+  }];
+  
+  [object1 st_hookInstanceMethod:@selector(instanceMethodD) option:STOptionAfter
+   | STOptionAutomaticRemoval usingIdentifier:@"hook instanceMethodD After 4" withBlock:^(id<StingerParams> params){
+    NSLog(@"hook instanceMethodD After 4");
+  }];
+  
+  NSArray *allIdentifiers = [object1 st_allIdentifiersForKey:@selector(instanceMethodD)];
+  XCTAssertTrue(allIdentifiers.count == 4, @"should equal");
+  
+  [object1 instanceMethodD];
+  allIdentifiers = [object1 st_allIdentifiersForKey:@selector(instanceMethodD)];
+  XCTAssertTrue(allIdentifiers.count == 1, @"should equal");
 }
 
 @end

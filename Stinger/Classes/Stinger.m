@@ -168,7 +168,7 @@ NS_INLINE NSArray<STIdentifier> * getAllIdentifiers(id obj, SEL key) {
   NSCParameterAssert(obj);
   NSCParameterAssert(key);
   id<STHookInfoPool> infoPool = st_getHookInfoPool(obj, key);
-  return infoPool.identifiers;
+  return infoPool.allIdentifiers;
 }
 
 

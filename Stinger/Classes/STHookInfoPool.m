@@ -107,7 +107,6 @@ NSString * const STClassPrefix = @"st_class_";
 @synthesize beforeInfos = _beforeInfos;
 @synthesize insteadInfo = _insteadInfo;
 @synthesize afterInfos = _afterInfos;
-@synthesize identifiers = _identifiers;
 @synthesize originalIMP = _originalIMP;
 @synthesize typeEncoding = _typeEncoding;
 @synthesize sel = _sel;
@@ -132,7 +131,6 @@ NSString * const STClassPrefix = @"st_class_";
     _beforeInfos = [[NSMutableArray alloc] init];
     _insteadInfo = nil;
     _afterInfos = [[NSMutableArray alloc] init];
-    _identifiers = [[NSMutableArray alloc] init];
     _semaphore = dispatch_semaphore_create(1);
   }
   return self;
@@ -162,20 +160,21 @@ NSString * const STClassPrefix = @"st_class_";
 - (BOOL)addInfo:(id<STHookInfo>)info {
   NSParameterAssert(info);
   dispatch_semaphore_wait(_semaphore, DISPATCH_TIME_FOREVER);
-  if (![_identifiers containsObject:info.identifier]) {
-    if (info.option & STOptionBefore) {
-      [_beforeInfos addObject:info];
-    } else if (info.option & STOptionInstead) {
-      _insteadInfo = info;
-    } else {
-      [_afterInfos addObject:info];
-    }
-    [_identifiers addObject:info.identifier];
-    dispatch_semaphore_signal(_semaphore);
-    return YES;
+  BOOL flag = NO;
+  if ((info.option & STOptionBefore) && ![[_beforeInfos valueForKey:@"identifier"] containsObject:info.identifier]) {
+    [_beforeInfos addObject:info];
+    flag = YES;
+  } else if (info.option & STOptionInstead) {
+    _insteadInfo = info;
+    flag = YES;
+  } else if ((info.option == STOptionAfter || info.option == STOptionAutomaticRemoval) && ![[_afterInfos valueForKey:@"identifier"] containsObject:info.identifier]) {
+    [_afterInfos addObject:info];
+    flag = YES;
+  } else {
+    flag = NO;
   }
   dispatch_semaphore_signal(_semaphore);
-  return NO;
+  return flag;
 }
 
 
@@ -188,6 +187,16 @@ NSString * const STClassPrefix = @"st_class_";
   if ([self _removeInfoForIdentifier:identifier inInfos:self.afterInfos]) return YES;
   return NO;
 }
+
+- (NSArray<STIdentifier> *)allIdentifiers {
+  NSMutableArray *allIdentifiers = [[_beforeInfos valueForKey:@"identifier"] mutableCopy];
+  if (_insteadInfo) {
+    [allIdentifiers addObject:_insteadInfo.identifier];
+  }
+  [allIdentifiers addObjectsFromArray:[_afterInfos valueForKey:@"identifier"]];
+  return allIdentifiers;
+}
+
 
 
 - (StingerIMP)stingerIMP {
@@ -235,7 +244,6 @@ NSString * const STClassPrefix = @"st_class_";
     id<STHookInfo> info = infos[i];
     if ([info.identifier isEqualToString:identifier]) {
       [infos removeObject:info];
-      [_identifiers removeObject:identifier];
       flag = YES;
       break;
     }

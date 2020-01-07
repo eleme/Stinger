@@ -14,7 +14,7 @@ typedef void *StingerIMP;
 
 #pragma mark - enum
 
-typedef NS_ENUM(NSInteger, STOption) {
+typedef NS_OPTIONS(NSInteger, STOption) {
   STOptionAfter = 0,     // Called after the original implementation (default)
   STOptionInstead = 1,   // Will replace the original implementation.
   STOptionBefore = 2,    // Called before the original implementation.
@@ -57,7 +57,6 @@ typedef NS_ENUM(NSInteger, STHookResult) {
 @property (nonatomic, strong, readonly) NSMutableArray<id<STHookInfo>> *beforeInfos;
 @property (nonatomic, strong, readonly) id<STHookInfo> insteadInfo;
 @property (nonatomic, strong, readonly) NSMutableArray<id<STHookInfo>> *afterInfos;
-@property (nonatomic, strong, readonly) NSMutableArray<NSString *> *identifiers;
 @property (nonatomic, copy) NSString *typeEncoding;
 @property (nonatomic) IMP originalIMP;
 @property (nonatomic) SEL sel;
@@ -65,6 +64,7 @@ typedef NS_ENUM(NSInteger, STHookResult) {
 
 - (BOOL)addInfo:(id<STHookInfo>)info;
 - (BOOL)removeInfoForIdentifier:(STIdentifier)identifier;
+- (NSArray<STIdentifier> *)allIdentifiers;
 
 @optional
 @property (nonatomic, weak) Class hookedCls;
