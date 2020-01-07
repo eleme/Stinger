@@ -18,6 +18,7 @@ typedef NS_ENUM(NSInteger, STOption) {
   STOptionAfter = 0,     // Called after the original implementation (default)
   STOptionInstead = 1,   // Will replace the original implementation.
   STOptionBefore = 2,    // Called before the original implementation.
+  STOptionAutomaticRemoval = 1 << 3 // Will remove the hook after the first execution.
 };
 
 

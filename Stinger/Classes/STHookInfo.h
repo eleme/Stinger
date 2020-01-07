@@ -13,5 +13,6 @@
 {
   @public
   id _block;
+  BOOL automaticRemoval;
 }
 @end

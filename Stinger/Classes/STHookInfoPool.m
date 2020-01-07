@@ -163,20 +163,12 @@ NSString * const STClassPrefix = @"st_class_";
   NSParameterAssert(info);
   dispatch_semaphore_wait(_semaphore, DISPATCH_TIME_FOREVER);
   if (![_identifiers containsObject:info.identifier]) {
-    switch (info.option) {
-      case STOptionBefore: {
-        [_beforeInfos addObject:info];
-        break;
-      }
-      case STOptionInstead: {
-        _insteadInfo = info;
-        break;
-      }
-      case STOptionAfter:
-      default: {
-        [_afterInfos addObject:info];
-        break;
-      }
+    if (info.option & STOptionBefore) {
+      [_beforeInfos addObject:info];
+    } else if (info.option & STOptionInstead) {
+      _insteadInfo = info;
+    } else {
+      [_afterInfos addObject:info];
     }
     [_identifiers addObject:info.identifier];
     dispatch_semaphore_signal(_semaphore);
@@ -283,6 +275,10 @@ for (NSUInteger i = 0; i < infos.count; i++) { \
   STHookInfo *info = infos[i];\
   innerArgs[0] = &(info->_block); \
   ffi_call(&(hookedClassInfoPool->_blockCif), _st_impForBlock(info->_block), NULL, innerArgs); \
+  if (info->automaticRemoval) { \
+    [(NSMutableArray *)infos removeObject:info]; \
+    i--; \
+  } \
 }  \
 
 NS_INLINE void _st_ffi_function(ffi_cif *cif, void *ret, void **args, void *userdata) {
@@ -311,9 +307,15 @@ NS_INLINE void _st_ffi_function(ffi_cif *cif, void *ret, void **args, void *user
   if (instanceInfoPool && instanceInfoPool->_insteadInfo) {
     innerArgs[0] = &(((STHookInfo *)(instanceInfoPool->_insteadInfo))->_block);
     ffi_call(&(hookedClassInfoPool->_blockCif), _st_impForBlock(((STHookInfo *)(instanceInfoPool->_insteadInfo))->_block), ret, innerArgs);
+    if (((STHookInfo *)(instanceInfoPool->_insteadInfo))->automaticRemoval) {
+      instanceInfoPool->_insteadInfo = nil;
+    }
   } else if (REAL_STATED_CALSS_INFO_POOL && REAL_STATED_CALSS_INFO_POOL->_insteadInfo) {
     innerArgs[0] = &(((STHookInfo *)(REAL_STATED_CALSS_INFO_POOL->_insteadInfo))->_block);
     ffi_call(&(hookedClassInfoPool->_blockCif), _st_impForBlock(((STHookInfo *)(REAL_STATED_CALSS_INFO_POOL->_insteadInfo))->_block), ret, innerArgs);
+    if (((STHookInfo *)(REAL_STATED_CALSS_INFO_POOL->_insteadInfo))->automaticRemoval) {
+      REAL_STATED_CALSS_INFO_POOL->_insteadInfo = nil;
+    }
   } else {
     /// original IMP
     /// if original selector is hooked by aspects or jspatch.., which use message-forwarding, invoke invacation.

@@ -31,6 +31,10 @@ static NSString *TestClassB_string_b = @"";
   return a+b;
 }
 
+- (void)instanceMethodD {
+    
+}
+
 @end
 
 

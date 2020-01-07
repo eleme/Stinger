@@ -95,7 +95,6 @@ static void *STSubClassKey = &STSubClassKey;
 NS_INLINE STHookResult hookMethod(Class hookedCls, SEL sel, STOption option, STIdentifier identifier, id block) {
   NSCParameterAssert(hookedCls);
   NSCParameterAssert(sel);
-  NSCParameterAssert(option == 0 || option == 1 || option == 2);
   NSCParameterAssert(identifier);
   NSCParameterAssert(block);
   Method m = class_getInstanceMethod(hookedCls, sel);
@@ -192,7 +191,7 @@ NS_INLINE BOOL isMatched(STMethodSignature *methodSignature, STMethodSignature *
     }
   }
   // when STOptionInstead, returnType
-  if (option == STOptionInstead && ![blockSignature.returnType isEqualToString:methodSignature.returnType]) {
+  if ((option & STOptionInstead) && ![blockSignature.returnType isEqualToString:methodSignature.returnType]) {
     NSCAssert(NO, @"return type isn't equal. Class: (%@), SEL: (%@), Identifier: (%@)", cls, NSStringFromSelector(sel), identifier);
     return NO;
   }
