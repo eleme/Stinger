@@ -329,7 +329,7 @@ Assuner-Lee, assuner@foxmail.com
 | 0.2.6 | support struct.|
 | 0.2.7 | improve performance.|
 | 0.2.8 | improve performance.|
-| 0.2.9 | supoort automatic removal|
+| 0.2.9 | support automatic removal|
 
 ## License
 
