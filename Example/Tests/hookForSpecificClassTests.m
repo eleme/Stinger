@@ -32,6 +32,7 @@ typedef struct {
 - (CGRect)instanceGWithRect:(CGRect)rect;
 - (structB)instanceHWithStruct:(structB)rect;
 - (CGSize)instanceIWithSize:(CGSize)size;
+- (void)instanceMethodJ;
 + (NSInteger)classMethodAWithNumA:(NSInteger)a numB:(NSInteger)b;
 @end
 
@@ -73,6 +74,10 @@ static NSString *TestClassA_string_a = @"";
 
 - (CGSize)instanceIWithSize:(CGSize)size {
   return size;
+}
+
+- (void)instanceMethodJ {
+  TestClassA_string_a = [TestClassA_string_a stringByAppendingString:@"original instanceMethodJ called--"];
 }
 
 
@@ -307,5 +312,80 @@ static NSString *TestClassA_string_a = @"";
   XCTAssertTrue(CGSizeEqualToSize(result, CGSizeMake(2, 1)), @"should be equal");
 }
 
+- (void)testInstanceMethodJ {
+  TestClassA *objectA = [TestClassA new];
+  
+  [TestClassA st_hookInstanceMethod:@selector(instanceMethodJ) option:STOptionBefore usingIdentifier:@"hook InstanceMethodJ before 1" withBlock:^(id<StingerParams> params){
+      TestClassA_string_a = [TestClassA_string_a stringByAppendingString:@"before 1 instanceMethodJ called--"];
+  }];
+  
+  [TestClassA st_hookInstanceMethod:@selector(instanceMethodJ) option:STOptionBefore | STOptionAutomaticRemoval usingIdentifier:@"hook InstanceMethodJ before 2" withBlock:^(id<StingerParams> params){
+      TestClassA_string_a = [TestClassA_string_a stringByAppendingString:@"before 2 instanceMethodJ called--"];
+  }];
+  
+  [TestClassA st_hookInstanceMethod:@selector(instanceMethodJ) option:STOptionBefore | STOptionAutomaticRemoval usingIdentifier:@"hook InstanceMethodJ before 3" withBlock:^(id<StingerParams> params){
+      TestClassA_string_a = [TestClassA_string_a stringByAppendingString:@"before 3 instanceMethodJ called--"];
+  }];
+  
+  [TestClassA st_hookInstanceMethod:@selector(instanceMethodJ) option:STOptionBefore usingIdentifier:@"hook InstanceMethodJ before 4" withBlock:^(id<StingerParams> params){
+      TestClassA_string_a = [TestClassA_string_a stringByAppendingString:@"before 4 instanceMethodJ called--"];
+  }];
+  
+  [objectA instanceMethodJ];
+  NSString *TestClassA_string_a_result = @"before 1 instanceMethodJ called--before 2 instanceMethodJ called--before 3 instanceMethodJ called--before 4 instanceMethodJ called--original instanceMethodJ called--";
+  XCTAssertTrue([TestClassA_string_a isEqualToString:TestClassA_string_a_result], @"should be equal");
+  NSArray *identifiers = [TestClassA st_allIdentifiersForKey:@selector(instanceMethodJ)];
+  XCTAssertTrue(identifiers.count == 2, @"should be equal");
+  
+  TestClassA_string_a = @"";
+  [objectA instanceMethodJ];
+  TestClassA_string_a_result = @"before 1 instanceMethodJ called--before 4 instanceMethodJ called--original instanceMethodJ called--";
+  XCTAssertTrue([TestClassA_string_a isEqualToString:TestClassA_string_a_result], @"should be equal");
+  
+  [TestClassA st_removeHookWithIdentifier:@"hook InstanceMethodJ before 4" forKey:@selector(instanceMethodJ)];
+  [TestClassA st_removeHookWithIdentifier:@"hook InstanceMethodJ before 1" forKey:@selector(instanceMethodJ)];
+  TestClassA_string_a = @"";
+  [objectA instanceMethodJ];
+  TestClassA_string_a_result = @"original instanceMethodJ called--";
+  XCTAssertTrue([TestClassA_string_a isEqualToString:TestClassA_string_a_result], @"should be equal");
+  
+   [TestClassA st_hookInstanceMethod:@selector(instanceMethodJ) option:STOptionInstead | STOptionAutomaticRemoval usingIdentifier:@"hook InstanceMethodJ instead" withBlock:^(id<StingerParams> params){
+       TestClassA_string_a = [TestClassA_string_a stringByAppendingString:@"instead instanceMethodJ called--"];
+   }];
+  TestClassA_string_a = @"";
+  [objectA instanceMethodJ];
+  TestClassA_string_a_result = @"instead instanceMethodJ called--";
+  XCTAssertTrue([TestClassA_string_a isEqualToString:TestClassA_string_a_result], @"should be equal");
+  TestClassA_string_a = @"";
+  [objectA instanceMethodJ];
+  TestClassA_string_a_result = @"original instanceMethodJ called--";
+  XCTAssertTrue([TestClassA_string_a isEqualToString:TestClassA_string_a_result], @"should be equal");
+  
+  
+  [TestClassA st_hookInstanceMethod:@selector(instanceMethodJ) option:STOptionAfter usingIdentifier:@"hook InstanceMethodJ after 1" withBlock:^(id<StingerParams> params){
+      TestClassA_string_a = [TestClassA_string_a stringByAppendingString:@"after 1 instanceMethodJ called--"];
+  }];
+
+  [TestClassA st_hookInstanceMethod:@selector(instanceMethodJ) option:STOptionAfter | STOptionAutomaticRemoval usingIdentifier:@"hook InstanceMethodJ after 2" withBlock:^(id<StingerParams> params){
+      TestClassA_string_a = [TestClassA_string_a stringByAppendingString:@"after 2 instanceMethodJ called--"];
+  }];
+
+  [TestClassA st_hookInstanceMethod:@selector(instanceMethodJ) option:STOptionAfter | STOptionAutomaticRemoval usingIdentifier:@"hook InstanceMethodJ after 3" withBlock:^(id<StingerParams> params){
+      TestClassA_string_a = [TestClassA_string_a stringByAppendingString:@"after 3 instanceMethodJ called--"];
+  }];
+
+  [TestClassA st_hookInstanceMethod:@selector(instanceMethodJ) option:STOptionAfter usingIdentifier:@"hook InstanceMethodJ after 4" withBlock:^(id<StingerParams> params){
+      TestClassA_string_a = [TestClassA_string_a stringByAppendingString:@"after 4 instanceMethodJ called--"];
+  }];
+  
+  TestClassA_string_a = @"";
+  [objectA instanceMethodJ];
+  TestClassA_string_a_result = @"original instanceMethodJ called--after 1 instanceMethodJ called--after 2 instanceMethodJ called--after 3 instanceMethodJ called--after 4 instanceMethodJ called--";
+  XCTAssertTrue([TestClassA_string_a isEqualToString:TestClassA_string_a_result], @"should be equal");
+  TestClassA_string_a = @"";
+  [objectA instanceMethodJ];
+  TestClassA_string_a_result = @"original instanceMethodJ called--after 1 instanceMethodJ called--after 4 instanceMethodJ called--";
+  XCTAssertTrue([TestClassA_string_a isEqualToString:TestClassA_string_a_result], @"should be equal");
+}
 
 @end

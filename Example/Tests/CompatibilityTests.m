@@ -117,5 +117,4 @@ static NSString *TestClassD_string = @"";
   XCTAssertTrue([TestClassD_string isEqualToString:result], @"should be equal");
 }
 
-
 @end

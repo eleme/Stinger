@@ -166,6 +166,7 @@ Assuner-Lee, assuner@foxmail.com
 | 0.2.6 | 支持结构体.|
 | 0.2.7 | 提升性能.|
 | 0.2.8 | 进一步提升实例对象hook的性能.|
+| 0.2.9 | 支持自动移除hook选项.|
 
 ## License
 
