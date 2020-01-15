@@ -16,6 +16,7 @@ typedef NS_ENUM(NSInteger, STOption) {
   STOptionAfter = 0,     // 在原方法后调用（默认）
   STOptionInstead = 1,   // 替换原实现
   STOptionBefore = 2,    // 在原方法前调用
+  STOptionAutomaticRemoval = 1 << 3 // 第一次调用后自动移除
 };
 
 typedef NS_ENUM(NSInteger, STHookResult) {
