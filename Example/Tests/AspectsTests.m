@@ -44,9 +44,10 @@
     
   } error:nil];
   
+  NSError *error;
   [TestClassE.class aspect_hookSelector:@selector(methodB) withOptions:AspectPositionAfter usingBlock:^(id aspectInfo) {
     
-  } error:nil];
+  } error:&error];
   
   [TestClassE methodA];
   [TestClassE.new methodB];
