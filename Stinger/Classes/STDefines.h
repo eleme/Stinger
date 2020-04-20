@@ -49,6 +49,7 @@ typedef NS_ENUM(NSInteger, STHookResult) {
 - (id)slf;
 - (SEL)sel;
 - (void)invokeAndGetOriginalRetValue:(void *)retLoc;
+- (NSArray*)getAllArgs;
 @end
 
 

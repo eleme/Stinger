@@ -54,4 +54,18 @@
   }
 }
 
+- (NSArray*)getAllArgs{
+    NSMethodSignature *signature = [NSMethodSignature signatureWithObjCTypes:_types.UTF8String];
+    NSInteger count = signature.numberOfArguments;
+    if (count <= 2) {
+        return @[];
+    }
+    NSMutableArray * args = [[NSMutableArray alloc] initWithCapacity:count - 2];
+    for (int i = 2; i < count; i ++) {
+        void **point = _args[i];
+        [args addObject:(__bridge id)(*point)];
+    }
+    return args.copy;
+}
+
 @end

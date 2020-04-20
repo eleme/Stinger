@@ -173,8 +173,8 @@ NS_INLINE NSArray<STIdentifier> * getAllIdentifiers(id obj, SEL key) {
 
 
 NS_INLINE BOOL isMatched(STMethodSignature *methodSignature, STMethodSignature *blockSignature, STOption option, Class cls, SEL sel, NSString *identifier) {
-  //argument count
-  if (methodSignature.argumentTypes.count != blockSignature.argumentTypes.count) {
+  //argument count.
+  if (blockSignature.argumentTypes.count > methodSignature.argumentTypes.count) {
     NSCAssert(NO, @"count of arguments isn't equal. Class: (%@), SEL: (%@), Identifier: (%@)", cls, NSStringFromSelector(sel), identifier);
     return NO;
   };
@@ -184,7 +184,7 @@ NS_INLINE BOOL isMatched(STMethodSignature *methodSignature, STMethodSignature *
     return NO;
   }
   // from loc 2.
-  for (NSInteger i = 2; i < methodSignature.argumentTypes.count; i++) {
+  for (NSInteger i = 2; i < blockSignature.argumentTypes.count; i++) {
     if (![blockSignature.argumentTypes[i] isEqualToString:methodSignature.argumentTypes[i]]) {
       NSCAssert(NO, @"argument (%zd) type isn't equal. Class: (%@), SEL: (%@), Identifier: (%@)", i, cls, NSStringFromSelector(sel), identifier);
       return NO;
