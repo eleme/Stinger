@@ -60,8 +60,8 @@ static void *STSubClassKey = &STSubClassKey;
     STHookResult hookMethodResult = hookMethod(stSubClass, sel, option, identifier, block);
     if (hookMethodResult != STHookResultSuccuss) return hookMethodResult;
     if (!objc_getAssociatedObject(self, STSubClassKey)) {
-      // object_setClass(self, stSubClass);
-      // objc_setAssociatedObject(self, STSubClassKey, stSubClass, OBJC_ASSOCIATION_ASSIGN);
+       object_setClass(self, stSubClass);
+       objc_setAssociatedObject(self, STSubClassKey, stSubClass, OBJC_ASSOCIATION_ASSIGN);
     }
     
     id<STHookInfoPool> instanceHookInfoPool = st_getHookInfoPool(self, sel);
