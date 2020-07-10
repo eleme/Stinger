@@ -14,6 +14,7 @@
 		2977986E239CF4AB00512AC7 /* HookForSpecificInstanceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2977986D239CF4AB00512AC7 /* HookForSpecificInstanceTests.m */; };
 		2979077B21E88D87002684DB /* README_中文.md in Resources */ = {isa = PBXBuildFile; fileRef = 2979077A21E88D87002684DB /* README_中文.md */; };
 		298885D123A32A9000882BB3 /* CompatibilityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 298885D023A32A9000882BB3 /* CompatibilityTests.m */; };
+		2DD5136124B8438E00354BC1 /* HookKVOObjectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DD5136024B8438E00354BC1 /* HookKVOObjectTests.m */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -51,6 +52,7 @@
 		2977986D239CF4AB00512AC7 /* HookForSpecificInstanceTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HookForSpecificInstanceTests.m; sourceTree = "<group>"; };
 		2979077A21E88D87002684DB /* README_中文.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = "README_中文.md"; path = "../README_中文.md"; sourceTree = "<group>"; };
 		298885D023A32A9000882BB3 /* CompatibilityTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CompatibilityTests.m; sourceTree = "<group>"; };
+		2DD5136024B8438E00354BC1 /* HookKVOObjectTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HookKVOObjectTests.m; sourceTree = "<group>"; };
 		4A2FC9F2CFEB57D74DD57D5D /* Stinger.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Stinger.podspec; path = ../Stinger.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		6003F58A195388D20070C39A /* Stinger_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stinger_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -175,6 +177,7 @@
 				2977986D239CF4AB00512AC7 /* HookForSpecificInstanceTests.m */,
 				295D1B0C23A101C9001A882D /* PerformanceTests.m */,
 				298885D023A32A9000882BB3 /* CompatibilityTests.m */,
+				2DD5136024B8438E00354BC1 /* HookKVOObjectTests.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -370,6 +373,7 @@
 				298885D123A32A9000882BB3 /* CompatibilityTests.m in Sources */,
 				295C52AC23991DAA00C3E9D5 /* MethodSignatureTests.m in Sources */,
 				295D1B0D23A101C9001A882D /* PerformanceTests.m in Sources */,
+				2DD5136124B8438E00354BC1 /* HookKVOObjectTests.m in Sources */,
 				2977986E239CF4AB00512AC7 /* HookForSpecificInstanceTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

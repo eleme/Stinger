@@ -159,8 +159,10 @@ NS_INLINE Class getSTSubClass(id object) {
       Class realClass = realIsaClass;
       hookGetClassMessage(stSubClass, realClass);
       hookGetClassMessage(object_getClass(stSubClass), realClass);
-      
-      // KVO exists, not modify object's isa 
+    }
+    
+    {
+      // KVO exists, not modify object's isa
       // object_setClass(object, stSubClass);
       objc_setAssociatedObject(object, STSubClassKey, stSubClass, OBJC_ASSOCIATION_ASSIGN);
       

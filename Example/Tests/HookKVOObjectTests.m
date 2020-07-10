@@ -77,7 +77,7 @@
                           withBlock:^NSString* (id<StingerParams> params) {
         return @"new_return";
     }];
-    
+
     XCTAssertTrue([[self.obj methodA] isEqualToString:@"new_return"]);
 }
 
@@ -89,11 +89,11 @@
                           withBlock:^(id<StingerParams> params) {
         i = 1000;
     }];
-    
+
     XCTAssertTrue(i == 0);
     [self.obj methodA];
     XCTAssertTrue(i == 1000);
-    
+
 }
 
 - (void)testPerformanceExample {
