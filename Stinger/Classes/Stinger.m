@@ -60,8 +60,8 @@ static void *STSubClassKey = &STSubClassKey;
     STHookResult hookMethodResult = hookMethod(stSubClass, sel, option, identifier, block);
     if (hookMethodResult != STHookResultSuccuss) return hookMethodResult;
     if (!objc_getAssociatedObject(self, STSubClassKey)) {
-      object_setClass(self, stSubClass);
-      objc_setAssociatedObject(self, STSubClassKey, stSubClass, OBJC_ASSOCIATION_ASSIGN);
+      // object_setClass(self, stSubClass);
+      // objc_setAssociatedObject(self, STSubClassKey, stSubClass, OBJC_ASSOCIATION_ASSIGN);
     }
     
     id<STHookInfoPool> instanceHookInfoPool = st_getHookInfoPool(self, sel);
@@ -133,28 +133,66 @@ NS_INLINE STHookResult hookMethod(Class hookedCls, SEL sel, STOption option, STI
   }
 }
 
+static NSString *kSTKVOClassPrefix = nil;
 NS_INLINE Class getSTSubClass(id object) {
   NSCParameterAssert(object);
   Class stSubClass = objc_getAssociatedObject(object, STSubClassKey);
   if (stSubClass) return stSubClass;
-    
+  
   Class isaClass = object_getClass(object);
   NSString *isaClassName = NSStringFromClass(isaClass);
-  const char *subclassName = [STClassPrefix stringByAppendingString:isaClassName].UTF8String;
-  stSubClass = objc_getClass(subclassName);
+  
+  if (!kSTKVOClassPrefix) kSTKVOClassPrefix = [NSString stringWithFormat:@"NSK%@%@ing", @"VO", @"Notify"];
+  bool isKVOObject = false;
+  if ([isaClassName hasPrefix:kSTKVOClassPrefix]) isKVOObject = true;
+  if (isKVOObject) { // KVO
+    Class realIsaClass = [object class];
+    NSString *realIsaClassName = NSStringFromClass(realIsaClass);
+    const char *stclassName = [STClassPrefix stringByAppendingString:realIsaClassName].UTF8String;
+    stSubClass = objc_getClass(stclassName);
+    if (!stSubClass) {
+      stSubClass = objc_allocateClassPair(realIsaClass, stclassName, 0);
+      NSCAssert(stSubClass, @"Class %s allocate failed!", stclassName);
+      if (!stSubClass) return nil;
+      
+      objc_registerClassPair(stSubClass);
+      Class realClass = realIsaClass;
+      hookGetClassMessage(stSubClass, realClass);
+      hookGetClassMessage(object_getClass(stSubClass), realClass);
+      
+      // KVO exists, not modify object's isa 
+      // object_setClass(object, stSubClass);
+      objc_setAssociatedObject(object, STSubClassKey, stSubClass, OBJC_ASSOCIATION_ASSIGN);
+      
+      // old: KVO class -> original class
+      // new: KVO class -> st class -> original class
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+      class_setSuperclass(isaClass, stSubClass);
+#pragma clang diagnostic pop
+      // hookGetClassMessage(isaClass, stSubClass);
+      // hookGetClassMessage(object_getClass(isaClass), stSubClass);
+    }
+    return stSubClass;
+  }
+  
+  const char *stclassName = [STClassPrefix stringByAppendingString:isaClassName].UTF8String;
+  stSubClass = objc_getClass(stclassName);
   if (!stSubClass) {
-    stSubClass = objc_allocateClassPair(isaClass, subclassName, 0);
-    NSCAssert(stSubClass, @"Class %s allocate failed!", subclassName);
+    stSubClass = objc_allocateClassPair(isaClass, stclassName, 0);
+    NSCAssert(stSubClass, @"Class %s allocate failed!", stclassName);
     if (!stSubClass) return nil;
     
-  objc_registerClassPair(stSubClass);
-  Class realClass = [object class];
-  hookGetClassMessage(stSubClass, realClass);
-  hookGetClassMessage(object_getClass(stSubClass), realClass);
-}
+    objc_registerClassPair(stSubClass);
+    Class realClass = [object class];
+    hookGetClassMessage(stSubClass, realClass);
+    hookGetClassMessage(object_getClass(stSubClass), realClass);
+    
+    object_setClass(object, stSubClass);
+    objc_setAssociatedObject(object, STSubClassKey, stSubClass, OBJC_ASSOCIATION_ASSIGN);
+  }
   return stSubClass;
 }
-
 
 NS_INLINE void hookGetClassMessage(Class class, Class retClass) {
   Method method = class_getInstanceMethod(class, @selector(class));
