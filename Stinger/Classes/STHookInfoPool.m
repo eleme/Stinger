@@ -86,6 +86,7 @@ NS_INLINE void *_st_impForBlock(id block) {
 #pragma mark - STHookInfoPool
 
 NSString * const STClassPrefix = @"st_class_";
+NSString * const KVOClassPrefix = @"NSKVONotifying_";
 
 
 @interface STHookInfoPool ()
@@ -147,7 +148,7 @@ NSString * const STClassPrefix = @"st_class_";
 
 - (void)setHookedCls:(Class)hookedCls {
   _hookedCls = hookedCls;
-  _isInstanceHook = [NSStringFromClass(hookedCls) hasPrefix:STClassPrefix];
+  _isInstanceHook = st_isIntanceHookCls(hookedCls);
 }
 
 
@@ -357,6 +358,11 @@ id<STHookInfoPool> st_getHookInfoPool(id obj, SEL key) {
   NSCParameterAssert(obj);
   NSCParameterAssert(key);
   return objc_getAssociatedObject(obj, NSSelectorFromString([NSString stringWithFormat:@"%@%@", STSelectorPrefix, NSStringFromSelector(key)]));
+}
+
+BOOL st_isIntanceHookCls(Class cls) {
+  NSString *clsName = NSStringFromClass(cls);
+  return [clsName hasPrefix:STClassPrefix] || [clsName hasPrefix:KVOClassPrefix];
 }
 
 

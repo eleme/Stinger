@@ -123,8 +123,7 @@ NS_INLINE STHookResult hookMethod(Class hookedCls, SEL sel, STOption option, STI
       
       st_setHookInfoPool(hookedCls, sel, hookInfoPool);
     }
-    
-    if ([NSStringFromClass(hookedCls) hasPrefix:STClassPrefix]) {
+    if (st_isIntanceHookCls(hookedCls)) {
       return STHookResultSuccuss;
     } else {
       STHookInfo *hookInfo = [STHookInfo infoWithOption:option withIdentifier:identifier withBlock:block];
@@ -140,18 +139,22 @@ NS_INLINE Class getSTSubClass(id object) {
     
   Class isaClass = object_getClass(object);
   NSString *isaClassName = NSStringFromClass(isaClass);
-  const char *subclassName = [STClassPrefix stringByAppendingString:isaClassName].UTF8String;
-  stSubClass = objc_getClass(subclassName);
-  if (!stSubClass) {
-    stSubClass = objc_allocateClassPair(isaClass, subclassName, 0);
-    NSCAssert(stSubClass, @"Class %s allocate failed!", subclassName);
-    if (!stSubClass) return nil;
-    
-  objc_registerClassPair(stSubClass);
-  Class realClass = [object class];
-  hookGetClassMessage(stSubClass, realClass);
-  hookGetClassMessage(object_getClass(stSubClass), realClass);
-}
+  if ([isaClassName hasPrefix:KVOClassPrefix]) {
+    return isaClass;
+  } else {
+    const char *subclassName = [STClassPrefix stringByAppendingString:isaClassName].UTF8String;
+    stSubClass = objc_getClass(subclassName);
+    if (!stSubClass) {
+      stSubClass = objc_allocateClassPair(isaClass, subclassName, 0);
+      NSCAssert(stSubClass, @"Class %s allocate failed!", subclassName);
+      if (!stSubClass) return nil;
+      
+    objc_registerClassPair(stSubClass);
+    Class realClass = [object class];
+    hookGetClassMessage(stSubClass, realClass);
+    hookGetClassMessage(object_getClass(stSubClass), realClass);
+    }
+  }
   return stSubClass;
 }
 
