@@ -331,6 +331,7 @@ Assuner-Lee, assuner@foxmail.com
 | 0.2.7 | improve performance.|
 | 0.2.8 | improve performance.|
 | 0.2.9 | support automatic removal|
+| 0.3.0 | fix kvo crash|
 
 ## License
 
