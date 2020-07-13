@@ -43,20 +43,35 @@
 
 - (void)tearDown {
     // Put teardown code here. This method is called after the invocation of each test method in the class.
-//    [self.obj removeObserver:self forKeyPath:@"index"];
-//    [self.obj removeObserver:self forKeyPath:@"name"];
+    [self.obj removeObserver:self forKeyPath:@"index"];
+    [self.obj removeObserver:self forKeyPath:@"name"];
+    temp = @"";
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     NSLog(@"%@对象的%@属性改变了：%@", object, keyPath, change);
+    temp = [temp stringByAppendingFormat:@"-kvo"];
+}
+
+static NSString *temp = @"";
+
+- (void)testSetter1 {
+  [self.obj st_hookInstanceMethod:@selector(setIndex:) option:STOptionInstead usingIdentifier:@"xxxxx" withBlock:^(id<StingerParams> params, NSInteger index) {
+    NSLog(@"name");
+    temp = [temp stringByAppendingFormat:@"-st"];
+  }];
+  self.obj.index = 2;
+  NSAssert([temp isEqualToString:@"-st"], @"");
 }
 
 
-- (void)testSetter {
+- (void)testSetter2 {
   [self.obj st_hookInstanceMethod:@selector(setName:) option:STOptionAfter usingIdentifier:@"xxxxx" withBlock:^(id<StingerParams> params, NSString *name) {
     NSLog(@"name");
+    temp = [temp stringByAppendingFormat:@"-st"];
   }];
   self.obj.name = @"2";
+  NSAssert([temp isEqualToString:@"-kvo-st"], @"");
 }
 
 - (void)testInstanceHookBefore {
