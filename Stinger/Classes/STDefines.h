@@ -49,6 +49,10 @@ typedef NS_ENUM(NSInteger, STHookResult) {
 - (id)slf;
 - (SEL)sel;
 - (void)invokeAndGetOriginalRetValue:(void *)retLoc;
+
+/// 调用原实现, 需要重新传入消息接收目标target和其余参数(如果有的话)
+/// @param target 接收目标
+- (NSValue *)invokeOriginalWithTarget:(id)target, ... ;
 @end
 
 
