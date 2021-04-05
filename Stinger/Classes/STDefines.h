@@ -52,8 +52,12 @@ typedef NS_ENUM(NSInteger, STHookResult) {
 
 /// 调用原实现, 需要重新传入消息接收目标target和其余参数(如果有的话)
 /// @param target 接收目标
-- (NSValue *)invokeOriginalWithTarget:(id)target, ... ;
+/// @return 返回指针, 指向栈上内存
+- (void *)invokeOriginalWithTarget:(id)target, ... ;
 @end
+
+#define StingerInvokeOriginal(ReturnType, StingerParams, ...)  \
+*((ReturnType*)[StingerParams invokeOriginalWithTarget:StingerParams.slf, ##__VA_ARGS__])
 
 
 @protocol STHookInfoPool <NSObject>

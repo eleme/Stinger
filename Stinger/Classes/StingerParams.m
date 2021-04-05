@@ -55,9 +55,8 @@
   }
 }
 
-- (NSValue *)invokeOriginalWithTarget:(id)target, ... {
+- (void *)invokeOriginalWithTarget:(id)target, ... {
     NSMethodSignature *signature = [NSMethodSignature signatureWithObjCTypes:_types.UTF8String];
-    NSInteger count = signature.numberOfArguments;
     NSInvocation *inv = [NSInvocation invocationWithMethodSignature:signature];
     // 传参
     [inv setTarget:target];
@@ -66,6 +65,7 @@
     va_list args;
     va_start(args, target);
     
+    NSInteger count = signature.numberOfArguments;
     for (int index = 2; index < count; index++) {
         char *type = (char *)[signature getArgumentTypeAtIndex:index];
         while (*type == 'r' || // const
@@ -244,23 +244,14 @@ else if (size <= 4 * _size_ ) { \
     
     // 调用原实现
     [inv invokeUsingIMP:_originalIMP];
-    NSUInteger returnSize = inv.methodSignature.methodReturnLength;
+    size_t returnSize = inv.methodSignature.methodReturnLength;
     if (returnSize) {
-        void *buffer = malloc(returnSize);
+        // 申请栈上内存
+        void *buffer = alloca(returnSize);
         [inv getReturnValue:buffer];
-        NSData *data = [NSData dataWithBytesNoCopy:buffer length:returnSize freeWhenDone:YES];
-        NSValue *retValue =
-        [NSValue valueWithBytes:buffer
-                       objCType:inv.methodSignature.methodReturnType];
-        objc_setAssociatedObject(retValue, "StingerReturnData",
-                                 data, OBJC_ASSOCIATION_COPY_NONATOMIC);
-        return retValue;
+        return buffer;
     }
     return nil;
-}
-
-- (void)dtdd {
-    
 }
 
 @end
