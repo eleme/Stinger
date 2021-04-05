@@ -56,9 +56,6 @@ typedef NS_ENUM(NSInteger, STHookResult) {
 - (void *)invokeOriginalWithTarget:(id)target, ... ;
 @end
 
-#define StingerInvokeOriginal(ReturnType, StingerParams, ...)  \
-*((ReturnType*)[StingerParams invokeOriginalWithTarget:StingerParams.slf, ##__VA_ARGS__])
-
 
 @protocol STHookInfoPool <NSObject>
 @required
