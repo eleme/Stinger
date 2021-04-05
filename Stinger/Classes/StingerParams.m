@@ -55,7 +55,7 @@
   }
 }
 
-- (void *)invokeOriginalWithTarget:(id)target, ... {
+- (CFTypeRef *)invokeOriginalWithTarget:(id)target, ... {
     NSMethodSignature *signature = [NSMethodSignature signatureWithObjCTypes:_types.UTF8String];
     NSInvocation *inv = [NSInvocation invocationWithMethodSignature:signature];
     // 传参
@@ -249,7 +249,7 @@ else if (size <= 4 * _size_ ) { \
         // 申请栈上内存
         void *buffer = alloca(returnSize);
         [inv getReturnValue:buffer];
-        return buffer;
+        return (CFTypeRef*)buffer;
     }
     return nil;
 }

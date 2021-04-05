@@ -53,7 +53,7 @@ typedef NS_ENUM(NSInteger, STHookResult) {
 /// 调用原实现, 需要重新传入消息接收目标target和其余参数(如果有的话)
 /// @param target 接收目标
 /// @return 返回指针, 指向栈上内存
-- (void *)invokeOriginalWithTarget:(id)target, ... ;
+- (CFTypeRef *)invokeOriginalWithTarget:(id)target, ... ;
 @end
 
 
