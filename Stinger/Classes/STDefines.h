@@ -51,7 +51,7 @@ typedef NS_ENUM(NSInteger, STHookResult) {
 - (void)invokeAndGetOriginalRetValue:(void *)retLoc;
 
 /// 调用原方法实现(IMP).
-- (CFTypeRef)invoke;
+- (CFTypeRef)invokeOriginal;
 
 /// 调用原方法实现(IMP). 需要传入参数.
 /// @param useless 无用, 随便传什么参数, 一般传nil吧

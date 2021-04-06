@@ -54,7 +54,7 @@
   }
 }
 
-- (CFTypeRef)invoke {
+- (CFTypeRef)invokeOriginal {
   NSMethodSignature *signature = [NSMethodSignature signatureWithObjCTypes:_types.UTF8String];
   NSInteger count = signature.numberOfArguments;
   NSInvocation *originalInvocation = [NSInvocation invocationWithMethodSignature:signature];
