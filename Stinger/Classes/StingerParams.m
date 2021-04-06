@@ -55,19 +55,19 @@
   }
 }
 
-- (CFTypeRef *)invokeOriginalWithTarget:(id)target, ... {
-    NSMethodSignature *signature = [NSMethodSignature signatureWithObjCTypes:_types.UTF8String];
-    NSInvocation *inv = [NSInvocation invocationWithMethodSignature:signature];
+- (void)invokeOriginal:(void*)retLoc, ...; {
+    NSMethodSignature *sig = [NSMethodSignature signatureWithObjCTypes:_types.UTF8String];
+    NSInvocation *inv = [NSInvocation invocationWithMethodSignature:sig];
     // 传参
-    [inv setTarget:target];
+    [inv setArgument:_args[0] atIndex:0];
     [inv setArgument:_args[1] atIndex:1];
     
     va_list args;
-    va_start(args, target);
+    va_start(args, retLoc);
     
-    NSInteger count = signature.numberOfArguments;
+    NSInteger count = sig.numberOfArguments;
     for (int index = 2; index < count; index++) {
-        char *type = (char *)[signature getArgumentTypeAtIndex:index];
+        char *type = (char *)[sig getArgumentTypeAtIndex:index];
         while (*type == 'r' || // const
                *type == 'n' || // in
                *type == 'N' || // inout
@@ -232,8 +232,9 @@ else if (size <= 4 * _size_ ) { \
                  */
                 struct dummy {char tmp;};
                 for (int i = 0; i < size; i++) va_arg(args, struct dummy);
-                NSLog(@"StingerParams invokeOriginalAndGetReturnValue unsupported type:%s (%lu bytes)",
-                      [signature getArgumentTypeAtIndex:index],(unsigned long)size);
+                NSLog(@"%s unsupported type:%s (%lu bytes)",
+                      __PRETTY_FUNCTION__,
+                      [sig getArgumentTypeAtIndex:index],(unsigned long)size);
             }
 #undef case_size
 
@@ -244,14 +245,9 @@ else if (size <= 4 * _size_ ) { \
     
     // 调用原实现
     [inv invokeUsingIMP:_originalIMP];
-    size_t returnSize = inv.methodSignature.methodReturnLength;
-    if (returnSize) {
-        // 申请栈上内存
-        void *buffer = alloca(returnSize);
-        [inv getReturnValue:buffer];
-        return (CFTypeRef*)buffer;
+    if (sig.methodReturnLength) {
+        [inv getReturnValue:retLoc];
     }
-    return nil;
 }
 
 @end
