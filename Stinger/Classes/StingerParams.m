@@ -41,7 +41,6 @@
   return _sel;
 }
 
-
 - (void)invokeAndGetOriginalRetValue:(void *)retLoc {
   NSMethodSignature *signature = [NSMethodSignature signatureWithObjCTypes:_types.UTF8String];
   NSInteger count = signature.numberOfArguments;
@@ -50,12 +49,29 @@
     [originalInvocation setArgument:_args[i] atIndex:i];
   }
   [originalInvocation invokeUsingIMP:_originalIMP];
-  if (originalInvocation.methodSignature.methodReturnLength && !(retLoc == NULL)) {
+  if (signature.methodReturnLength) {
     [originalInvocation getReturnValue:retLoc];
   }
 }
 
-- (void)invokeOriginal:(void*)retLoc, ...; {
+- (CFTypeRef)invoke {
+  NSMethodSignature *signature = [NSMethodSignature signatureWithObjCTypes:_types.UTF8String];
+  NSInteger count = signature.numberOfArguments;
+  NSInvocation *originalInvocation = [NSInvocation invocationWithMethodSignature:signature];
+  for (int i = 0; i < count; i ++) {
+    [originalInvocation setArgument:_args[i] atIndex:i];
+  }
+  [originalInvocation invokeUsingIMP:_originalIMP];
+  if (signature.methodReturnLength) {
+    // 申请栈上内存
+    CFTypeRef *retLoc = alloca(signature.methodReturnLength);
+    [originalInvocation getReturnValue:retLoc];
+    return *retLoc;
+  }
+  return nil;
+}
+
+- (CFTypeRef)invokeOriginal:(void*)useless, ... {
     NSMethodSignature *sig = [NSMethodSignature signatureWithObjCTypes:_types.UTF8String];
     NSInvocation *inv = [NSInvocation invocationWithMethodSignature:sig];
     // 传参
@@ -63,7 +79,7 @@
     [inv setArgument:_args[1] atIndex:1];
     
     va_list args;
-    va_start(args, retLoc);
+    va_start(args, useless);
     
     NSInteger count = sig.numberOfArguments;
     for (int index = 2; index < count; index++) {
@@ -244,10 +260,15 @@ else if (size <= 4 * _size_ ) { \
     va_end(args);
     
     // 调用原实现
+    [inv retainArguments];
     [inv invokeUsingIMP:_originalIMP];
     if (sig.methodReturnLength) {
+        // 申请栈上内存
+        CFTypeRef *retLoc = alloca(sig.methodReturnLength);
         [inv getReturnValue:retLoc];
+        return *retLoc;
     }
+    return nil;
 }
 
 @end
