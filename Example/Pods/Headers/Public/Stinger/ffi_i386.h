@@ -1,1 +1,0 @@
-../../../../../Stinger/Classes/libffi/ffi_i386.h
