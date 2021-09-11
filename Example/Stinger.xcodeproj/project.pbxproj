@@ -10,7 +10,6 @@
 		243495F313045EB30CF94EB2 /* libPods-Stinger_Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 21F7D4EE6855E30149E51D1A /* libPods-Stinger_Tests.a */; };
 		2937BBE624B85A0200D29B94 /* HookKVOObjectTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2937BBE524B85A0200D29B94 /* HookKVOObjectTests.m */; };
 		295C52A92398A6F400C3E9D5 /* HookForSpecificClassTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 295C52A82398A6F400C3E9D5 /* HookForSpecificClassTests.m */; };
-		295C52AC23991DAA00C3E9D5 /* MethodSignatureTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 295C52AB23991DAA00C3E9D5 /* MethodSignatureTests.m */; };
 		295D1B0D23A101C9001A882D /* PerformanceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 295D1B0C23A101C9001A882D /* PerformanceTests.m */; };
 		2977986E239CF4AB00512AC7 /* HookForSpecificInstanceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2977986D239CF4AB00512AC7 /* HookForSpecificInstanceTests.m */; };
 		2979077B21E88D87002684DB /* README_中文.md in Resources */ = {isa = PBXBuildFile; fileRef = 2979077A21E88D87002684DB /* README_中文.md */; };
@@ -48,7 +47,6 @@
 		26029EEE123E5F3DD35E00C4 /* libPods-Stinger_Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Stinger_Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2937BBE524B85A0200D29B94 /* HookKVOObjectTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HookKVOObjectTests.m; sourceTree = "<group>"; };
 		295C52A82398A6F400C3E9D5 /* HookForSpecificClassTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HookForSpecificClassTests.m; sourceTree = "<group>"; };
-		295C52AB23991DAA00C3E9D5 /* MethodSignatureTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MethodSignatureTests.m; sourceTree = "<group>"; };
 		295D1B0C23A101C9001A882D /* PerformanceTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PerformanceTests.m; sourceTree = "<group>"; };
 		2977986D239CF4AB00512AC7 /* HookForSpecificInstanceTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HookForSpecificInstanceTests.m; sourceTree = "<group>"; };
 		2979077A21E88D87002684DB /* README_中文.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = "README_中文.md"; path = "../README_中文.md"; sourceTree = "<group>"; };
@@ -173,7 +171,6 @@
 			children = (
 				6003F5B6195388D20070C39A /* Supporting Files */,
 				295C52A82398A6F400C3E9D5 /* HookForSpecificClassTests.m */,
-				295C52AB23991DAA00C3E9D5 /* MethodSignatureTests.m */,
 				2977986D239CF4AB00512AC7 /* HookForSpecificInstanceTests.m */,
 				295D1B0C23A101C9001A882D /* PerformanceTests.m */,
 				298885D023A32A9000882BB3 /* CompatibilityTests.m */,
@@ -371,7 +368,6 @@
 			files = (
 				295C52A92398A6F400C3E9D5 /* HookForSpecificClassTests.m in Sources */,
 				298885D123A32A9000882BB3 /* CompatibilityTests.m in Sources */,
-				295C52AC23991DAA00C3E9D5 /* MethodSignatureTests.m in Sources */,
 				295D1B0D23A101C9001A882D /* PerformanceTests.m in Sources */,
 				2937BBE624B85A0200D29B94 /* HookKVOObjectTests.m in Sources */,
 				2977986E239CF4AB00512AC7 /* HookForSpecificInstanceTests.m in Sources */,

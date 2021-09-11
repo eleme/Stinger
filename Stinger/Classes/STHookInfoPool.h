@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <Stinger/STDefines.h>
 
-extern NSString *st_getSignatureForBlock(id block);
+extern NSMethodSignature *st_getSignatureForBlock(id block);
 extern NSString * const STClassPrefix;
 extern NSString * const KVOClassPrefix;
 extern void st_setHookInfoPool(id obj, SEL key, id infoPool);

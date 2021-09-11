@@ -8,7 +8,6 @@
 
 #import "STHookInfoPool.h"
 #import "ffi.h"
-#import "STMethodSignature.h"
 #import <objc/runtime.h>
 #import <objc/message.h>
 #import "StingerParams.h"
@@ -60,7 +59,7 @@ struct Block_layout {
 };
 
 
-NSString *st_getSignatureForBlock(id block) {
+NSMethodSignature *st_getSignatureForBlock(id block) {
   struct Block_layout *layout = (__bridge void *)block;
   if (!(layout->flags & BLOCK_HAS_SIGNATURE))
     return nil;
@@ -74,7 +73,7 @@ NSString *st_getSignatureForBlock(id block) {
   if (!descRef) return nil;
   
   const char *signature = (*(const char **)descRef);
-  return [NSString stringWithUTF8String:signature];
+  return [NSMethodSignature signatureWithObjCTypes:signature];
 }
 
 NS_INLINE void *_st_impForBlock(id block) {
@@ -82,6 +81,107 @@ NS_INLINE void *_st_impForBlock(id block) {
   return layout->invoke;
 }
 
+static ffi_type *st_ffiTypeWithType(const char *c) {
+    switch (c[0]) {
+        case 'v':
+            return &ffi_type_void;
+        case 'c':
+            return &ffi_type_schar;
+        case 'C':
+            return &ffi_type_uchar;
+        case 's':
+            return &ffi_type_sshort;
+        case 'S':
+            return &ffi_type_ushort;
+        case 'i':
+            return &ffi_type_sint;
+        case 'I':
+            return &ffi_type_uint;
+        case 'l':
+            return &ffi_type_slong;
+        case 'L':
+            return &ffi_type_ulong;
+        case 'q':
+            return &ffi_type_sint64;
+        case 'Q':
+            return &ffi_type_uint64;
+        case 'f':
+            return &ffi_type_float;
+        case 'd':
+            return &ffi_type_double;
+        case 'F':
+#if CGFLOAT_IS_DOUBLE
+            return &ffi_type_double;
+#else
+            return &ffi_type_float;
+#endif
+        case 'B':
+            return &ffi_type_uint8;
+        case '^':
+            return &ffi_type_pointer;
+        case '*':
+            return &ffi_type_pointer;
+        case '@':
+            return &ffi_type_pointer;
+        case '#':
+            return &ffi_type_pointer;
+        case ':':
+            return &ffi_type_pointer;
+        case '{': {
+            // http://www.chiark.greenend.org.uk/doc/libffi-dev/html/Type-Example.html
+            ffi_type *type = malloc(sizeof(ffi_type));
+            type->type = FFI_TYPE_STRUCT;
+            NSUInteger size = 0;
+            NSUInteger alignment = 0;
+            NSGetSizeAndAlignment(c, &size, &alignment);
+            type->alignment = alignment;
+            type->size = size;
+            while (c[0] != '=') ++c; ++c;
+            
+            NSPointerArray *pointArray = [NSPointerArray pointerArrayWithOptions:NSPointerFunctionsOpaqueMemory];
+            while (c[0] != '}') {
+                ffi_type *elementType = NULL;
+                elementType = st_ffiTypeWithType(c);
+                if (elementType) {
+                    [pointArray addPointer:elementType];
+                    c = NSGetSizeAndAlignment(c, NULL, NULL);
+                } else {
+                    return NULL;
+                }
+            }
+            NSInteger count = pointArray.count;
+            ffi_type **types = malloc(sizeof(ffi_type *) * (count + 1));
+            for (NSInteger i = 0; i < count; i++) {
+                types[i] = [pointArray pointerAtIndex:i];
+            }
+            types[count] = NULL; // terminated element is NULL
+            
+            type->elements = types;
+            return type;
+        }
+    }
+    return NULL;
+}
+
+@interface NSMethodSignature (ArgumentTypes)
+
+@property (nonatomic, copy, readonly) NSArray *argumentTypes;
+
+@end
+
+@implementation NSMethodSignature (ArgumentTypes)
+
+- (NSArray *)argumentTypes {
+    NSMutableArray *types = [NSMutableArray array];
+    NSUInteger count = self.numberOfArguments;
+    for (NSUInteger i = 0; i < count; ++i) {
+        const char *type = [self getArgumentTypeAtIndex:i];
+        [types addObject:[NSString stringWithUTF8String:type]];
+    }
+    return [types copy];
+}
+
+@end
 
 #pragma mark - STHookInfoPool
 
@@ -91,8 +191,7 @@ NSString * const KVOClassPrefix = @"NSKVONotifying_";
 
 @interface STHookInfoPool ()
 @property (nonatomic, strong) dispatch_semaphore_t semaphore;
-@property (nonatomic, strong) STMethodSignature *signature;
-@property (nonatomic, strong) NSMethodSignature *ns_signature;
+@property (nonatomic, strong) NSMethodSignature *signature;
 @property (nonatomic, assign) NSUInteger argsCount;
 @property (nonatomic) SEL uniqueKey;
 @end
@@ -140,9 +239,8 @@ NSString * const KVOClassPrefix = @"NSKVONotifying_";
 
 - (void)setTypeEncoding:(NSString *)typeEncoding {
   _typeEncoding = typeEncoding;
-  _signature = typeEncoding ? [[STMethodSignature alloc] initWithObjCTypes:typeEncoding] : nil;
-  _ns_signature = typeEncoding ? [NSMethodSignature signatureWithObjCTypes:[typeEncoding UTF8String]]: nil;
-  _argsCount = _signature.argumentTypes.count;
+  _signature = typeEncoding ? [NSMethodSignature signatureWithObjCTypes:[typeEncoding UTF8String]]: nil;
+  _argsCount = _signature.numberOfArguments;
 }
 
 
@@ -208,15 +306,15 @@ NSString * const KVOClassPrefix = @"NSKVONotifying_";
 
 - (StingerIMP)stingerIMP {
   if (_stingerIMP == NULL) {
-    ffi_type *returnType = st_ffiTypeWithType(self.signature.returnType);
-    NSAssert(returnType, @"can't find a ffi_type of %@", self.signature.returnType);
+    ffi_type *returnType = st_ffiTypeWithType(self.signature.methodReturnType);
+    NSAssert(returnType, @"can't find a ffi_type of %s", self.signature.methodReturnType);
     
     NSUInteger argumentCount = self->_argsCount;
     _args = malloc(sizeof(ffi_type *) * argumentCount) ;
     
     for (int i = 0; i < argumentCount; i++) {
-      ffi_type* current_ffi_type = st_ffiTypeWithType(self.signature.argumentTypes[i]);
-      NSAssert(current_ffi_type, @"can't find a ffi_type of %@", self.signature.argumentTypes[i]);
+      ffi_type* current_ffi_type = st_ffiTypeWithType([self.signature getArgumentTypeAtIndex:i]);
+      NSAssert(current_ffi_type, @"can't find a ffi_type of %s", [self.signature getArgumentTypeAtIndex:i]);
       _args[i] = current_ffi_type;
     }
     
@@ -260,25 +358,26 @@ NSString * const KVOClassPrefix = @"NSKVONotifying_";
 }
 
 - (void)_genarateBlockCif {
-  ffi_type *returnType = st_ffiTypeWithType(self.signature.returnType);
+  ffi_type *returnType = st_ffiTypeWithType(self.signature.methodReturnType);
   
   NSUInteger argumentCount = self->_argsCount;
   _blockArgs = malloc(sizeof(ffi_type *) *argumentCount);
   
-  ffi_type *current_ffi_type_0 = st_ffiTypeWithType(@"@?");
+  ffi_type *current_ffi_type_0 = st_ffiTypeWithType("@?");
   _blockArgs[0] = current_ffi_type_0;
-  ffi_type *current_ffi_type_1 = st_ffiTypeWithType(@"@");
+  ffi_type *current_ffi_type_1 = st_ffiTypeWithType("@");
   _blockArgs[1] = current_ffi_type_1;
   
   for (int i = 2; i < argumentCount; i++){
-    ffi_type* current_ffi_type = st_ffiTypeWithType(self.signature.argumentTypes[i]);
-    _blockArgs[i] = current_ffi_type;
+      ffi_type* current_ffi_type = st_ffiTypeWithType([self.signature getArgumentTypeAtIndex:i]);
+      _blockArgs[i] = current_ffi_type;
   }
   
   if(ffi_prep_cif(&_blockCif, FFI_DEFAULT_ABI, (unsigned int)argumentCount, returnType, _blockArgs) != FFI_OK) {
-    NSAssert(NO, @"FUCK");
+      NSAssert(NO, @"FUCK");
   }
 }
+
 
 
 #pragma mark - _st_ffi_function
