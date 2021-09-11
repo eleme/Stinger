@@ -7,7 +7,6 @@
 //
 
 #import "STHookInfo.h"
-#import "STMethodSignature.h"
 
 @implementation STHookInfo
 

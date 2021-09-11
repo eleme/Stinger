@@ -1,6 +1,0 @@
-framework module Stinger {
-  umbrella header "Stinger-umbrella.h"
-
-  export *
-  module * { export * }
-}

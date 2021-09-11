@@ -49,5 +49,10 @@
     [self methodA];
   }
   NSLog(@"clicked!!");
+  NSURL *url = [[NSURL alloc] initWithString:@"https://www.google.com"];
+  [url st_hookInstanceMethod:@selector(absoluteString) option:(STOptionBefore) usingIdentifier:@"123" withBlock:^(id<StingerParams> params) {
+      NSLog(@"");
+  }];
+  [url absoluteString];
 }
 @end

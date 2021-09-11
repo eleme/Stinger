@@ -10,7 +10,6 @@
 #import <objc/runtime.h>
 #import "STHookInfo.h"
 #import "STHookInfoPool.h"
-#import "STMethodSignature.h"
 
 static void *STSubClassKey = &STSubClassKey;
 
@@ -58,7 +57,7 @@ static void *STSubClassKey = &STSubClassKey;
     if (!stSubClass) return STHookResultOther;
     
     STHookResult hookMethodResult = hookMethod(stSubClass, sel, option, identifier, block);
-    if (hookMethodResult != STHookResultSuccuss) return hookMethodResult;
+    if (hookMethodResult != STHookResultSuccess) return hookMethodResult;
     if (!objc_getAssociatedObject(self, STSubClassKey)) {
       object_setClass(self, stSubClass);
       objc_setAssociatedObject(self, STSubClassKey, stSubClass, OBJC_ASSOCIATION_ASSIGN);
@@ -71,7 +70,7 @@ static void *STSubClassKey = &STSubClassKey;
     }
     
     STHookInfo *instanceHookInfo = [STHookInfo infoWithOption:option withIdentifier:identifier withBlock:block];
-    return [instanceHookInfoPool addInfo:instanceHookInfo] ? STHookResultSuccuss : STHookResultErrorIDExisted;
+    return [instanceHookInfoPool addInfo:instanceHookInfo] ? STHookResultSuccess : STHookResultErrorIDExisted;
   }
 }
 
@@ -101,8 +100,9 @@ NS_INLINE STHookResult hookMethod(Class hookedCls, SEL sel, STOption option, STI
   NSCAssert(m, @"SEL (%@) doesn't has a imp in Class (%@) originally", NSStringFromSelector(sel), hookedCls);
   if (!m) return STHookResultErrorMethodNotFound;
   const char * typeEncoding = method_getTypeEncoding(m);
-  STMethodSignature *methodSignature = [[STMethodSignature alloc] initWithObjCTypes:[NSString stringWithUTF8String:typeEncoding]];
-  STMethodSignature *blockSignature = [[STMethodSignature alloc] initWithObjCTypes:st_getSignatureForBlock(block)];
+  NSMethodSignature *methodSignature = [NSMethodSignature signatureWithObjCTypes:typeEncoding];
+  NSMethodSignature *blockSignature = st_getSignatureForBlock(block);
+
   if (!isMatched(methodSignature, blockSignature, option, hookedCls, sel, identifier)) {
     return STHookResultErrorBlockNotMatched;
   }
@@ -124,10 +124,10 @@ NS_INLINE STHookResult hookMethod(Class hookedCls, SEL sel, STOption option, STI
       st_setHookInfoPool(hookedCls, sel, hookInfoPool);
     }
     if (st_isIntanceHookCls(hookedCls)) {
-      return STHookResultSuccuss;
+      return STHookResultSuccess;
     } else {
       STHookInfo *hookInfo = [STHookInfo infoWithOption:option withIdentifier:identifier withBlock:block];
-      return [hookInfoPool addInfo:hookInfo] ? STHookResultSuccuss :  STHookResultErrorIDExisted;
+      return [hookInfoPool addInfo:hookInfo] ? STHookResultSuccess :  STHookResultErrorIDExisted;
     }
   }
 }
@@ -175,28 +175,39 @@ NS_INLINE NSArray<STIdentifier> * getAllIdentifiers(id obj, SEL key) {
 }
 
 
-NS_INLINE BOOL isMatched(STMethodSignature *methodSignature, STMethodSignature *blockSignature, STOption option, Class cls, SEL sel, NSString *identifier) {
+NS_INLINE BOOL isMatched(NSMethodSignature *methodSignature, NSMethodSignature *blockSignature, STOption option, Class cls, SEL sel, NSString *identifier) {
+  BOOL strictCheck = ((option & STOptionWeakCheckSignature) == 0);
   //argument count
-  if (methodSignature.argumentTypes.count != blockSignature.argumentTypes.count) {
+  if (strictCheck && methodSignature.numberOfArguments != blockSignature.numberOfArguments) {
     NSCAssert(NO, @"count of arguments isn't equal. Class: (%@), SEL: (%@), Identifier: (%@)", cls, NSStringFromSelector(sel), identifier);
     return NO;
   };
   // loc 1 should be id<StingerParams>.
-  if (![blockSignature.argumentTypes[1] isEqualToString:@"@"]) {
+  const char *firstArgumentType = [blockSignature getArgumentTypeAtIndex:1];
+  if (!firstArgumentType || firstArgumentType[0] != '@') {
      NSCAssert(NO, @"argument 1 should be object type. Class: (%@), SEL: (%@), Identifier: (%@)", cls, NSStringFromSelector(sel), identifier);
     return NO;
   }
-  // from loc 2.
-  for (NSInteger i = 2; i < methodSignature.argumentTypes.count; i++) {
-    if (![blockSignature.argumentTypes[i] isEqualToString:methodSignature.argumentTypes[i]]) {
-      NSCAssert(NO, @"argument (%zd) type isn't equal. Class: (%@), SEL: (%@), Identifier: (%@)", i, cls, NSStringFromSelector(sel), identifier);
-      return NO;
+  /// only strict check
+  if (strictCheck) {
+    // from loc 2.
+    for (NSInteger i = 2; i < methodSignature.numberOfArguments; i++) {
+      const char *methodType = [methodSignature getArgumentTypeAtIndex:i];
+      const char *blockType = [blockSignature getArgumentTypeAtIndex:i];
+      if (!methodType || !blockType || methodType[0] != blockType[0]) {
+        NSCAssert(NO, @"argument (%zd) type isn't equal. Class: (%@), SEL: (%@), Identifier: (%@)", i, cls, NSStringFromSelector(sel), identifier);
+        return NO;
+      }
     }
   }
   // when STOptionInstead, returnType
-  if ((option & STOptionInstead) && ![blockSignature.returnType isEqualToString:methodSignature.returnType]) {
-    NSCAssert(NO, @"return type isn't equal. Class: (%@), SEL: (%@), Identifier: (%@)", cls, NSStringFromSelector(sel), identifier);
-    return NO;
+  if ((option & StingerPositionFilter) == STOptionInstead) {
+    const char *methodReturnType = methodSignature.methodReturnType;
+    const char *blockReturnType = blockSignature.methodReturnType;
+    if (!methodReturnType || !blockReturnType || methodReturnType[0] != blockReturnType[0]) {
+      NSCAssert(NO, @"return type isn't equal. Class: (%@), SEL: (%@), Identifier: (%@)", cls, NSStringFromSelector(sel), identifier);
+      return NO;
+    }
   }
   
   return YES;

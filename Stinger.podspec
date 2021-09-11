@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Stinger'
-  s.version          = '0.3.0'
+  s.version          = '1.0.0'
   s.summary          = 'Implementing HOOK & AOP using libffi for Objective-C.'
 
 # This description is used to generate tags and improve search results.
@@ -30,15 +30,22 @@ TODO: Add long description of the pod here.
 
   s.ios.deployment_target = '8.0'
 
-  s.source_files = 'Stinger/Classes/**/*'
+  s.pod_target_xcconfig = {
+    'DEFINES_MODULE' => 'YES',
+  }
+  s.default_subspecs = 'Core', 'libffi'
+  # libffi source code from https://github.com/libffi/libffi
+  # version 3.3.0
+  # how to fix libffi, you can see https://juejin.cn/post/6955652447670894606
+  s.subspec 'libffi' do |d|
+    d.source_files = 'Stinger/libffi/**/*.{h,c,m,S}'
+    d.public_header_files = 'Stinger/libffi/**/*.{h}'
+  end
   
-  # s.resource_bundles = {
-  #   'Stinger' => ['Stinger/Assets/*.png']
-  # }
-
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
-  s.vendored_libraries = 'Stinger/Classes/libffi/libffi.a'
+  s.subspec 'Core' do |d|
+    d.source_files = 'Stinger/Classes/**/*'
+    d.public_header_files = 'Stinger/Classes/**/*.{h}'
+    d.dependency 'Stinger/libffi'
+  end
 
 end

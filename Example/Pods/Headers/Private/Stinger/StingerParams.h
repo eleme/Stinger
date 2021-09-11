@@ -1,1 +1,0 @@
-../../../../../Stinger/Classes/StingerParams.h
