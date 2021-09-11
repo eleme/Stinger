@@ -332,6 +332,7 @@ Assuner-Lee, assuner@foxmail.com
 | 0.2.8 | improve performance.|
 | 0.2.9 | support automatic removal|
 | 0.3.0 | fix kvo crash|
+| 1.0.0 | 1. replace STMethodSignature with NSMethodSignature <br />2. support get arguments <br />3. libffi use source code from https://github.com/libffi/libffi, version 3.3.0 <br />4. fix libffi crash according to https://juejin.cn/post/6955652447670894606 <br />5. add weak check signature feature|
 
 ## License
 
