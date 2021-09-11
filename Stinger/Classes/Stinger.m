@@ -57,7 +57,7 @@ static void *STSubClassKey = &STSubClassKey;
     if (!stSubClass) return STHookResultOther;
     
     STHookResult hookMethodResult = hookMethod(stSubClass, sel, option, identifier, block);
-    if (hookMethodResult != STHookResultSuccuss) return hookMethodResult;
+    if (hookMethodResult != STHookResultSuccess) return hookMethodResult;
     if (!objc_getAssociatedObject(self, STSubClassKey)) {
       object_setClass(self, stSubClass);
       objc_setAssociatedObject(self, STSubClassKey, stSubClass, OBJC_ASSOCIATION_ASSIGN);
@@ -70,7 +70,7 @@ static void *STSubClassKey = &STSubClassKey;
     }
     
     STHookInfo *instanceHookInfo = [STHookInfo infoWithOption:option withIdentifier:identifier withBlock:block];
-    return [instanceHookInfoPool addInfo:instanceHookInfo] ? STHookResultSuccuss : STHookResultErrorIDExisted;
+    return [instanceHookInfoPool addInfo:instanceHookInfo] ? STHookResultSuccess : STHookResultErrorIDExisted;
   }
 }
 
@@ -124,10 +124,10 @@ NS_INLINE STHookResult hookMethod(Class hookedCls, SEL sel, STOption option, STI
       st_setHookInfoPool(hookedCls, sel, hookInfoPool);
     }
     if (st_isIntanceHookCls(hookedCls)) {
-      return STHookResultSuccuss;
+      return STHookResultSuccess;
     } else {
       STHookInfo *hookInfo = [STHookInfo infoWithOption:option withIdentifier:identifier withBlock:block];
-      return [hookInfoPool addInfo:hookInfo] ? STHookResultSuccuss :  STHookResultErrorIDExisted;
+      return [hookInfoPool addInfo:hookInfo] ? STHookResultSuccess :  STHookResultErrorIDExisted;
     }
   }
 }

@@ -25,7 +25,8 @@ typedef NS_OPTIONS(NSInteger, STOption) {
 #define StingerPositionFilter 0x07
 
 typedef NS_ENUM(NSInteger, STHookResult) {
-  STHookResultSuccuss = 1,
+  STHookResultSuccuss = 1, // fix typo
+  STHookResultSuccess = 1,
   STHookResultErrorMethodNotFound = -1,
   STHookResultErrorBlockNotMatched = -2,
   STHookResultErrorIDExisted = -3,

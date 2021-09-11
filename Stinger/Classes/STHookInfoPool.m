@@ -311,14 +311,14 @@ NSString * const KVOClassPrefix = @"NSKVONotifying_";
 - (StingerIMP)stingerIMP {
   if (_stingerIMP == NULL) {
     ffi_type *returnType = st_ffiTypeWithType(self.signature.methodReturnType);
-    NSAssert(returnType, @"can't find a ffi_type of %s", self.signature.methodReturnType);
+    NSCAssert(returnType, @"can't find a ffi_type of %s", self.signature.methodReturnType);
     
     NSUInteger argumentCount = self->_argsCount;
     _args = malloc(sizeof(ffi_type *) * argumentCount) ;
     
     for (int i = 0; i < argumentCount; i++) {
       ffi_type* current_ffi_type = st_ffiTypeWithType([self.signature getArgumentTypeAtIndex:i]);
-      NSAssert(current_ffi_type, @"can't find a ffi_type of %s", [self.signature getArgumentTypeAtIndex:i]);
+      NSCAssert(current_ffi_type, @"can't find a ffi_type of %s", [self.signature getArgumentTypeAtIndex:i]);
       _args[i] = current_ffi_type;
     }
     
@@ -326,10 +326,10 @@ NSString * const KVOClassPrefix = @"NSKVONotifying_";
     
     if(ffi_prep_cif(&_cif, FFI_DEFAULT_ABI, (unsigned int)argumentCount, returnType, _args) == FFI_OK) {
       if (ffi_prep_closure_loc(_closure, &_cif, _st_ffi_function, (__bridge void *)(self), _stingerIMP) != FFI_OK) {
-        NSAssert(NO, @"genarate IMP failed");
+        NSCAssert(NO, @"genarate IMP failed");
       }
     } else {
-      NSAssert(NO, @"FUCK");
+      NSCAssert(NO, @"FUCK");
     }
     
     [self _genarateBlockCif];
@@ -378,7 +378,7 @@ NSString * const KVOClassPrefix = @"NSKVONotifying_";
   }
   
   if(ffi_prep_cif(&_blockCif, FFI_DEFAULT_ABI, (unsigned int)argumentCount, returnType, _blockArgs) != FFI_OK) {
-      NSAssert(NO, @"FUCK");
+      NSCAssert(NO, @"FUCK");
   }
 }
 

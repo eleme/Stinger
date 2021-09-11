@@ -61,7 +61,7 @@ static NSString *temp = @"";
     temp = [temp stringByAppendingFormat:@"-st"];
   }];
   self.obj.index = 2;
-  NSAssert([temp isEqualToString:@"-st"], @"");
+  NSCAssert([temp isEqualToString:@"-st"], @"");
 }
 
 
@@ -71,7 +71,7 @@ static NSString *temp = @"";
     temp = [temp stringByAppendingFormat:@"-st"];
   }];
   self.obj.name = @"2";
-  NSAssert([temp isEqualToString:@"-kvo-st"], @"");
+  NSCAssert([temp isEqualToString:@"-kvo-st"], @"");
 }
 
 - (void)testInstanceHookBefore {

@@ -21,7 +21,7 @@ typedef NS_ENUM(NSInteger, STOption) {
 };
 
 typedef NS_ENUM(NSInteger, STHookResult) {
-  STHookResultSuccuss = 1,
+  STHookResultSuccess = 1,
   STHookResultErrorMethodNotFound = -1,
   STHookResultErrorBlockNotMatched = -2,
   STHookResultErrorIDExisted = -3,
