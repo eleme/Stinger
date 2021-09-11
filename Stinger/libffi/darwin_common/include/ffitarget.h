@@ -12,7 +12,7 @@
 #endif
 #ifdef __arm__
 
-#include "ffitarget_arm.h"
+#include "ffitarget_armv7.h"
 
 
 #endif
