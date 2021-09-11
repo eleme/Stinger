@@ -176,8 +176,9 @@ NS_INLINE NSArray<STIdentifier> * getAllIdentifiers(id obj, SEL key) {
 
 
 NS_INLINE BOOL isMatched(STMethodSignature *methodSignature, STMethodSignature *blockSignature, STOption option, Class cls, SEL sel, NSString *identifier) {
+  BOOL strictCheck = ((option & STOptionWeakCheckSignature) == 0);
   //argument count
-  if (methodSignature.argumentTypes.count != blockSignature.argumentTypes.count) {
+  if (strictCheck && methodSignature.argumentTypes.count != blockSignature.argumentTypes.count) {
     NSCAssert(NO, @"count of arguments isn't equal. Class: (%@), SEL: (%@), Identifier: (%@)", cls, NSStringFromSelector(sel), identifier);
     return NO;
   };
@@ -186,11 +187,14 @@ NS_INLINE BOOL isMatched(STMethodSignature *methodSignature, STMethodSignature *
      NSCAssert(NO, @"argument 1 should be object type. Class: (%@), SEL: (%@), Identifier: (%@)", cls, NSStringFromSelector(sel), identifier);
     return NO;
   }
-  // from loc 2.
-  for (NSInteger i = 2; i < methodSignature.argumentTypes.count; i++) {
-    if (![blockSignature.argumentTypes[i] isEqualToString:methodSignature.argumentTypes[i]]) {
-      NSCAssert(NO, @"argument (%zd) type isn't equal. Class: (%@), SEL: (%@), Identifier: (%@)", i, cls, NSStringFromSelector(sel), identifier);
-      return NO;
+  /// only strict check
+  if (strictCheck) {
+    // from loc 2.
+    for (NSInteger i = 2; i < methodSignature.argumentTypes.count; i++) {
+      if (![blockSignature.argumentTypes[i] isEqualToString:methodSignature.argumentTypes[i]]) {
+        NSCAssert(NO, @"argument (%zd) type isn't equal. Class: (%@), SEL: (%@), Identifier: (%@)", i, cls, NSStringFromSelector(sel), identifier);
+        return NO;
+      }
     }
   }
   // when STOptionInstead, returnType

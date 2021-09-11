@@ -166,6 +166,8 @@ NS_INLINE ffi_type *_st_ffiTypeWithType(const char *c) {
         return &ffi_type_uint8;
       case '^':
         return &ffi_type_pointer;
+      case '*':
+        return &ffi_type_pointer;
       case '@':
         return &ffi_type_pointer;
       case '#':
