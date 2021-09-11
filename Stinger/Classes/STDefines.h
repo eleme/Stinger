@@ -22,6 +22,7 @@ typedef NS_OPTIONS(NSInteger, STOption) {
   STOptionWeakCheckSignature = 1 << 16, // Original method's signature and the block's signature should be consistent by default. The return type only check when STOptionInstead is on. With STOptionWeakCheckSignature on, we will only check the first argument type(id<StingerParams>) and the return type.
 };
 
+#define StingerPositionFilter 0x07
 
 typedef NS_ENUM(NSInteger, STHookResult) {
   STHookResultSuccuss = 1,
@@ -49,6 +50,8 @@ typedef NS_ENUM(NSInteger, STHookResult) {
 @required
 - (id)slf;
 - (SEL)sel;
+- (NSArray *)arguments;
+- (NSString *)typeEncoding;
 - (void)invokeAndGetOriginalRetValue:(void *)retLoc;
 @end
 

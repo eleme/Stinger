@@ -162,17 +162,23 @@ NSString * const KVOClassPrefix = @"NSKVONotifying_";
   NSParameterAssert(info);
   dispatch_semaphore_wait(_semaphore, DISPATCH_TIME_FOREVER);
   BOOL flag = NO;
-  if ((info.option & STOptionBefore) && ![[_beforeInfos valueForKey:@"identifier"] containsObject:info.identifier]) {
-    [_beforeInfos addObject:info];
-    flag = YES;
-  } else if (info.option & STOptionInstead) {
-    _insteadInfo = info;
-    flag = YES;
-  } else if ((info.option == STOptionAfter || info.option == STOptionAutomaticRemoval) && ![[_afterInfos valueForKey:@"identifier"] containsObject:info.identifier]) {
-    [_afterInfos addObject:info];
-    flag = YES;
-  } else {
-    flag = NO;
+  NSUInteger position = info.option & StingerPositionFilter;
+  switch (position) {
+      case STOptionBefore:
+          [_beforeInfos addObject:info];
+          flag = YES;
+          break;
+      case STOptionInstead:
+          _insteadInfo = info;
+          flag = YES;
+          break;
+      case STOptionAfter:
+          [_afterInfos addObject:info];
+          flag = YES;
+          break;
+      default:
+          flag = NO;
+          break;
   }
   dispatch_semaphore_signal(_semaphore);
   return flag;
@@ -303,7 +309,7 @@ NS_INLINE void _st_ffi_function(ffi_cif *cif, void *ret, void **args, void *user
     instanceInfoPool = _st_fast_get_HookInfoPool((__bridge id)(*slf), hookedClassInfoPool->_uniqueKey);
   }
 
-  StingerParams *params = [[StingerParams alloc] initWithType:hookedClassInfoPool->_typeEncoding originalIMP:hookedClassInfoPool->_originalIMP sel:hookedClassInfoPool->_sel args:args];
+  StingerParams *params = [[StingerParams alloc] initWithType:hookedClassInfoPool->_typeEncoding originalIMP:hookedClassInfoPool->_originalIMP sel:hookedClassInfoPool->_sel args:args argumentTypes:hookedClassInfoPool->_signature.argumentTypes];
   innerArgs[1] = &params;
   
   memcpy(innerArgs + 2, args + 2, (hookedClassInfoPool->_argsCount - 2) * sizeof(*args));

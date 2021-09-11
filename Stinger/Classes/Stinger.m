@@ -198,7 +198,8 @@ NS_INLINE BOOL isMatched(STMethodSignature *methodSignature, STMethodSignature *
     }
   }
   // when STOptionInstead, returnType
-  if ((option & STOptionInstead) && ![blockSignature.returnType isEqualToString:methodSignature.returnType]) {
+  NSUInteger position = option & StingerPositionFilter;
+  if (position == STOptionInstead && ![blockSignature.returnType isEqualToString:methodSignature.returnType]) {
     NSCAssert(NO, @"return type isn't equal. Class: (%@), SEL: (%@), Identifier: (%@)", cls, NSStringFromSelector(sel), identifier);
     return NO;
   }

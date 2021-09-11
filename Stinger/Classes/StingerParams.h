@@ -11,5 +11,5 @@
 
 
 @interface StingerParams : NSObject <StingerParams>
-- (instancetype)initWithType:(NSString *)types originalIMP:(IMP)imp sel:(SEL)sel args:(void **)args;
+- (instancetype)initWithType:(NSString *)types originalIMP:(IMP)imp sel:(SEL)sel args:(void **)args argumentTypes:(NSArray *)argumentTypes;
 @end
