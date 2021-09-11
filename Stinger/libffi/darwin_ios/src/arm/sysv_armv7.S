@@ -362,13 +362,13 @@ ARM_FUNC_END(ffi_closure_ret)
 #include <mach/machine/vm_param.h>
 
 .align	PAGE_MAX_SHIFT
-ARM_FUNC_START(ffi_closure_trampoline_table_page)
+ARM_FUNC_START(ffi_closure_remap_trampoline_table_page)
 .rept	PAGE_MAX_SIZE / FFI_TRAMPOLINE_SIZE
 	adr ip, #-PAGE_MAX_SIZE   @ the config page is PAGE_MAX_SIZE behind the trampoline page
 	sub ip, #8				  @ account for pc bias
 	ldr	pc, [ip, #4]		  @ jump to ffi_closure_SYSV or ffi_closure_VFP
 .endr
-ARM_FUNC_END(ffi_closure_trampoline_table_page)
+ARM_FUNC_END(ffi_closure_remap_trampoline_table_page)
 #endif
 
 #else

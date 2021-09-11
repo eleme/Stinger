@@ -263,17 +263,21 @@ NSString * const KVOClassPrefix = @"NSKVONotifying_";
   NSUInteger position = info.option & StingerPositionFilter;
   switch (position) {
       case STOptionBefore:
+        if (![[_beforeInfos valueForKey:@"identifier"] containsObject:info.identifier]) {
           [_beforeInfos addObject:info];
           flag = YES;
           break;
+        }
       case STOptionInstead:
           _insteadInfo = info;
           flag = YES;
           break;
       case STOptionAfter:
+        if (![[_afterInfos valueForKey:@"identifier"] containsObject:info.identifier]) {
           [_afterInfos addObject:info];
           flag = YES;
           break;
+        }
       default:
           flag = NO;
           break;

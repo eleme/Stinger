@@ -654,6 +654,8 @@ extern "C" {
 
 /* ------------------- Declarations of public routines ------------------- */
 
+#define USE_DL_PREFIX 1
+
 #ifndef USE_DL_PREFIX
 #define dlcalloc               calloc
 #define dlfree                 free

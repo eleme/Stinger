@@ -67,7 +67,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.  */
 # define BR(r)  br r
 # define BLR(r) blr r
 #endif
-
+.extern _ffi_bridge_data_page1;
 	.text
 	.align 4
 
@@ -371,22 +371,93 @@ CNAME(ffi_closure_SYSV):
 
 #if FFI_EXEC_TRAMPOLINE_TABLE
 
+# 动态remap的 page
 #ifdef __MACH__
 #include <mach/machine/vm_param.h>
-    .align PAGE_MAX_SHIFT
-CNAME(ffi_closure_trampoline_table_page):
+     .align PAGE_MAX_SHIFT
+    CNAME(ffi_closure_remap_trampoline_table_page):
     .rept PAGE_MAX_SIZE / FFI_TRAMPOLINE_SIZE
     adr x16, -PAGE_MAX_SIZE
     ldp x17, x16, [x16]
-    BR(x16)
-	nop		/* each entry in the trampoline config page is 2*sizeof(void*) so the trampoline itself cannot be smaller than 16 bytes */
+    br x16
+    nop        /* each entry in the trampoline config page is 2*sizeof(void*) so the trampoline itself cannot be smaller that 16 bytes */
     .endr
 
-    .globl CNAME(ffi_closure_trampoline_table_page)
-    FFI_HIDDEN(CNAME(ffi_closure_trampoline_table_page))
+.globl CNAME(ffi_closure_remap_trampoline_table_page)
+#ifdef __ELF__
+    .type    CNAME(ffi_closure_remap_trampoline_table_page), #function
+    .hidden    CNAME(ffi_closure_remap_trampoline_table_page)
+    .size    CNAME(ffi_closure_remap_trampoline_table_page), . - CNAME(ffi_closure_remap_trampoline_table_page)
+#endif
+#endif
+
+# 静态分配的page
+#ifdef __MACH__
+#include <mach/machine/vm_param.h>
+
+    .align 14
+    .data
+    .global _ffi_bridge_data_page1
+    _ffi_bridge_data_page1:
+        .space PAGE_MAX_SIZE*5
+    .align PAGE_MAX_SHIFT
+    .text
+    CNAME(_ffi_local_forwarding_bridge_page):
+
+    _ffi_local_forwarding_bridge:
+    adrp x17, ffi_closure_static_trampoline_table_page_start@PAGE;// text page
+    sub  x16, x16, x17;// offset
+    adrp x17, _ffi_bridge_data_page1@PAGE;// data page
+    add x16, x16, x17;// data address
+    ldp x17, x16, [x16];// x17 closure x16 start
+    br x16
+    nop
+    nop
+    .align PAGE_MAX_SHIFT
+    CNAME(ffi_closure_static_trampoline_table_page):
+
+#这个label 用来adrp@PAGE 计算 trampoline 到 trampoline page的offset
+#留了5个用来调试。
+# 我们static trampoline 两条指令就够了，这里使用4个，和remap的保持一致
+    ffi_closure_static_trampoline_table_page_start:
+    adr x16, #0 // mv pc t0 x16
+    b _ffi_local_forwarding_bridge
+    nop
+    nop
+
+    adr x16, #0 // mv pc t0 x16
+    b _ffi_local_forwarding_bridge // cal x16
+    nop
+    nop
+
+    adr x16, #0 // mv pc t0 x16
+    b _ffi_local_forwarding_bridge // cal x16
+    nop
+    nop
+
+    adr x16, #0 // mv pc t0 x16
+    b _ffi_local_forwarding_bridge // cal x16
+    nop
+    nop
+
+    adr x16, #0 // mv pc t0 x16
+    b _ffi_local_forwarding_bridge // cal x16
+    nop
+    nop
+
+    // 5 * 4
+    .rept (PAGE_MAX_SIZE*5-5*4) / FFI_TRAMPOLINE_SIZE
+    adr x16, #0
+    b _ffi_local_forwarding_bridge
+    nop
+    nop
+    .endr
+
+    .globl CNAME(ffi_closure_static_trampoline_table_page)
+    FFI_HIDDEN(CNAME(ffi_closure_static_trampoline_table_page))
     #ifdef __ELF__
-    	.type	CNAME(ffi_closure_trampoline_table_page), #function
-    	.size	CNAME(ffi_closure_trampoline_table_page), . - CNAME(ffi_closure_trampoline_table_page)
+    	.type	CNAME(ffi_closure_static_trampoline_table_page), #function
+    	.size	CNAME(ffi_closure_static_trampoline_table_page), . - CNAME(ffi_closure_static_trampoline_table_page)
     #endif
 #endif
 

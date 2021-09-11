@@ -807,9 +807,21 @@ ffi_prep_closure_loc (ffi_closure *closure,
 #ifdef HAVE_PTRAUTH
   codeloc = ptrauth_strip (codeloc, ptrauth_key_asia);
 #endif
-  void **config = (void **)((uint8_t *)codeloc - PAGE_MAX_SIZE);
-  config[0] = closure;
-  config[1] = start;
+  // trampoline_table 前8个字节 page_type字段
+  if (*((uint64_t *)closure->trampoline_table) == 0) {
+    extern void *ffi_closure_static_trampoline_table_page;
+    extern void *ffi_bridge_data_page1;
+    size_t offset = (intptr_t)codeloc - (intptr_t)(&ffi_closure_static_trampoline_table_page);
+    void **config = (void**)((int64_t)&ffi_bridge_data_page1 + offset);
+    config[0] = closure;
+    config[1] = start;
+  } else {
+    void **config = (void**)((uint8_t *)codeloc - PAGE_MAX_SIZE);
+    config[0] = closure;
+    config[1] = start;
+  }
+
+
 #endif
 #else
   static const unsigned char trampoline[16] = {
