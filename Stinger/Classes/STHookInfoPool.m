@@ -378,7 +378,7 @@ NSString * const KVOClassPrefix = @"NSKVONotifying_";
   }
   
   if(ffi_prep_cif(&_blockCif, FFI_DEFAULT_ABI, (unsigned int)argumentCount, returnType, _blockArgs) != FFI_OK) {
-      NSCAssert(NO, @"FUCK");
+      NSCAssert(NO, @"OMG");
   }
 }
 
