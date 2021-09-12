@@ -329,7 +329,7 @@ NSString * const KVOClassPrefix = @"NSKVONotifying_";
         NSCAssert(NO, @"genarate IMP failed");
       }
     } else {
-      NSCAssert(NO, @"FUCK");
+      NSCAssert(NO, @"OMG");
     }
     
     [self _genarateBlockCif];
