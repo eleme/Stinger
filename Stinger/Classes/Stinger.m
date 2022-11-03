@@ -18,11 +18,11 @@ static void *STSubClassKey = &STSubClassKey;
 #pragma mark - For specific class
 
 + (STHookResult)st_hookInstanceMethod:(SEL)sel option:(STOption)option usingIdentifier:(STIdentifier)identifier withBlock:(id)block {
-  return hookMethod(self, sel, option, identifier, block);
+  return hookMethod(self, sel, option, identifier, block, NO);
 }
 
 + (STHookResult)st_hookClassMethod:(SEL)sel option:(STOption)option usingIdentifier:(STIdentifier)identifier withBlock:(id)block {
-  return hookMethod(object_getClass(self), sel, option, identifier, block);
+  return hookMethod(object_getClass(self), sel, option, identifier, block, NO);
 }
 
 + (NSArray<STIdentifier> *)st_allIdentifiersForKey:(SEL)key {
@@ -56,7 +56,7 @@ static void *STSubClassKey = &STSubClassKey;
     Class stSubClass = getSTSubClass(self);
     if (!stSubClass) return STHookResultOther;
     
-    STHookResult hookMethodResult = hookMethod(stSubClass, sel, option, identifier, block);
+    STHookResult hookMethodResult = hookMethod(stSubClass, sel, option, identifier, block, YES);
     if (hookMethodResult != STHookResultSuccess) return hookMethodResult;
     if (!objc_getAssociatedObject(self, STSubClassKey)) {
       object_setClass(self, stSubClass);
@@ -91,7 +91,7 @@ static void *STSubClassKey = &STSubClassKey;
 
 #pragma mark - inline functions
 
-NS_INLINE STHookResult hookMethod(Class hookedCls, SEL sel, STOption option, STIdentifier identifier, id block) {
+NS_INLINE STHookResult hookMethod(Class hookedCls, SEL sel, STOption option, STIdentifier identifier, id block, BOOL byInstanceHook) {
   NSCParameterAssert(hookedCls);
   NSCParameterAssert(sel);
   NSCParameterAssert(identifier);
@@ -124,11 +124,13 @@ NS_INLINE STHookResult hookMethod(Class hookedCls, SEL sel, STOption option, STI
       st_setHookInfoPool(hookedCls, sel, hookInfoPool);
     }
     if (st_isIntanceHookCls(hookedCls)) {
-      return STHookResultSuccess;
-    } else {
-      STHookInfo *hookInfo = [STHookInfo infoWithOption:option withIdentifier:identifier withBlock:block];
-      return [hookInfoPool addInfo:hookInfo] ? STHookResultSuccess :  STHookResultErrorIDExisted;
+      if (byInstanceHook) {
+        return STHookResultSuccess;
+      }
+      hookInfoPool.isInstanceIsaHook = YES;
     }
+    STHookInfo *hookInfo = [STHookInfo infoWithOption:option withIdentifier:identifier withBlock:block];
+    return [hookInfoPool addInfo:hookInfo] ? STHookResultSuccess : STHookResultErrorIDExisted;
   }
 }
 
