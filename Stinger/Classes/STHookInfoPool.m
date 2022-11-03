@@ -214,6 +214,7 @@ NSString * const KVOClassPrefix = @"NSKVONotifying_";
 @synthesize hookedCls = _hookedCls;
 @synthesize statedCls = _statedCls;
 @synthesize isInstanceHook = _isInstanceHook;
+@synthesize isInstanceIsaHook = _isInstanceIsaHook;
 @synthesize semaphore = _semaphore;
 
 
@@ -408,7 +409,9 @@ NS_INLINE void _st_ffi_function(ffi_cif *cif, void *ret, void **args, void *user
   void **slf = args[0];
   
   if (hookedClassInfoPool->_isInstanceHook) {
-    statedClassInfoPool = _st_fast_get_HookInfoPool(hookedClassInfoPool->_statedCls, hookedClassInfoPool->_uniqueKey);
+    if (!hookedClassInfoPool->_isInstanceIsaHook) {
+      statedClassInfoPool = _st_fast_get_HookInfoPool(hookedClassInfoPool->_statedCls, hookedClassInfoPool->_uniqueKey);
+    }
     instanceInfoPool = _st_fast_get_HookInfoPool((__bridge id)(*slf), hookedClassInfoPool->_uniqueKey);
   }
 
